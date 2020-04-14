@@ -1,5 +1,7 @@
 package server.mediator;
 
-public interface WarehouseServer
+import java.rmi.Remote;
+
+public interface WarehouseServer extends Remote
 {
 }
