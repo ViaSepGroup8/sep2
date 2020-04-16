@@ -1,4 +1,4 @@
-package server.mediator;
+package mediator;
 
 import java.rmi.Remote;
 
