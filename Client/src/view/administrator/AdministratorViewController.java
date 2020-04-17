@@ -1,4 +1,4 @@
-package view;
+package view.administrator;
 
 public class AdministratorViewController {
 }

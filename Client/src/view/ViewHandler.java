@@ -4,6 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import view.administrator.AdministratorViewController;
+import view.customer.CustomerViewController;
+import view.driver.DriverViewController;
+import view.login.LoginViewController;
+import view.picker.PickerViewController;
 import viewmodel.ViewModelFactory;
 
 import java.io.IOException;
@@ -48,7 +53,7 @@ public class ViewHandler {
 
         switch (id) {
             case "Login":
-                loginViewController = loadLoginView("/view/LoginView.fxml", loginViewController);
+                loginViewController = loadLoginView("/view/login/LoginView.fxml", loginViewController);
                 root = loginViewController.getRoot();
                 width = 225;
                 height = 170;
