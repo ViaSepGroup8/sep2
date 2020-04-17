@@ -87,7 +87,7 @@ public class ViewHandler {
         }
 
         currentScene.setRoot(root);
-        primaryStage.setTitle("Chat room");
+        primaryStage.setTitle("Bernardo's warehouse");
         primaryStage.setScene(currentScene);
         primaryStage.setWidth(width);
         primaryStage.setHeight(height);
