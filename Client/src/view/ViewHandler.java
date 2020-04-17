@@ -34,10 +34,10 @@ public class ViewHandler {
         this.currentScene = new Scene(new Region());
 
         loginViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
-        customerViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
-        administratorViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
-        driverViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
-        pickerViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
+        customerViewController.init(this, viewModelFactory.getCustomerViewModel(), new Region());
+        administratorViewController.init(this, viewModelFactory.getAdministratorViewModel(), new Region());
+        driverViewController.init(this, viewModelFactory.getDriverViewModel(), new Region());
+        pickerViewController.init(this, viewModelFactory.getPickerViewModel(), new Region());
     }
 
     public void start(Stage primaryStage) {
@@ -46,7 +46,6 @@ public class ViewHandler {
 
     public void openView(String id) {
         Region root = null;
-        String title = "";
         primaryStage = new Stage();
         int width = 0;
         int height = 0;
@@ -59,25 +58,25 @@ public class ViewHandler {
                 height = root.prefHeight();
                 break;
             case "Customer":
-                customerViewController = loadCustomerView("/view/MainView.fxml", mainViewController);
+                customerViewController = loadCustomerView("/view/customer/CustomerView.fxml", customerViewController);
                 root = customerViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
                 break;
             case "Administrator":
-                administratorViewController = loadAdministratorView("/view/MainView.fxml", mainViewController);
+                administratorViewController = loadAdministratorView("/view/administrator/AdministratorView.fxml", administratorViewController);
                 root = administratorViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
                 break;
             case "Driver":
-                driverViewController = loadDriverView("/view/MainView.fxml", mainViewController);
+                driverViewController = loadDriverView("/view/driver/DriverView.fxml", driverViewController);
                 root = driverViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
                 break;
             case "Picker":
-                pickerViewController = loadView("/view/MainView.fxml", mainViewController);
+                pickerViewController = loadPickerView("/view/picker/PickerView.fxml", pickerViewController);
                 root = pickerViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
@@ -96,7 +95,7 @@ public class ViewHandler {
 
     public void closeView() { primaryStage.close(); }
 
-    private LoginViewController loadLoginView(String fxmlFile, LoginViewController controller, String id) {
+    private LoginViewController loadLoginView(String fxmlFile, LoginViewController controller) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -109,7 +108,7 @@ public class ViewHandler {
         return controller;
     }
 
-    private CustomerViewController loadCustomerView(String fxmlFile, CustomerViewController controller, String id) {
+    private CustomerViewController loadCustomerView(String fxmlFile, CustomerViewController controller) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -122,7 +121,7 @@ public class ViewHandler {
         return controller;
     }
 
-    private AdministratorViewController loadAdministratorView(String fxmlFile, AdministratorViewController controller, String id) {
+    private AdministratorViewController loadAdministratorView(String fxmlFile, AdministratorViewController controller) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -135,7 +134,7 @@ public class ViewHandler {
         return controller;
     }
 
-    private DriverViewController loadDriverView(String fxmlFile, DriverViewController controller, String id) {
+    private DriverViewController loadDriverView(String fxmlFile, DriverViewController controller) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -148,7 +147,7 @@ public class ViewHandler {
         return controller;
     }
 
-    private PickerViewController loadPickerView(String fxmlFile, PickerViewController controller, String id) {
+    private PickerViewController loadPickerView(String fxmlFile, PickerViewController controller) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
