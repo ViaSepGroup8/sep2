@@ -103,7 +103,7 @@ public class ViewHandler {
             loader.setLocation(getClass().getResource(fxmlFile));
             Region root = loader.load();
             controller = loader.getController();
-            controller.init(this, viewModelFactory.getLoginViewModel(), root);
+            controller.init(this, viewModelFactory.getLoginViewModel(), root); // Need to change the get login view model.
         }
         catch (IOException e) { e.printStackTrace(); }
         return controller;
