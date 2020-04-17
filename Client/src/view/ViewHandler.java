@@ -53,35 +53,35 @@ public class ViewHandler {
 
         switch (id) {
             case "Login":
-                loginViewController = loadLoginView("/view/login/LoginView.fxml", loginViewController);
+                loginViewController = loadView("/view/login/LoginView.fxml", loginViewController);
                 root = loginViewController.getRoot();
-                width = 225;
-                height = 170;
+                width = root.prefWidth();
+                height = root.prefHeight();
                 break;
             case "Customer":
-                /*mainViewController = loadMainView("/view/MainView.fxml", mainViewController);
-                root = mainViewController.getRoot();
-                width = 620;
-                height = 435;
-                break;*/
+                customerViewController = loadView("/view/MainView.fxml", mainViewController);
+                root = customerViewController.getRoot();
+                width = root.prefWidth();
+                height = root.prefHeight();
+                break;
             case "Administrator":
-                /*mainViewController = loadMainView("/view/MainView.fxml", mainViewController);
-                root = mainViewController.getRoot();
-                width = 620;
-                height = 435;
-                break;*/
+                administratorViewController = loadView("/view/MainView.fxml", mainViewController);
+                root = administratorViewController.getRoot();
+                width = root.prefWidth();
+                height = root.prefHeight();
+                break;
             case "Driver":
-                /*mainViewController = loadMainView("/view/MainView.fxml", mainViewController);
-                root = mainViewController.getRoot();
-                width = 620;
-                height = 435;
-                break;*/
+                driverViewController = loadView("/view/MainView.fxml", mainViewController);
+                root = driverViewController.getRoot();
+                width = root.prefWidth();
+                height = root.prefHeight();
+                break;
             case "Picker":
-                /*mainViewController = loadMainView("/view/MainView.fxml", mainViewController);
-                root = mainViewController.getRoot();
-                width = 620;
-                height = 435;
-                break;*/
+                pickerViewController = loadView("/view/MainView.fxml", mainViewController);
+                root = pickerViewController.getRoot();
+                width = root.prefWidth();
+                height = root.prefHeight();
+                break;
             default:
                 System.out.println("ERROR NO CHOSEN WINDOW");
         }
@@ -96,7 +96,7 @@ public class ViewHandler {
 
     public void closeView() { primaryStage.close(); }
 
-    private LoginViewController loadLoginView(String fxmlFile, LoginViewController controller) {
+    private LoginViewController loadView(String fxmlFile, LoginViewController controller) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
