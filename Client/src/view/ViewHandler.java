@@ -25,6 +25,7 @@ public class ViewHandler {
 
     public ViewHandler(ViewModelFactory viewModelFactory) {
         this.viewModelFactory = viewModelFactory;
+
         loginViewController = new LoginViewController();
         customerViewController = new CustomerViewController();
         administratorViewController = new AdministratorViewController();
@@ -96,7 +97,7 @@ public class ViewHandler {
             loader.setLocation(getClass().getResource(fxmlFile));
             Region root = loader.load();
             controller = loader.getController();
-            controller.init(this, viewModelFactory.getLoginViewModel(), root);
+            controller.init(this, viewModelFactory.getLoginViewModel(), root); // Null point exception here
         }
         catch (IOException e) { e.printStackTrace(); }
         return controller;
