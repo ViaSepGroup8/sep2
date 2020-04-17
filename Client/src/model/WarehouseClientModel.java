@@ -1,4 +1,7 @@
 package model;
 
-public interface WarehouseClientModel {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface WarehouseClientModel extends Remote {
 }
