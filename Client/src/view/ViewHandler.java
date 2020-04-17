@@ -47,43 +47,37 @@ public class ViewHandler {
     public void openView(String id) {
         Region root = null;
         primaryStage = new Stage();
-        int width = 0;
-        int height = 0;
+        double width = 0;
+        double height = 0;
 
         switch (id) {
             case "Login":
                 loginViewController = loadLoginView("/view/login/LoginView.fxml", loginViewController);
                 root = loginViewController.getRoot();
-                width = root.prefWidth();
-                height = root.prefHeight();
                 break;
             case "Customer":
                 customerViewController = loadCustomerView("/view/customer/CustomerView.fxml", customerViewController);
                 root = customerViewController.getRoot();
-                width = root.prefWidth();
-                height = root.prefHeight();
                 break;
             case "Administrator":
                 administratorViewController = loadAdministratorView("/view/administrator/AdministratorView.fxml", administratorViewController);
                 root = administratorViewController.getRoot();
-                width = root.prefWidth();
-                height = root.prefHeight();
                 break;
             case "Driver":
                 driverViewController = loadDriverView("/view/driver/DriverView.fxml", driverViewController);
                 root = driverViewController.getRoot();
-                width = root.prefWidth();
-                height = root.prefHeight();
                 break;
             case "Picker":
                 pickerViewController = loadPickerView("/view/picker/PickerView.fxml", pickerViewController);
                 root = pickerViewController.getRoot();
-                width = root.prefWidth();
-                height = root.prefHeight();
                 break;
             default:
                 System.out.println("ERROR NO CHOSEN WINDOW");
         }
+
+        //Need to fix width and height but for now we'll use dummy values.
+        width = 400;  //root.prefWidth();
+        height = 400; //root.prefHeight();
 
         currentScene.setRoot(root);
         primaryStage.setTitle("Bernardo's warehouse");
