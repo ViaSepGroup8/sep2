@@ -53,25 +53,25 @@ public class ViewHandler {
 
         switch (id) {
             case "Login":
-                loginViewController = loadView("/view/login/LoginView.fxml", loginViewController);
+                loginViewController = loadLoginView("/view/login/LoginView.fxml", loginViewController);
                 root = loginViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
                 break;
             case "Customer":
-                customerViewController = loadView("/view/MainView.fxml", mainViewController);
+                customerViewController = loadCustomerView("/view/MainView.fxml", mainViewController);
                 root = customerViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
                 break;
             case "Administrator":
-                administratorViewController = loadView("/view/MainView.fxml", mainViewController);
+                administratorViewController = loadAdministratorView("/view/MainView.fxml", mainViewController);
                 root = administratorViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
                 break;
             case "Driver":
-                driverViewController = loadView("/view/MainView.fxml", mainViewController);
+                driverViewController = loadDriverView("/view/MainView.fxml", mainViewController);
                 root = driverViewController.getRoot();
                 width = root.prefWidth();
                 height = root.prefHeight();
@@ -96,14 +96,66 @@ public class ViewHandler {
 
     public void closeView() { primaryStage.close(); }
 
-    private LoginViewController loadView(String fxmlFile, LoginViewController controller) {
+    private LoginViewController loadLoginView(String fxmlFile, LoginViewController controller, String id) {
         controller = null;
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(fxmlFile));
             Region root = loader.load();
             controller = loader.getController();
-            controller.init(this, viewModelFactory.getLoginViewModel(), root); // Need to change the get login view model.
+            controller.init(this, viewModelFactory.getLoginViewModel(), root);
+        }
+        catch (IOException e) { e.printStackTrace(); }
+        return controller;
+    }
+
+    private CustomerViewController loadCustomerView(String fxmlFile, CustomerViewController controller, String id) {
+        controller = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(fxmlFile));
+            Region root = loader.load();
+            controller = loader.getController();
+            controller.init(this, viewModelFactory.getCustomerViewModel(), root);
+        }
+        catch (IOException e) { e.printStackTrace(); }
+        return controller;
+    }
+
+    private AdministratorViewController loadAdministratorView(String fxmlFile, AdministratorViewController controller, String id) {
+        controller = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(fxmlFile));
+            Region root = loader.load();
+            controller = loader.getController();
+            controller.init(this, viewModelFactory.getAdministratorViewModel(), root);
+        }
+        catch (IOException e) { e.printStackTrace(); }
+        return controller;
+    }
+
+    private DriverViewController loadDriverView(String fxmlFile, DriverViewController controller, String id) {
+        controller = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(fxmlFile));
+            Region root = loader.load();
+            controller = loader.getController();
+            controller.init(this, viewModelFactory.getDriverViewModel(), root);
+        }
+        catch (IOException e) { e.printStackTrace(); }
+        return controller;
+    }
+
+    private PickerViewController loadPickerView(String fxmlFile, PickerViewController controller, String id) {
+        controller = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(fxmlFile));
+            Region root = loader.load();
+            controller = loader.getController();
+            controller.init(this, viewModelFactory.getPickerViewModel(), root);
         }
         catch (IOException e) { e.printStackTrace(); }
         return controller;
