@@ -13,11 +13,11 @@ public class ViewModelFactory {
 
     public ViewModelFactory() throws IOException {
         WarehouseClientModelManager warehouseClientModelManager = new WarehouseClientModelManager();
-        loginViewModel = new LoginViewModel(warehouseClientModelManager);
-        customerViewModel = new CustomerViewModel(warehouseClientModelManager);
-        administratorViewModel = new AdministratorViewModel(warehouseClientModelManager);
-        driverViewModel = new DriverViewModel(warehouseClientModelManager);
-        pickerViewModel = new PickerViewModel(warehouseClientModelManager);
+        this.loginViewModel = new LoginViewModel(warehouseClientModelManager);
+        this.customerViewModel = new CustomerViewModel(warehouseClientModelManager);
+        this.administratorViewModel = new AdministratorViewModel(warehouseClientModelManager);
+        this.driverViewModel = new DriverViewModel(warehouseClientModelManager);
+        this.pickerViewModel = new PickerViewModel(warehouseClientModelManager);
     }
 
     public LoginViewModel getLoginViewModel() { return loginViewModel; }

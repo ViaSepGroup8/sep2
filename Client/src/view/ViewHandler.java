@@ -97,7 +97,7 @@ public class ViewHandler {
             loader.setLocation(getClass().getResource(fxmlFile));
             Region root = loader.load();
             controller = loader.getController();
-            controller.init(this, viewModelFactory.getLoginViewModel(), root); // Null point exception here
+            controller.init(this, viewModelFactory.getLoginViewModel(), root);
         }
         catch (IOException e) { e.printStackTrace(); }
         return controller;
