@@ -8,4 +8,6 @@ public class LoginViewModel {
     public LoginViewModel(WarehouseClientModelManager model) {
         this.model = model;
     }
+
+    public void login(String username, String password) { model.login(username, password); }
 }
