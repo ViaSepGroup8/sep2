@@ -76,9 +76,8 @@ public class ViewHandler {
                 System.out.println("ERROR NO CHOSEN WINDOW");
         }
 
-        //Need to fix width and height but for now we'll use dummy values.
-        width = 400;  //root.prefWidth();
-        height = 400; //root.prefHeight();
+        width = root.prefWidth(0);
+        height = root.prefHeight(0);
 
         currentScene.setRoot(root);
         primaryStage.setTitle("Bernardo's warehouse");
