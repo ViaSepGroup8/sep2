@@ -104,10 +104,40 @@ public class WarehouseClientModelManager implements WarehouseClientModel {
         property.firePropertyChange("broadcast", null, message);
     }
 
+<<<<<<< HEAD
     @Override public void receiveUserList(ArrayList<User> users)
     {
         System.out.println(users);
         property.firePropertyChange("userlist", null, users);
+=======
+    //Login
+    public void login(String username, String password) { System.out.println("Logging in..."); }
+
+    @Override
+    public void answer(int profession) {
+        switch (profession) {
+            case 0:
+                System.out.println("Impossible to login, try again!");
+                //No profession (it will give and error message)
+                break;
+            case 1:
+                System.out.println("Logged in as administrator!");
+                //Will open admin view
+                break;
+            case 2:
+                System.out.println("Logged in as customer!");
+                //Will open customer view
+                break;
+            case 3:
+                System.out.println("Logged in as picker!");
+                //Will open picker view
+                break;
+            case 4:
+                System.out.println("Logged in as driver!");
+                //Will open driver view
+                break;
+        }
+>>>>>>> 8b1cb92f5d9a9108d113139b41b49733ea99d802
     }
 
     @Override public User getUser()
