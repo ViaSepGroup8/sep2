@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Client implements ChatClient
+public class Client implements WarehouseClient
 {
   private ClientModel model;
 

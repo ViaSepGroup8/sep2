@@ -1,7 +1,7 @@
 package model;
 
-import server.mediator.ChatServer;
-import server.mediator.Server;
+import mediator.Server;
+import mediator.WarehouseServer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -11,7 +11,7 @@ import java.rmi.registry.Registry;
 
 public class ServerModelManager implements ServerModel
 {
-  private ChatServer server;
+  private WarehouseServer server;
   private PropertyChangeSupport property;
 
   public ServerModelManager()

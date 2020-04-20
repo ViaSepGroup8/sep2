@@ -13,8 +13,9 @@ public class Location
     this.C = C;
   }
 
-  public boolean onRightSide(){
-    return B%2 == 0;
+  public boolean onRightSide()
+  {
+    return B % 2 == 0;
   }
 
   public String getA()
@@ -32,13 +33,13 @@ public class Location
     return C;
   }
 
-  public String codeFormat(){
-    return String.format("%s-02%d-02%d", B,C);
+  public String codeFormat()
+  {
+    return String.format("%s-02%d-02%d", B, C);
   }
 
-  public String readableForamt(){
-    return String.format("%s")
+  public String readableFormat()
+  {
+    return String.format("In ale: %s on position: 02%d:02%d", A, B, C);
   }
-
-  enum
 }
