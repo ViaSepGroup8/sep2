@@ -1,4 +1,4 @@
-package server.mediator;
+package mediator;
 
 import client.mediator.ChatClient;
 import server.model.Message;

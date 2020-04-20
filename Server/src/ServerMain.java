@@ -6,6 +6,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class ServerMain {
+    //setup view and server
+    ServerModel server = new ServerModelManager();
+    SimpleConsoleView view = new SimpleConsoleView(server);
+
+    //start the server
+    server.start();
+
+
     public static void main(String[] args) throws RemoteException, MalformedURLException {
         startRegistry();
 

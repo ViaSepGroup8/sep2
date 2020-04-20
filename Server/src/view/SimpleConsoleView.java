@@ -1,4 +1,4 @@
-package server.view;
+package view;
 
 import server.model.ServerModel;
 
