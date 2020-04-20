@@ -1,11 +1,11 @@
 package viewmodel;
 
-import model.WarehouseClientModelManager;
+import model.ClientModel;
 
 public class LoginViewModel {
-    private WarehouseClientModelManager model;
+    private ClientModel model;
 
-    public LoginViewModel(WarehouseClientModelManager model) {
+    public LoginViewModel(ClientModel model) {
         this.model = model;
     }
 

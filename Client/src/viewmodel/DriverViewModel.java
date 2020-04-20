@@ -1,11 +1,11 @@
 package viewmodel;
 
-import model.WarehouseClientModelManager;
+import model.ClientModel;
 
 public class DriverViewModel {
-    private WarehouseClientModelManager model;
+    private ClientModel model;
 
-    public DriverViewModel(WarehouseClientModelManager model) {
+    public DriverViewModel(ClientModel model) {
         this.model = model;
     }
 }

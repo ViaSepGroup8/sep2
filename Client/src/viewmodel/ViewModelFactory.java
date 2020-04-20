@@ -1,6 +1,6 @@
 package viewmodel;
 
-import model.WarehouseClientModelManager;
+import model.ClientModel;
 
 import java.io.IOException;
 
@@ -11,13 +11,12 @@ public class ViewModelFactory {
     private DriverViewModel driverViewModel;
     private PickerViewModel pickerViewModel;
 
-    public ViewModelFactory() throws IOException {
-        WarehouseClientModelManager warehouseClientModelManager = new WarehouseClientModelManager();
-        this.loginViewModel = new LoginViewModel(warehouseClientModelManager);
-        this.customerViewModel = new CustomerViewModel(warehouseClientModelManager);
-        this.administratorViewModel = new AdministratorViewModel(warehouseClientModelManager);
-        this.driverViewModel = new DriverViewModel(warehouseClientModelManager);
-        this.pickerViewModel = new PickerViewModel(warehouseClientModelManager);
+    public ViewModelFactory(ClientModel model) throws IOException {
+        this.loginViewModel = new LoginViewModel(model);
+        this.customerViewModel = new CustomerViewModel(model);
+        this.administratorViewModel = new AdministratorViewModel(model);
+        this.driverViewModel = new DriverViewModel(model);
+        this.pickerViewModel = new PickerViewModel(model);
     }
 
     public LoginViewModel getLoginViewModel() { return loginViewModel; }

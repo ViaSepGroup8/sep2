@@ -1,12 +1,9 @@
 package mediator;
 
-import client.model.ClientModel;
-import server.model.Message;
-import server.model.User;
+import model.ClientModel;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 
 public class Client implements WarehouseClient
 {
@@ -16,15 +13,5 @@ public class Client implements WarehouseClient
   {
     UnicastRemoteObject.exportObject(this, 0);
     this.model = model;
-  }
-
-  @Override public void receiveMessage(Message message) throws RemoteException
-  {
-    model.receiveMessage(message);
-  }
-
-  @Override public void receiveUserList(ArrayList<User> users) throws RemoteException
-  {
-    model.receiveUserList(users);
   }
 }

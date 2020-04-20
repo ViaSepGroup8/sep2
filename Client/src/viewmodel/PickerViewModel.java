@@ -1,11 +1,11 @@
 package viewmodel;
 
-import model.WarehouseClientModelManager;
+import model.ClientModel;
 
 public class PickerViewModel {
-    private WarehouseClientModelManager model;
+    private ClientModel model;
 
-    public PickerViewModel(WarehouseClientModelManager model) {
+    public PickerViewModel(ClientModel model) {
         this.model = model;
     }
 }

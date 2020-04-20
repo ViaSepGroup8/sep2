@@ -1,5 +1,7 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.ClientModel;
+import model.ClientModelManager;
 import view.ViewHandler;
 import viewmodel.ViewModelFactory;
 
@@ -8,7 +10,8 @@ public class ClientMain extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ViewModelFactory viewModelFactory = new ViewModelFactory();
+        ClientModel model = new ClientModelManager();
+        ViewModelFactory viewModelFactory = new ViewModelFactory(model);
         ViewHandler viewHandler = new ViewHandler(viewModelFactory);
         viewHandler.openView("Login");
     }

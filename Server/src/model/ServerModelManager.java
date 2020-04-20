@@ -16,7 +16,10 @@ public class ServerModelManager implements ServerModel
 
   public ServerModelManager()
   {
-    try { server = new Server(this); } catch (RemoteException e) { log("initialization failed");}
+    // Create server object for clients to connect to
+    try {server = new Server(this); } catch (RemoteException e) { log("initialization failed");}
+
+    //setup observable subject
     property = new PropertyChangeSupport(this);
   }
 

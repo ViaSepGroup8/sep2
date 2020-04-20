@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Order
 {
-  String uniqueId;
+  int uniqueId;
   ArrayList<Item> items;
   ArrayList<Job> jobs;
 }
