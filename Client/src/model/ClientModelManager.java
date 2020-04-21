@@ -65,12 +65,12 @@ public class ClientModelManager implements ClientModel, ObserverSubject
 
     @Override public void debugLog(String message)
     {
-        System.out.println("debug>> " + message);
+        System.out.println("client>> " + message);
     }
 
     @Override public void fatalError(String message)
     {
-        System.out.println("fatal error>> " + message);
+        System.out.println("client fatal error>> " + message);
         System.exit(0);
     }
 

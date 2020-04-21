@@ -14,6 +14,6 @@ public class SimpleConsoleView implements PropertyChangeListener
 
   @Override public void propertyChange(PropertyChangeEvent propertyChangeEvent)
   {
-    System.out.println(">>" + propertyChangeEvent.getNewValue());
+    System.out.println("server>> " + propertyChangeEvent.getNewValue());
   }
 }
