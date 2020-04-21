@@ -1,5 +1,7 @@
 package mediator;
 
+import database.Database;
+import database.FakeDatabase;
 import model.ServerModel;
 import model.ServerModelManager;
 import model.UserType;
@@ -11,11 +13,13 @@ import java.util.ArrayList;
 public class Server implements WarehouseServer
 {
   ServerModel model;
+  Database database;
 //  ArrayList<WarehouseClient> clients;
 //  ArrayList<User> users;
 
   public Server(ServerModel model) throws RemoteException
   {
+    this.database = new FakeDatabase();
     this.model = model;
 //    clients = new ArrayList<WarehouseClient>();
 //    users = new ArrayList<User>();
@@ -29,15 +33,7 @@ public class Server implements WarehouseServer
 
   @Override public UserType login(String username, String password) throws RemoteException
   {
-    //todo implement with database
-    switch (username)
-    {
-      case "admin":    return UserType.ADMIN;
-      case "picker":   return UserType.PICKER;
-      case "driver":   return UserType.DRIVER;
-      case "customer": return UserType.CUSTOMER;
-      default:         return UserType.UNKNOWN;
-    }
+    return database.getUserType(username, password);
   }
 
   //  public void answer(int profession) {
