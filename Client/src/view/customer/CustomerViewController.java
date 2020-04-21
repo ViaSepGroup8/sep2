@@ -1,5 +1,6 @@
 package view.customer;
 
+import javafx.event.ActionEvent;
 import javafx.scene.layout.Region;
 import view.ViewHandler;
 import viewmodel.CustomerViewModel;
@@ -18,4 +19,20 @@ public class CustomerViewController {
     }
 
     public Region getRoot() { return root; }
+
+
+
+    public void onNewOrder (ActionEvent actionEvent) {
+
+
+    }
+
+    public void onAcceptOrder (ActionEvent actionEvent) {
+
+    }
+
+    public void onLogOut (ActionEvent actionEvent) {
+    viewModel.logOut();
+
+    }
 }

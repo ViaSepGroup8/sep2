@@ -8,4 +8,9 @@ public class CustomerViewModel {
     public CustomerViewModel(ClientModel model) {
         this.model = model;
     }
+
+    public void logOut ()
+    {
+        model.logOut();
+    }
 }

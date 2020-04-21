@@ -4,26 +4,34 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
    <children>
-      <TableView layoutY="44.0" prefHeight="323.0" prefWidth="600.0">
+      <TableView layoutY="32.0" prefHeight="199.0" prefWidth="601.0">
          <columns>
-            <TableColumn prefWidth="201.0" text="item" />
-            <TableColumn prefWidth="204.0" text="quantity" />
-            <TableColumn minWidth="9.3333740234375" prefWidth="194.0" text="price" />
+            <TableColumn fx:id="id" prefWidth="75.0" text="id" />
+            <TableColumn fx:id="item" prefWidth="201.0" text="item" />
+            <TableColumn fx:id="quantity" prefWidth="158.6666259765625" text="quantity" />
+            <TableColumn fx:id="price" minWidth="9.3333740234375" prefWidth="239.33334350585938" text="price" />
          </columns>
       </TableView>
-      <TextField layoutX="437.0" layoutY="377.0" />
-      <Button layoutX="501.0" layoutY="411.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Log out" />
-      <Button layoutX="14.0" layoutY="377.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Make order" />
-      <Button layoutX="14.0" layoutY="411.0" mnemonicParsing="false" text="Accept order" />
-      <Label layoutX="14.0" layoutY="14.0" text="Customer number" />
-      <TextField layoutX="125.0" layoutY="10.0" prefHeight="25.0" prefWidth="102.0" />
-      <Label layoutX="514.0" layoutY="14.0" text="In progress" />
-      <Label layoutX="455.0" layoutY="14.0" text="Status:" />
-      <Label layoutX="372.0" layoutY="381.0" text="Total sum:" />
+      <Button layoutX="501.0" layoutY="496.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="25.0" prefWidth="85.0" text="Log out" />
+      <Button layoutX="12.0" layoutY="231.0" mnemonicParsing="false" onAction="#onNewOrder" prefHeight="25.0" prefWidth="85.0" text="New order" />
+      <Button layoutX="13.0" layoutY="261.0" mnemonicParsing="false" onAction="#onAcceptOrder" text="Accept order" />
+      <Label layoutX="13.0" layoutY="5.0" text="Customer name" />
+      <Label fx:id="statusLabel" layoutX="514.0" layoutY="5.0" text="In proccess" />
+      <Label layoutX="454.0" layoutY="5.0" text="Status:" />
+      <Label layoutX="444.0" layoutY="235.0" text="Total sum:" />
+      <Label fx:id="totalSum" layoutX="523.0" layoutY="235.0" prefHeight="17.0" prefWidth="68.0" text="20 DKK" />
+      <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="lenka " />
+      <TableView layoutX="12.0" layoutY="296.0" prefHeight="182.0" prefWidth="589.0">
+        <columns>
+          <TableColumn fx:id="orderId" prefWidth="75.0" text="order id" />
+          <TableColumn fx:id="numberOfItems" prefWidth="221.33336639404297" text="number of items" />
+            <TableColumn fx:id="totalPrice" prefWidth="142.6666259765625" text="total price" />
+            <TableColumn fx:id="tableStatus" prefWidth="139.33334350585938" text="status" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
