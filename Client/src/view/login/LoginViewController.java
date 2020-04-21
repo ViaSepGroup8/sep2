@@ -23,7 +23,7 @@ public class LoginViewController {
 
     public Region getRoot() { return root; }
 
-    @FXML public void loginButtonClicked() { viewModel.login(username.getText(), password.getText()); }
+    @FXML public void loginButtonClicked() { viewModel.login(username.getText(), password.getText(), viewHandler); }
 
     @FXML public void exitButtonClicked() { System.exit(0); }
 }

@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 public interface ClientModel extends Remote
 {
+  void logOut();
   void userError(String message);
   void debugLog(String message);
+  void fatalError(String message);
 
   //Login
   public UserType login(String username, String password);

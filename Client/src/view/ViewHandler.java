@@ -43,11 +43,11 @@ public class ViewHandler {
 
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        openView("Login");
     }
 
     public void openView(String id) {
         Region root = null;
-        primaryStage = new Stage();
         double width = 0;
         double height = 0;
 

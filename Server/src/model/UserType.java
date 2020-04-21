@@ -6,4 +6,5 @@ public enum UserType
   CUSTOMER,
   PICKER,
   DRIVER,
+  UNKNOWN,
 }

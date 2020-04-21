@@ -13,6 +13,6 @@ public class ClientMain extends Application {
         ClientModel model = new ClientModelManager();
         ViewModelFactory viewModelFactory = new ViewModelFactory(model);
         ViewHandler viewHandler = new ViewHandler(viewModelFactory);
-        viewHandler.openView("Login");
+        viewHandler.start(stage);
     }
 }

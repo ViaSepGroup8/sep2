@@ -32,14 +32,12 @@ public class Server implements WarehouseServer
     //todo implement with database
     switch (username)
     {
-      case "admin":{ return UserType.ADMIN; }
-      case "picker": { return UserType.PICKER; }
-      case "driver": { return UserType.DRIVER; }
-      case "customer": { return UserType.CUSTOMER; }
+      case "admin":    return UserType.ADMIN;
+      case "picker":   return UserType.PICKER;
+      case "driver":   return UserType.DRIVER;
+      case "customer": return UserType.CUSTOMER;
+      default:         return UserType.UNKNOWN;
     }
-
-    //wrong username or password, return null
-    return null;
   }
 
   //  public void answer(int profession) {

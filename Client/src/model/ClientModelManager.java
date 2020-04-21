@@ -29,22 +29,32 @@ public class ClientModelManager implements ClientModel, ObserverSubject
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (WarehouseServer) registry.lookup("server");
         } catch (Exception exception){
-            System.out.println("connection failed");
-            System.exit(0);
+            fatalError("connection failed");
         }
 
         //test the connection
         try
         {
-            System.out.println(server.ping());
+            if(server.ping().equals("pong")){
+                debugLog("connected to server");
+            }
+            else{
+                debugLog("wrong response from server");
+            }
         }
         catch (RemoteException e)
         {
-            System.out.println("server does not respond, exiting");
-            System.exit(0);
+            fatalError("server does not respond");
         }
 
         //register client
+    }
+
+    @Override public void logOut()
+    {
+        //todo close connection and inform the server the user left
+        debugLog("user logout");
+        System.exit(0);
     }
 
     @Override public void userError(String message)
@@ -55,7 +65,13 @@ public class ClientModelManager implements ClientModel, ObserverSubject
 
     @Override public void debugLog(String message)
     {
-        System.out.println("debug>>");
+        System.out.println("debug>> " + message);
+    }
+
+    @Override public void fatalError(String message)
+    {
+        System.out.println("fatal error>> " + message);
+        System.exit(0);
     }
 
     @Override public UserType login(String username, String password)
@@ -66,7 +82,7 @@ public class ClientModelManager implements ClientModel, ObserverSubject
         }
         catch (RemoteException e)
         {
-            System.out.println("error in remote login method");
+            fatalError("error in remote login method");
         }
         return null;
     }
