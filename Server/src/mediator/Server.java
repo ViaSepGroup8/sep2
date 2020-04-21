@@ -2,6 +2,8 @@ package mediator;
 
 import model.ServerModel;
 import model.ServerModelManager;
+import model.UserType;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -23,6 +25,21 @@ public class Server implements WarehouseServer
   @Override public String ping() throws RemoteException
   {
     return "pong";
+  }
+
+  @Override public UserType login(String username, String password) throws RemoteException
+  {
+    //todo implement with database
+    switch (username)
+    {
+      case "admin":{ return UserType.ADMIN; }
+      case "picker": { return UserType.PICKER; }
+      case "driver": { return UserType.DRIVER; }
+      case "customer": { return UserType.CUSTOMER; }
+    }
+
+    //wrong username or password, return null
+    return null;
   }
 
   //  public void answer(int profession) {
