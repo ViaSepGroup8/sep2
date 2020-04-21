@@ -1,78 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="503.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox prefHeight="51.0" prefWidth="503.0">
-         <children>
-            <Label prefHeight="16.0" prefWidth="111.0" text="Customer number:">
-               <HBox.margin>
-                  <Insets left="7.0" top="10.0" />
-               </HBox.margin>
-            </Label>
-            <TextField alignment="CENTER" prefHeight="25.0" prefWidth="95.0">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets top="5.0" />
-               </HBox.margin>
-            </TextField>
-            <Label text="Status:">
-               <HBox.margin>
-                  <Insets left="100.0" top="10.0" />
-               </HBox.margin>
-            </Label>
-            <Label text="In process">
-               <HBox.margin>
-                  <Insets left="25.0" top="10.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
-      <TableView prefHeight="333.0" prefWidth="503.0">
-        <columns>
-          <TableColumn prefWidth="185.33333837985992" text="item" />
-          <TableColumn prefWidth="152.00001525878906" text="quantity" />
-            <TableColumn minWidth="9.3333740234375" prefWidth="165.33331298828125" text="price(?)" />
-        </columns>
+      <TableView layoutY="44.0" prefHeight="323.0" prefWidth="600.0">
+         <columns>
+            <TableColumn prefWidth="201.0" text="item" />
+            <TableColumn prefWidth="204.0" text="quantity" />
+            <TableColumn minWidth="9.3333740234375" prefWidth="194.0" text="price" />
+         </columns>
       </TableView>
-      <Button mnemonicParsing="false" text="Make an order">
-         <VBox.margin>
-            <Insets left="5.0" top="5.0" />
-         </VBox.margin>
-      </Button>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label prefHeight="24.0" prefWidth="55.0" text="Total sum:">
-               <HBox.margin>
-                  <Insets left="350.0" />
-               </HBox.margin>
-            </Label>
-            <TextField prefHeight="10.0" prefWidth="75.0">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-            </TextField>
-         </children>
-      </HBox>
-      <Button mnemonicParsing="false" text="Accept order">
-         <VBox.margin>
-            <Insets left="5.0" top="5.0" />
-         </VBox.margin>
-      </Button>
-      <Button mnemonicParsing="false" text="Log out">
-         <VBox.margin>
-            <Insets bottom="5.0" left="425.0" />
-         </VBox.margin>
-      </Button>
+      <TextField layoutX="437.0" layoutY="377.0" />
+      <Button layoutX="501.0" layoutY="411.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Log out" />
+      <Button layoutX="14.0" layoutY="377.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Make order" />
+      <Button layoutX="14.0" layoutY="411.0" mnemonicParsing="false" text="Accept order" />
+      <Label layoutX="14.0" layoutY="14.0" text="Customer number" />
+      <TextField layoutX="125.0" layoutY="10.0" prefHeight="25.0" prefWidth="102.0" />
+      <Label layoutX="514.0" layoutY="14.0" text="In progress" />
+      <Label layoutX="455.0" layoutY="14.0" text="Status:" />
+      <Label layoutX="372.0" layoutY="381.0" text="Total sum:" />
    </children>
-</VBox>
+</AnchorPane>
