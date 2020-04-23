@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
    <children>
-      <TableView layoutY="32.0" prefHeight="199.0" prefWidth="601.0">
+      <TableView fx:id="itemsTable" layoutY="32.0" prefHeight="199.0" prefWidth="601.0">
          <columns>
             <TableColumn fx:id="id" prefWidth="75.0" text="id" />
             <TableColumn fx:id="item" prefWidth="201.0" text="item" />
@@ -25,7 +25,7 @@
       <Label layoutX="444.0" layoutY="235.0" text="Total sum:" />
       <Label fx:id="totalSum" layoutX="523.0" layoutY="235.0" prefHeight="17.0" prefWidth="68.0" text="20 DKK" />
       <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="lenka " />
-      <TableView layoutX="12.0" layoutY="296.0" prefHeight="182.0" prefWidth="589.0">
+      <TableView fx:id="ordersTable" layoutX="12.0" layoutY="296.0" prefHeight="182.0" prefWidth="589.0">
         <columns>
           <TableColumn fx:id="orderId" prefWidth="75.0" text="order id" />
           <TableColumn fx:id="numberOfItems" prefWidth="221.33336639404297" text="number of items" />

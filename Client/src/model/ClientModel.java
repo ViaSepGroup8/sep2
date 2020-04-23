@@ -12,11 +12,12 @@ public interface ClientModel extends Remote
   void fatalError(String message);
 
   //Login
-  public UserType login(String username, String password);
+  UserType login(String username, String password);
 
   //Administrator
 
   //Costumer
+  ArrayList<Item> getAllWarehouseItems();
 
   //Driver
 

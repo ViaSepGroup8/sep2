@@ -2,6 +2,7 @@ package mediator;
 
 import database.Database;
 import database.FakeDatabase;
+import model.Item;
 import model.ServerModel;
 import model.ServerModelManager;
 import model.UserType;
@@ -34,6 +35,11 @@ public class Server implements WarehouseServer
   @Override public UserType login(String username, String password) throws RemoteException
   {
     return database.getUserType(username, password);
+  }
+
+  @Override public ArrayList<Item> getAllWarehouseItems()
+  {
+    return database.getAllWarehouseItems();
   }
 
   //  public void answer(int profession) {
