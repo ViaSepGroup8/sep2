@@ -8,4 +8,6 @@ public class PickerViewModel {
     public PickerViewModel(ClientModel model) {
         this.model = model;
     }
+
+    public void logOut() { model.logOut(); }
 }

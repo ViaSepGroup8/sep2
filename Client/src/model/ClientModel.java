@@ -23,6 +23,7 @@ public interface ClientModel extends Remote
 
   //Picker
 
+
   //local model
   //  void setUser(User user);
   //  User getUser();
