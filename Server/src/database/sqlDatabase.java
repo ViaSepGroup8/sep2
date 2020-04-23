@@ -1,6 +1,7 @@
 package database;
 
 import model.Item;
+import model.Job;
 import model.User;
 import model.UserType;
 
@@ -19,6 +20,11 @@ public class sqlDatabase implements Database
   }
 
   @Override public UserType getUserType(String username, String password)
+  {
+    return null;
+  }
+
+  @Override public Job getNewJob()
   {
     return null;
   }
