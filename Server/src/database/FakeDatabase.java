@@ -73,6 +73,11 @@ public class FakeDatabase implements Database
     }
   }
 
+  @Override public void addJob(Job job)
+  {
+    jobs.add(job);
+  }
+
   @Override public Job getNewJob()
   {
     //initialize list
