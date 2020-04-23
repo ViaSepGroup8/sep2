@@ -29,7 +29,12 @@ public class FakeDatabase implements Database
     System.out.println("db>> loading fake data");
     String StringOfItems = "error";
     try
-    { StringOfItems = Files.readString(Paths.get("Server/src/database/fake-data.txt")); } catch (IOException e) { }
+    {
+      StringOfItems = Files.readString(Paths.get("Server/src/database/fake-data.txt"));
+    }
+    catch (IOException e)
+    {
+    }
     String[] split = StringOfItems.replaceAll("\\s+", "").split(",");
     for (int i = 0; i < split.length; i++)
     {
@@ -55,11 +60,37 @@ public class FakeDatabase implements Database
     //todo implement with database
     switch (username)
     {
-      case "admin":    return UserType.ADMIN;
-      case "picker":   return UserType.PICKER;
-      case "driver":   return UserType.DRIVER;
-      case "customer": return UserType.CUSTOMER;
-      default:         return UserType.UNKNOWN;
+      case "admin":
+        return UserType.ADMIN;
+      case "picker":
+        return UserType.PICKER;
+      case "driver":
+        return UserType.DRIVER;
+      case "customer":
+        return UserType.CUSTOMER;
+      default:
+        return UserType.UNKNOWN;
     }
+  }
+
+  @Override public Job getNewJob()
+  {
+    //initialize list
+    ArrayList<Item> Jobitems = new ArrayList<Item>();
+
+    String chars = "BCDEFGHI";
+    Random rnd = new Random();
+    //load some fake data
+    String StringOfItems = "error";
+    try
+    { StringOfItems = Files.readString(Paths.get("Server/src/database/fake-data.txt")); } catch (IOException e) { }
+    String[] split = StringOfItems.replaceAll("\\s+", "").split(",");
+    for (int i = 0; i < 10; i++)
+    {
+      String item = split[i];
+      Jobitems.add(new Item(i, split[i], 1 + rnd.nextInt(10), new Location("40" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3)), rnd.nextInt(100)));
+    }
+
+    return new Job("Job001", Jobitems);
   }
 }

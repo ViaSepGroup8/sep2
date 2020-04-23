@@ -2,10 +2,7 @@ package mediator;
 
 import database.Database;
 import database.FakeDatabase;
-import model.Item;
-import model.ServerModel;
-import model.ServerModelManager;
-import model.UserType;
+import model.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -40,6 +37,16 @@ public class Server implements WarehouseServer
   @Override public ArrayList<Item> getAllWarehouseItems()
   {
     return database.getAllWarehouseItems();
+  }
+
+  @Override public Job getNewJob() throws RemoteException
+  {
+    return database.getNewJob();
+  }
+
+  @Override public void completeJob(int jobId) throws RemoteException
+  {
+
   }
 
   //  public void answer(int profession) {

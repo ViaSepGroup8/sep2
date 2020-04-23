@@ -1,6 +1,7 @@
 package database;
 
 import model.Item;
+import model.Job;
 import model.User;
 import model.UserType;
 
@@ -11,4 +12,5 @@ public interface Database
   ArrayList<Item> getAllWarehouseItems();
   User getUser(String username, String password);
   UserType getUserType(String username, String password);
+  Job getNewJob();
 }
