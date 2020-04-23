@@ -10,6 +10,7 @@ import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 
 public class ClientModelManager implements ClientModel, ObserverSubject
 {
@@ -83,6 +84,19 @@ public class ClientModelManager implements ClientModel, ObserverSubject
         catch (RemoteException e)
         {
             fatalError("error in remote login method");
+        }
+        return null;
+    }
+
+    @Override public ArrayList<Item> getAllWarehouseItems()
+    {
+        try
+        {
+            return server.getAllWarehouseItems();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
         }
         return null;
     }

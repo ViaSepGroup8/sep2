@@ -34,10 +34,10 @@ public class FakeDatabase implements Database
     for (int i = 0; i < split.length; i++)
     {
       String item = split[i];
-      items.add(new Item(i, split[i], -1, new Location("40" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3))));
+      items.add(new Item(i, split[i], -1, new Location("40" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3)), 10));
     }
 
-    System.out.println(items);
+    //System.out.println(items);
   }
 
   @Override public ArrayList<Item> getAllWarehouseItems()
