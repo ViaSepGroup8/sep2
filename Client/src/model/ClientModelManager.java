@@ -12,7 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
-public class ClientModelManager implements ClientModel, ObserverSubject
+public class ClientModelManager implements ClientModel
 {
     private WarehouseClient client;
     private WarehouseServer server;
@@ -110,6 +110,16 @@ public class ClientModelManager implements ClientModel, ObserverSubject
     @Override public void removeListener(PropertyChangeListener listener)
     {
         property.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void completeJob(String jobId) throws RemoteException {
+        server.completeJob(jobId);
+    }
+
+    @Override
+    public Job getNewJob() throws RemoteException {
+        return server.getNewJob();
     }
 
     //    @Override public void registerClient()
