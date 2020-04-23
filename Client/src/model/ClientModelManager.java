@@ -102,6 +102,11 @@ public class ClientModelManager implements ClientModel
         return null;
     }
 
+    @Override
+    public void createNewOrder(ArrayList<Item> itemsSelected) {
+
+    }
+
     @Override public void addListener(PropertyChangeListener listener)
     {
         property.addPropertyChangeListener(listener);
@@ -111,6 +116,8 @@ public class ClientModelManager implements ClientModel
     {
         property.addPropertyChangeListener(listener);
     }
+
+
 
     //    @Override public void registerClient()
 //    {

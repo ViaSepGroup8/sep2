@@ -1,6 +1,8 @@
 package model;
 
 import utility.ObserverSubject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public interface ClientModel extends ObserverSubject
@@ -17,6 +19,7 @@ public interface ClientModel extends ObserverSubject
 
   //Costumer
   ArrayList<Item> getAllWarehouseItems();
+  void createNewOrder(ArrayList<Item> itemsSelected);
 
   //Driver
 

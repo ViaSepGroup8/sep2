@@ -84,8 +84,7 @@ public class CustomerViewController {
     }
 
     public void onLogOut (ActionEvent actionEvent) {
-    viewModel.logOut();
-
+        viewModel.logOut();
     }
 }
 

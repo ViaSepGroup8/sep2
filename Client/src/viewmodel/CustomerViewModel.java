@@ -6,11 +6,15 @@ import model.ClientModel;
 import model.Item;
 import view.customer.ItemTableRowData;
 
+import java.util.ArrayList;
+
 public class CustomerViewModel {
     private ClientModel model;
+    private ArrayList<Item> itemsSelected;
 
     public CustomerViewModel(ClientModel model) {
         this.model = model;
+        this.itemsSelected = new ArrayList<>();
     }
 
     public void logOut ()
@@ -27,4 +31,6 @@ public class CustomerViewModel {
         }
         return AllwarehouseItems;
     }
+
+
 }
