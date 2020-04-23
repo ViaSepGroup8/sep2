@@ -93,4 +93,14 @@ public class FakeDatabase implements Database
 
     return new Job("Job001", Jobitems);
   }
+
+  @Override public void addOrder(Order order)
+  {
+    orders.add(order);
+  }
+
+  @Override public ArrayList<Order> getOrders()
+  {
+    return orders;
+  }
 }

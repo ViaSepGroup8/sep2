@@ -8,4 +8,6 @@ public class AdministratorViewModel {
     public AdministratorViewModel(ClientModel model) {
         this.model = model;
     }
+
+    public void logOut() { model.logOut(); }
 }

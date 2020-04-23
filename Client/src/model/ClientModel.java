@@ -22,6 +22,7 @@ public interface ClientModel extends ObserverSubject
 
   //Picker
 
+
   //local model
   //  void setUser(User user);
   //  User getUser();
