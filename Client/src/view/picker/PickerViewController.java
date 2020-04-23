@@ -6,6 +6,8 @@ import javafx.scene.layout.Region;
 import view.ViewHandler;
 import viewmodel.PickerViewModel;
 
+import java.rmi.RemoteException;
+
 public class PickerViewController {
     private ViewHandler viewHandler;
     private PickerViewModel viewModel;
@@ -28,8 +30,9 @@ public class PickerViewController {
 
     }
 
-    @FXML public void orderCompleted() {
-        viewModel.completeJob();
+    @FXML public void orderCompleted() throws RemoteException
+    {
+        viewModel.completeJob("");
     }
 
     @FXML public void logOut() { viewModel.logOut(); }

@@ -80,6 +80,8 @@ public class FakeDatabase implements Database
 
   @Override public Job getNewJob()
   {
+    //todo the job should have should not be assigned to anybody else.
+
     //initialize list
     ArrayList<Item> Jobitems = new ArrayList<Item>();
 
@@ -96,7 +98,20 @@ public class FakeDatabase implements Database
       Jobitems.add(new Item(i, split[i], 1 + rnd.nextInt(10), new Location("40" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3)), rnd.nextInt(100)));
     }
 
-    return new Job("Job001", Jobitems);
+
+
+    return new Job("Job001", "fakeOrder", Jobitems);
+  }
+
+  @Override public Job getJobById(String id) throws InvalidDatabaseRequestException
+  {
+    for (Job job : jobs)
+    {
+      if(job.getJobId().equals(id)){
+        return job;
+      }
+    }
+    throw new InvalidDatabaseRequestException("cannot find the job by id");
   }
 
   @Override public void addOrder(Order order)
@@ -107,5 +122,17 @@ public class FakeDatabase implements Database
   @Override public ArrayList<Order> getOrders()
   {
     return orders;
+  }
+
+  @Override public void setOrderStatus(String orderId, OrderStatus status) throws InvalidDatabaseRequestException
+  {
+    for (Order order : orders)
+    {
+      if(order.getUniqueId().equals(orderId)){
+        order.setStatus(status);
+        return;
+      }
+    }
+    throw new InvalidDatabaseRequestException("cannot find the order");
   }
 }

@@ -2,6 +2,7 @@ package mediator;
 
 import database.Database;
 import database.FakeDatabase;
+import database.InvalidDatabaseRequestException;
 import model.*;
 
 import java.rmi.RemoteException;
@@ -46,28 +47,49 @@ public class Server implements WarehouseServer
 
   @Override public void completeJob(String jobId) throws RemoteException
   {
-    //todo
+    //todo database complete job
+    //todo check if its the last job of the order
+
+    if(false){
+      try
+      {
+        database.setOrderStatus(database.getJobById(jobId).getOrderId(), OrderStatus.READY_FOR_PICKUP);
+      }
+      catch (InvalidDatabaseRequestException e)
+      {
+        model.log(e.getMessage());
+      }
+    }
   }
   @Override public void createNewOrder(Order order) throws RemoteException
   {
+    //add the order to the database
     database.addOrder(order);
 
     //This is where the orders is split into smaller job objects
-
     ArrayList<Item> orderItems = order.getItems();
     ArrayList<Item> jobItems = new ArrayList<Item>();
-
     Integer jobCount = 0;
 
-    for (Item orderItem : orderItems)
+    for (int i = 0; i < orderItems.size(); i++)
     {
+      Item orderItem = orderItems.get(i);
       jobItems.add(orderItem);
-      if(jobItems.size() >= 20){
-        database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(), jobItems));
+
+      //first part: if we have more 20 items create a job for a picker.
+      //second part: check if it is the last item in the order list. In this case we will create a job
+      //with only the items that are left. Meaning the last job will have probably less items than 20.
+      if (jobItems.size() >= 20 || (i == orderItems.size()-1 && orderItems.size() > 0))
+      {
+        database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(),order.getUniqueId(), jobItems));
         jobItems = new ArrayList<>();
         jobCount++;
       }
     }
+
+    //change the status of the order to job divided
+    try { database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED); }
+    catch (Exception e) { model.log("database cannot find order id" + order.getUniqueId()); }
   }
 
   @Override public ArrayList<Order> getOrderList() throws RemoteException
@@ -75,34 +97,12 @@ public class Server implements WarehouseServer
     return database.getOrders();
   }
 
-  //  public void answer(int profession) {
-//    switch (profession) {
-//      case 0:
-//        System.out.println("Impossible to login, try again!");
-//        //No profession (it will give and error message)
-//        break;
-//      case 1:
-//        System.out.println("Logged in as administrator!");
-//        //Will open admin view
-//        break;
-//      case 2:
-//        System.out.println("Logged in as customer!");
-//        //Will open customer view
-//        break;
-//      case 3:
-//        System.out.println("Logged in as picker!");
-//        //Will open picker view
-//        break;
-//      case 4:
-//        System.out.println("Logged in as driver!");
-//        //Will open driver view
-//        break;
-//    }
-//  }
+  @Override public Order getNewPickupOrder()
+  {
+    return null;
+  }
 
-
-  //
-//  @Override public void registerClient(WarehouseClient client, User user) throws RemoteException
+  //  @Override public void registerClient(WarehouseClient client, User user) throws RemoteException
 //  {
 //    clients.add(client);
 //    users.add(user);

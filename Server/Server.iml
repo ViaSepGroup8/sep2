@@ -9,6 +9,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Client" />
     <orderEntry type="library" name="javafx-global" level="application" />
-    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
