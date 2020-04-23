@@ -1,6 +1,7 @@
 package viewmodel;
 
 import model.ClientModel;
+import view.customer.CustomerViewModel;
 
 import java.io.IOException;
 

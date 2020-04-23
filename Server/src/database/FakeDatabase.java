@@ -34,7 +34,7 @@ public class FakeDatabase implements Database
     for (int i = 0; i < split.length; i++)
     {
       String item = split[i];
-      items.add(new Item(i, split[i], -1, new Location("40" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3)), 10));
+      items.add(new Item(i, split[i], 0, new Location("40" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3)), rnd.nextInt(100)));
     }
 
     //System.out.println(items);

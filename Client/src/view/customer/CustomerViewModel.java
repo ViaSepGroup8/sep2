@@ -1,4 +1,4 @@
-package viewmodel;
+package view.customer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,11 +7,9 @@ import model.Item;
 
 public class CustomerViewModel {
     private ClientModel model;
-    private ObservableList<Item> emptyList;
 
     public CustomerViewModel(ClientModel model) {
         this.model = model;
-        emptyList = loadList();
     }
 
     public void logOut ()
@@ -19,18 +17,13 @@ public class CustomerViewModel {
         model.logOut();
     }
 
-    private ObservableList<Item> loadList()
+    public ObservableList<ItemTableRowData> getAllWarehouseItems()
     {
-        ObservableList<Item> observableList = FXCollections.observableArrayList();
+        ObservableList<ItemTableRowData> AllwarehouseItems = FXCollections.observableArrayList();
         for (Item item: model.getAllWarehouseItems())
         {
-            observableList.add(item);
+            AllwarehouseItems.add(new ItemTableRowData(item));
         }
-        return observableList;
-    }
-
-    public ObservableList<Item> getEmptyList()
-    {
-        return emptyList;
+        return AllwarehouseItems;
     }
 }

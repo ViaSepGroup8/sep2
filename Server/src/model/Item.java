@@ -19,6 +19,31 @@ public class Item implements Serializable
     this.price = price;
   }
 
+  public Integer getUniqueId()
+  {
+    return uniqueId;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public Integer getQuantity()
+  {
+    return quantity;
+  }
+
+  public Location getLocation()
+  {
+    return location;
+  }
+
+  public Integer getPrice()
+  {
+    return price;
+  }
+
   @Override public String toString()
   {
     return "Item{" + "uniqueId=" + uniqueId + ", name='" + name + '\'' + ", quantity=" + quantity + ", location=" + location + '}';

@@ -26,19 +26,19 @@ public class ViewHandler {
     public ViewHandler(ViewModelFactory viewModelFactory) {
         this.viewModelFactory = viewModelFactory;
 
-        loginViewController = new LoginViewController();
-        customerViewController = new CustomerViewController();
-        administratorViewController = new AdministratorViewController();
-        driverViewController = new DriverViewController();
-        pickerViewController = new PickerViewController();
+//        loginViewController = new LoginViewController();
+//        customerViewController = new CustomerViewController();
+//        administratorViewController = new AdministratorViewController();
+//        driverViewController = new DriverViewController();
+//        pickerViewController = new PickerViewController();
 
         this.currentScene = new Scene(new Region());
 
-        loginViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
-        customerViewController.init(this, viewModelFactory.getCustomerViewModel(), new Region());
-        administratorViewController.init(this, viewModelFactory.getAdministratorViewModel(), new Region());
-        driverViewController.init(this, viewModelFactory.getDriverViewModel(), new Region());
-        pickerViewController.init(this, viewModelFactory.getPickerViewModel(), new Region());
+//        loginViewController.init(this, viewModelFactory.getLoginViewModel(), new Region());
+//        customerViewController.init(this, viewModelFactory.getCustomerViewModel(), new Region());
+//        administratorViewController.init(this, viewModelFactory.getAdministratorViewModel(), new Region());
+//        driverViewController.init(this, viewModelFactory.getDriverViewModel(), new Region());
+//        pickerViewController.init(this, viewModelFactory.getPickerViewModel(), new Region());
     }
 
     public void start(Stage primaryStage) {

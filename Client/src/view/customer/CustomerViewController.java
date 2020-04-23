@@ -1,16 +1,20 @@
 package view.customer;
 
-import javafx.collections.ObservableList;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Region;
+import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 import model.Item;
 import view.ViewHandler;
-import viewmodel.CustomerViewModel;
 
 public class CustomerViewController {
     //Labels
@@ -19,39 +23,56 @@ public class CustomerViewController {
     @FXML public Label customerName;
 
     //Table 1
-    @FXML public TableView<Item> itemsTable;
-    @FXML public TableColumn<Item, Integer> id;
-    @FXML public TableColumn<Item, String> item;
-    @FXML public TableColumn<Item, Integer> quantity;
-    @FXML public TableColumn<Item, Integer> price;
+    @FXML public TableView<ItemTableRowData> itemsTable;
+    @FXML public TableColumn<ItemTableRowData, Number> id;
+    @FXML public TableColumn<ItemTableRowData, String> item;
+    @FXML public TableColumn<ItemTableRowData, Number> quantity;
+    @FXML public TableColumn<ItemTableRowData, Number> price;
 
-    //Table 2
-    @FXML public TableView ordersTable;
-    @FXML public TableColumn orderId;
-    @FXML public TableColumn numberOfItems;
-    @FXML public TableColumn totalPrice;
-    @FXML public TableColumn tableStatus;
+//    //Table 2
+//    @FXML public TableView ordersTable;
+//    @FXML public TableColumn orderId;
+//    @FXML public TableColumn numberOfItems;
+//    @FXML public TableColumn totalPrice;
+//    @FXML public TableColumn tableStatus;
 
     //Other
     private ViewHandler viewHandler;
     private CustomerViewModel viewModel;
     private Region root;
 
-    public CustomerViewController() {}
-
     public void init(ViewHandler viewHandler, CustomerViewModel viewModel, Region root) {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
 
-//        id.setCellValueFactory(id.cellFactoryProperty());
-//        id.setCellValueFactory(cellData -> cellData.getValue());
-//        id.setCellValueFactory(new PropertyValueFactory<Item, Integer>("uniqueId"));
+        id.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ItemTableRowData, Number>, ObservableValue<Number>>()
+        {
+            @Override public ObservableValue<Number> call(TableColumn.CellDataFeatures<ItemTableRowData, Number> itemTableRowDataNumberCellDataFeatures)
+            {
+                return itemTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty();
+            }
+        });
+        item.setCellValueFactory(CellData -> CellData.getValue().nameProperty());
 
+        quantity.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
 
-//        item.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-//        quantity.setCellValueFactory(new PropertyValueFactory<Item, Integer>("quantity"));
-//        price.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        price.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ItemTableRowData, Number>, ObservableValue<Number>>()
+        {
+            @Override public ObservableValue<Number> call(TableColumn.CellDataFeatures<ItemTableRowData, Number> itemTableRowDataNumberCellDataFeatures)
+            {
+                return itemTableRowDataNumberCellDataFeatures.getValue().priceProperty();
+            }
+        });
+
+        //Update the table to allow for the first and last name fields
+        //to be editable
+        itemsTable.setEditable(true);
+
+//        roomNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+//        functionalitiesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+//        subjectsColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        quantity.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
     }
 
     public Region getRoot() { return root; }
@@ -59,11 +80,10 @@ public class CustomerViewController {
     //https://stackoverflow.com/questions/27900344/how-to-make-a-table-column-with-integer-datatype-editable-without-changing-it-to
 
     public void onNewOrder (ActionEvent actionEvent) {
+        itemsTable.setItems(viewModel.getAllWarehouseItems());
     }
 
     public void onAcceptOrder (ActionEvent actionEvent) {
-        itemsTable.setItems(viewModel.getEmptyList());
-        item.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
     }
 
     public void onLogOut (ActionEvent actionEvent) {
