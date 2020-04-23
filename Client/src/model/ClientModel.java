@@ -19,7 +19,7 @@ public interface ClientModel extends ObserverSubject
 
   //Costumer
   ArrayList<Item> getAllWarehouseItems();
-  void createNewOrder(ArrayList<Item> itemsSelected);
+  void createCustomerNewOrder(Order order);
 
   //Driver
 

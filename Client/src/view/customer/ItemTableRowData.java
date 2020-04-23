@@ -66,4 +66,9 @@ public class ItemTableRowData
   {
     return price;
   }
+
+  public Item toItemObject(){
+    //Item(Integer uniqueId, String name, Integer quantity, Location location, Integer price)
+    return new Item(getUniqueId(), getName(), getQuantity(), getLocation(), getPrice());
+  }
 }
