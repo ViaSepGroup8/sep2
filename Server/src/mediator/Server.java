@@ -44,9 +44,18 @@ public class Server implements WarehouseServer
     return database.getNewJob();
   }
 
-  @Override public void completeJob(int jobId) throws RemoteException
+  @Override public void completeJob(String jobId) throws RemoteException
   {
+    //todo
+  }
+  @Override public void createNewOrder(Order order) throws RemoteException
+  {
+    database.addOrder(order);
+  }
 
+  @Override public ArrayList<Order> getOrderList() throws RemoteException
+  {
+    return database.getOrders();
   }
 
   //  public void answer(int profession) {

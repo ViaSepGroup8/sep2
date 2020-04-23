@@ -1,9 +1,6 @@
 package database;
 
-import model.Item;
-import model.Job;
-import model.User;
-import model.UserType;
+import model.*;
 
 import java.util.ArrayList;
 
@@ -13,4 +10,6 @@ public interface Database
   User getUser(String username, String password);
   UserType getUserType(String username, String password);
   Job getNewJob();
+  void addOrder(Order order);
+  ArrayList<Order> getOrders();
 }
