@@ -1,10 +1,9 @@
 package model;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import utility.ObserverSubject;
 import java.util.ArrayList;
 
-public interface ClientModel extends Remote
+public interface ClientModel extends ObserverSubject
 {
   void logOut();
   void userError(String message);
