@@ -51,6 +51,23 @@ public class Server implements WarehouseServer
   @Override public void createNewOrder(Order order) throws RemoteException
   {
     database.addOrder(order);
+
+    //This is where the orders is split into smaller job objects
+
+    ArrayList<Item> orderItems = order.getItems();
+    ArrayList<Item> jobItems = new ArrayList<Item>();
+
+    Integer jobCount = 0;
+
+    for (Item orderItem : orderItems)
+    {
+      jobItems.add(orderItem);
+      if(jobItems.size() >= 20){
+        database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(), jobItems));
+        jobItems = new ArrayList<>();
+        jobCount++;
+      }
+    }
   }
 
   @Override public ArrayList<Order> getOrderList() throws RemoteException
