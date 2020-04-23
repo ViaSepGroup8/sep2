@@ -1,9 +1,10 @@
-package view.customer;
+package viewmodel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.ClientModel;
 import model.Item;
+import view.customer.ItemTableRowData;
 
 public class CustomerViewModel {
     private ClientModel model;

@@ -6,31 +6,31 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="648.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
    <children>
-      <TableView fx:id="itemsTable" layoutY="32.0" prefHeight="199.0" prefWidth="601.0">
+      <TableView fx:id="itemsTable" layoutX="12.0" layoutY="32.0" prefHeight="199.0" prefWidth="589.0">
          <columns>
-            <TableColumn fx:id="id" prefWidth="75.0" text="id" />
-            <TableColumn fx:id="item" prefWidth="201.0" text="item" />
-            <TableColumn fx:id="quantity" prefWidth="158.6666259765625" text="quantity" />
-            <TableColumn fx:id="price" minWidth="9.3333740234375" prefWidth="239.33334350585938" text="price" />
+            <TableColumn fx:id="id" prefWidth="133.0" text="ID" />
+            <TableColumn fx:id="item" prefWidth="161.0" text="Item" />
+            <TableColumn fx:id="quantity" prefWidth="142.0" text="Quantity" />
+            <TableColumn fx:id="price" minWidth="9.3333740234375" prefWidth="152.0" text="Price" />
          </columns>
       </TableView>
-      <Button layoutX="501.0" layoutY="496.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="25.0" prefWidth="85.0" text="Log out" />
-      <Button layoutX="12.0" layoutY="231.0" mnemonicParsing="false" onAction="#onNewOrder" prefHeight="25.0" prefWidth="85.0" text="New order" />
-      <Button layoutX="13.0" layoutY="261.0" mnemonicParsing="false" onAction="#onAcceptOrder" text="Accept order" />
+      <Button layoutX="515.0" layoutY="491.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="25.0" prefWidth="85.0" text="Log out" />
+      <Button layoutX="12.0" layoutY="237.0" mnemonicParsing="false" onAction="#onNewOrder" prefHeight="25.0" prefWidth="85.0" text="New order" />
+      <Button layoutX="13.0" layoutY="267.0" mnemonicParsing="false" onAction="#onAcceptOrder" text="Accept order" />
       <Label layoutX="13.0" layoutY="5.0" text="Customer name" />
       <Label fx:id="statusLabel" layoutX="514.0" layoutY="5.0" text="In proccess" />
       <Label layoutX="454.0" layoutY="5.0" text="Status:" />
-      <Label layoutX="444.0" layoutY="235.0" text="Total sum:" />
-      <Label fx:id="totalSum" layoutX="523.0" layoutY="235.0" prefHeight="17.0" prefWidth="68.0" text="20 DKK" />
-      <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="lenka " />
-      <TableView fx:id="ordersTable" layoutX="12.0" layoutY="296.0" prefHeight="182.0" prefWidth="589.0">
+      <Label layoutX="445.0" layoutY="241.0" text="Total sum:" />
+      <Label fx:id="totalSum" layoutX="524.0" layoutY="241.0" prefHeight="17.0" prefWidth="68.0" text="0 kr." />
+      <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="DEFAULT" />
+      <TableView fx:id="ordersTable" layoutX="12.0" layoutY="299.0" prefHeight="182.0" prefWidth="589.0">
         <columns>
-          <TableColumn fx:id="orderId" prefWidth="75.0" text="order id" />
-          <TableColumn fx:id="numberOfItems" prefWidth="221.33336639404297" text="number of items" />
-            <TableColumn fx:id="totalPrice" prefWidth="142.6666259765625" text="total price" />
-            <TableColumn fx:id="tableStatus" prefWidth="139.33334350585938" text="status" />
+          <TableColumn fx:id="orderId" prefWidth="133.0" text="Order ID" />
+          <TableColumn fx:id="numberOfItems" prefWidth="154.0" text="Number of Items" />
+            <TableColumn fx:id="totalPrice" prefWidth="160.0" text="Total Price" />
+            <TableColumn fx:id="tableStatus" prefWidth="141.0" text="Status" />
         </columns>
       </TableView>
    </children>
