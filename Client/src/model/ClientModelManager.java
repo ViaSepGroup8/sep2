@@ -12,7 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
-public class ClientModelManager implements ClientModel, ObserverSubject
+public class ClientModelManager implements ClientModel
 {
     private WarehouseClient client;
     private WarehouseServer server;
