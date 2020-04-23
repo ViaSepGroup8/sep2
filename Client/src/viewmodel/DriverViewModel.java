@@ -8,4 +8,6 @@ public class DriverViewModel {
     public DriverViewModel(ClientModel model) {
         this.model = model;
     }
+
+    public void logOut() { model.logOut(); }
 }

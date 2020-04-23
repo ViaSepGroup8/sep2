@@ -1,7 +1,7 @@
 package view.picker;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.Region;
 import view.ViewHandler;
 import viewmodel.PickerViewModel;
@@ -10,7 +10,9 @@ public class PickerViewController {
     private ViewHandler viewHandler;
     private PickerViewModel viewModel;
     private Region root;
-    @FXML private TreeTableView pickerTable;
+    @FXML private TreeTableColumn nameColumn;
+    @FXML private TreeTableColumn quantityColumn;
+    @FXML private TreeTableColumn locationColumn;
 
     public PickerViewController() {}
 
@@ -22,11 +24,13 @@ public class PickerViewController {
 
     public Region getRoot() { return root; }
 
+    public void update() {
+
+    }
+
     @FXML public void orderCompleted() {
 
     }
 
-    @FXML public void logOut() {
-
-    }
+    @FXML public void logOut() { viewModel.logOut(); }
 }
