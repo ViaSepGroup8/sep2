@@ -29,7 +29,7 @@ public class PickerViewController {
     }
 
     @FXML public void orderCompleted() {
-
+        viewModel.completeJob();
     }
 
     @FXML public void logOut() { viewModel.logOut(); }
