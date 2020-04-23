@@ -34,6 +34,7 @@ public class ClientModelManager implements ClientModel, ObserverSubject
         }
 
         //test the connection
+        //test
         try
         {
             if(server.ping().equals("pong")){
