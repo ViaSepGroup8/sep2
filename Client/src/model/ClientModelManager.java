@@ -112,6 +112,16 @@ public class ClientModelManager implements ClientModel, ObserverSubject
         property.addPropertyChangeListener(listener);
     }
 
+    @Override
+    public void completeJob(String jobId) throws RemoteException {
+        server.completeJob(jobId);
+    }
+
+    @Override
+    public Job getNewJob() throws RemoteException {
+        return server.getNewJob();
+    }
+
     //    @Override public void registerClient()
 //    {
 //        try

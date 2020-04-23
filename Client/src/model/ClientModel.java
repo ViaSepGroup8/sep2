@@ -22,7 +22,8 @@ public interface ClientModel extends Remote
   //Driver
 
   //Picker
-
+  void completeJob(String jobId) throws RemoteException;
+  Job getNewJob() throws RemoteException;
 
   //local model
   //  void setUser(User user);
