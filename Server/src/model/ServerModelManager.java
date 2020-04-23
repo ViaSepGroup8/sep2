@@ -16,11 +16,11 @@ public class ServerModelManager implements ServerModel
 
   public ServerModelManager()
   {
-    // Create server object for clients to connect to
-    try {server = new Server(this); } catch (RemoteException e) { log("initialization failed");}
-
     //setup observable subject
     property = new PropertyChangeSupport(this);
+
+    // Create server object for clients to connect to
+    try {server = new Server(this); } catch (RemoteException e) { log("initialization failed");}
   }
 
   @Override public void start()
