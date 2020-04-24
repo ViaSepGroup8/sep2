@@ -120,6 +120,14 @@ public class ClientModelManager implements ClientModel
         * */
     }
 
+    public Job getNewJob() throws RemoteException {
+        return server.getNewJob();
+    }
+
+    public void completeJob(String jobId) {
+
+    }
+
     @Override public void addListener(PropertyChangeListener listener)
     {
         property.addPropertyChangeListener(listener);

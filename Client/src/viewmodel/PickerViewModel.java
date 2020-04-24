@@ -1,6 +1,7 @@
 package viewmodel;
 
 import model.ClientModel;
+import model.Job;
 
 import java.rmi.RemoteException;
 
@@ -10,6 +11,8 @@ public class PickerViewModel {
     public PickerViewModel(ClientModel model) {
         this.model = model;
     }
+
+    public Job getNewJob() throws RemoteException { return model.getNewJob(); }
 
     public void logOut() { model.logOut(); }
 

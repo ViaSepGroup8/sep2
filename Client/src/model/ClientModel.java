@@ -3,6 +3,7 @@ package model;
 import utility.ObserverSubject;
 
 import java.lang.reflect.Array;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface ClientModel extends ObserverSubject
@@ -24,7 +25,8 @@ public interface ClientModel extends ObserverSubject
   //Driver
 
   //Picker
-
+  Job getNewJob() throws RemoteException;
+  void completeJob(String jobId) throws RemoteException;
 
   //local model
   //  void setUser(User user);
