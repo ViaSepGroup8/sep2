@@ -8,9 +8,7 @@ import java.rmi.RemoteException;
 public class PickerViewModel {
     private ClientModel model;
 
-    public PickerViewModel(ClientModel model) {
-        this.model = model;
-    }
+    public PickerViewModel(ClientModel model) { this.model = model; }
 
     public Job getNewJob() throws RemoteException { return model.getNewJob(); }
 

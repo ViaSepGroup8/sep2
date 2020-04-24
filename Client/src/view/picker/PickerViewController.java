@@ -1,9 +1,13 @@
 package view.picker;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.Region;
+import model.Item;
 import model.Job;
+import model.Location;
 import view.ViewHandler;
 import viewmodel.PickerViewModel;
 
@@ -24,6 +28,11 @@ public class PickerViewController {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
+
+        /*
+        TableColumn<Item, String> name = new TableColumn<>();
+        TableColumn<Item, Integer> quantity = new TableColumn<>();
+        TableColumn<Item, Location> location = new TableColumn<>();*/
     }
 
     public Region getRoot() { return root; }
