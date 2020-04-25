@@ -2,6 +2,7 @@ package model;
 
 import utility.ObserverSubject;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -19,12 +20,13 @@ public interface ClientModel extends ObserverSubject
 
   //Costumer
   ArrayList<Item> getAllWarehouseItems();
+  void createCustomerNewOrder(Order order);
 
   //Driver
 
   //Picker
-  void completeJob(String jobId) throws RemoteException, RemoteException;
   Job getNewJob() throws RemoteException;
+  void completeJob(String jobId) throws RemoteException;
 
   //local model
   //  void setUser(User user);

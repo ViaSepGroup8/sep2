@@ -1,6 +1,9 @@
 package view.customer;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -10,8 +13,11 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Region;
 import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
+import model.Item;
 import view.ViewHandler;
 import viewmodel.CustomerViewModel;
+
+import java.util.ArrayList;
 
 public class CustomerViewController {
     //Labels
@@ -26,12 +32,12 @@ public class CustomerViewController {
     @FXML public TableColumn<ItemTableRowData, Number> quantity;
     @FXML public TableColumn<ItemTableRowData, Number> price;
 
-//    //Table 2
-//    @FXML public TableView ordersTable;
-//    @FXML public TableColumn orderId;
-//    @FXML public TableColumn numberOfItems;
-//    @FXML public TableColumn totalPrice;
-//    @FXML public TableColumn tableStatus;
+    //Table 2
+    @FXML public TableView<Item> ordersTable;
+    @FXML public TableColumn<Item, Number> orderId;
+    @FXML public TableColumn<Item, String> numberOfItems;
+    @FXML public TableColumn<Item, Number> totalPrice;
+    @FXML public TableColumn<Item, Number> tableStatus;
 
     //Other
     private ViewHandler viewHandler;
@@ -81,11 +87,41 @@ public class CustomerViewController {
     }
 
     public void onAcceptOrder (ActionEvent actionEvent) {
+        ArrayList<ItemTableRowData> itemsSelectedRowData = new ArrayList<ItemTableRowData>();
+        ArrayList<Item> itemsSelected = new ArrayList<Item>();
+        itemsSelectedRowData.addAll(itemsTable.getItems());
+
+        //Insert all elements from itemsSelectedRowData to itemsSelected(converting each element to Item Type)
+        for (ItemTableRowData item : itemsSelectedRowData) {
+            itemsSelected.add(item.toItemObject());
+        }
+
+        //Remove all not selected items by customer
+        for (Item item : itemsSelected) {
+            if (item.getQuantity() == 0){
+                itemsSelected.remove(item);
+            }
+        }
+
+        //Upload table with items selected to the second FXML table.
+        for (Item item : itemsSelected) {
+            orderId.setCellValueFactory();
+            numberOfItems.setCellValueFactory(CellData -> new ItemTableRowData((item).getQuantity());
+            totalPrice.setCellValueFactory();
+            totalPrice.setCellValueFactory();
+            tableStatus.setCellValueFactory();
+        }
+        /* HOW IT SHOULD BE DONE(Arraylist to TableView)
+            columnOne.setCellValueFactory(c -> new SimpleStringProperty(new String("123")));
+            columnTwo.setCellValueFactory(c -> new SimpleStringProperty(new String("456")));
+        */
+
+        //Pass info to viewModel
+        viewModel.createCustomerNewOrder(itemsSelected);
     }
 
     public void onLogOut (ActionEvent actionEvent) {
-    viewModel.logOut();
-
+        viewModel.logOut();
     }
 }
 

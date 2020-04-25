@@ -17,6 +17,7 @@ public class ClientModelManager implements ClientModel
     private WarehouseClient client;
     private WarehouseServer server;
     private PropertyChangeSupport property;
+    private Order order;
 
     public ClientModelManager() throws RemoteException
     {
@@ -102,6 +103,31 @@ public class ClientModelManager implements ClientModel
         return null;
     }
 
+    @Override
+    public void createCustomerNewOrder(Order order){
+        this.order = order;
+        // Pass order to the client that connects with the server.
+        try {
+            server.createNewOrder(order);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        /*
+        * If we have 2 clients(ClientModel and WarehouseClient), isn't WarehouseClient to make the connections with the
+        * server and where everything related to the connections is. And then the ClientModel that connects with the
+        * viewModel and is unrelated to the RMI? Because we have do the registry and get the server here, but we don't
+        * use the Client class for anything
+        * */
+    }
+
+    public Job getNewJob() throws RemoteException {
+        return server.getNewJob();
+    }
+
+    public void completeJob(String jobId) {
+
+    }
+
     @Override public void addListener(PropertyChangeListener listener)
     {
         property.addPropertyChangeListener(listener);
@@ -112,15 +138,7 @@ public class ClientModelManager implements ClientModel
         property.addPropertyChangeListener(listener);
     }
 
-    @Override
-    public void completeJob(String jobId) throws RemoteException {
-        server.completeJob(jobId);
-    }
 
-    @Override
-    public Job getNewJob() throws RemoteException {
-        return server.getNewJob();
-    }
 
     //    @Override public void registerClient()
 //    {
