@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Region;
 import javafx.util.Callback;
@@ -97,17 +98,21 @@ public class CustomerViewController {
         }
 
         //Remove all not selected items by customer
+        ArrayList<Item> valuesToRemove = new ArrayList<>();
         for (Item item : itemsSelected) {
             if (item.getQuantity() == 0){
-                itemsSelected.remove(item);
+                valuesToRemove.remove(item);
             }
         }
+        itemsSelected.removeAll(valuesToRemove);
 
         //Upload table with items selected to the second FXML table.
-        orderId.setCellValueFactory(CellData -> new ItemTableRowData(/*itemsSelected.getUniqueID*/));
-        numberOfItems.setCellValueFactory(CellData -> new ItemTableRowData(itemsSelected.size());
-        totalPrice.setCellValueFactory();
-        tableStatus.setCellValueFactory();
+        //orderId.setCellValueFactory(CellData -> new ItemTableRowData(/*itemsSelected.getUniqueID*/));
+        orderId.setCellValueFactory(new PropertyValueFactory("MAMA"));
+        //numberOfItems.setCellValueFactory(CellData -> new ItemTableRowData(itemsSelected.size());
+        numberOfItems.setCellValueFactory(new PropertyValueFactory("Rains items"));
+        totalPrice.setCellValueFactory(new PropertyValueFactory("PRICE$$$"));
+        tableStatus.setCellValueFactory(new PropertyValueFactory("High status person"));
 
         /* HOW IT SHOULD BE DONE(Arraylist to TableView)
             columnOne.setCellValueFactory(c -> new SimpleStringProperty(new String("123")));
