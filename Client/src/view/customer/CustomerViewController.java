@@ -15,6 +15,7 @@ import javafx.scene.layout.Region;
 import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
 import model.Item;
+import model.Order;
 import view.ViewHandler;
 import viewmodel.CustomerViewModel;
 
@@ -34,11 +35,11 @@ public class CustomerViewController {
     @FXML public TableColumn<ItemTableRowData, Number> price;
 
     //Table 2
-    @FXML public TableView<Item> ordersTable;
-    @FXML public TableColumn<Item, Number> orderId;
-    @FXML public TableColumn<Item, String> numberOfItems;
-    @FXML public TableColumn<Item, Number> totalPrice;
-    @FXML public TableColumn<Item, Number> tableStatus;
+    @FXML public TableView<ItemTableRowData> ordersTable;
+    @FXML public TableColumn<Order, Number> orderId;
+    @FXML public TableColumn<Order, String> numberOfItems;
+    @FXML public TableColumn<Order, Number> totalPrice;
+    @FXML public TableColumn<Order, Number> tableStatus;
 
     //Other
     private ViewHandler viewHandler;
@@ -106,10 +107,23 @@ public class CustomerViewController {
         }
         itemsSelected.removeAll(valuesToRemove);
 
-        //Upload table with items selected to the second FXML table.
-        //orderId.setCellValueFactory(CellData -> new ItemTableRowData(/*itemsSelected.getUniqueID*/));
+        //Pass info to viewModel
+        viewModel.createCustomerNewOrder(itemsSelected);
+    }
+
+    public void onLogOut (ActionEvent actionEvent) {
+        viewModel.logOut();
+    }
+
+    public void onRefreshButton(ActionEvent actionEvent) {
+        ArrayList<Item> toTable2 = FXCollections.observableArrayList();
+
+        for(Order order : viewModel.refresh()){
+        }
+        ordersTable.setItems(toTable2);
+
+        //TODO: Upload table with items selected to the second FXML table.
         orderId.setCellValueFactory(new PropertyValueFactory("MAMA"));
-        //numberOfItems.setCellValueFactory(CellData -> new ItemTableRowData(itemsSelected.size());
         numberOfItems.setCellValueFactory(new PropertyValueFactory("Rains items"));
         totalPrice.setCellValueFactory(new PropertyValueFactory("PRICE$$$"));
         tableStatus.setCellValueFactory(new PropertyValueFactory("High status person"));
@@ -118,13 +132,6 @@ public class CustomerViewController {
             columnOne.setCellValueFactory(c -> new SimpleStringProperty(new String("123")));
             columnTwo.setCellValueFactory(c -> new SimpleStringProperty(new String("456")));
         */
-
-        //Pass info to viewModel
-        viewModel.createCustomerNewOrder(itemsSelected);
-    }
-
-    public void onLogOut (ActionEvent actionEvent) {
-        viewModel.logOut();
     }
 }
 

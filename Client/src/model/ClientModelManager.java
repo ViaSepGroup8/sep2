@@ -6,6 +6,7 @@ import mediator.WarehouseServer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,7 +24,6 @@ public class ClientModelManager implements ClientModel
     {
         //setup observable subject
         property = new PropertyChangeSupport(this);
-
         client = new Client(this);
 
         //connect to the server
@@ -51,6 +51,7 @@ public class ClientModelManager implements ClientModel
         }
 
         //register client
+
     }
 
     @Override public void logOut()
@@ -125,6 +126,17 @@ public class ClientModelManager implements ClientModel
         * viewModel and is unrelated to the RMI? Because we have do the registry and get the server here, but we don't
         * use the Client class for anything
         * */
+    }
+
+    @Override
+    public ArrayList<Order> getOrderList() {
+        ArrayList<Order> ordersInServer = new ArrayList<>();
+        try {
+            ordersInServer = server.getOrderList();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return ordersInServer;
     }
 
     public Job getNewJob() throws RemoteException {

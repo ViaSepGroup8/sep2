@@ -33,5 +33,6 @@
             <TableColumn fx:id="tableStatus" prefWidth="141.0" text="Status" />
         </columns>
       </TableView>
+      <Button layoutX="14.0" layoutY="505.0" mnemonicParsing="false" onAction="#onRefreshButton" text="Refresh" />
    </children>
 </AnchorPane>
