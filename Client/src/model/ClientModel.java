@@ -14,7 +14,8 @@ public interface ClientModel extends ObserverSubject
   void fatalError(String message);
 
   //Login
-  UserType login(String username, String password);
+  void login(String username, String password);
+  User getUser();
 
   //Administrator
 
@@ -23,10 +24,12 @@ public interface ClientModel extends ObserverSubject
   void createCustomerNewOrder(Order order);
 
   //Driver
+  Order getNewPickupOrder();
 
   //Picker
   Job getNewJob() throws RemoteException;
   void completeJob(String jobId) throws RemoteException;
+
 
   //local model
   //  void setUser(User user);

@@ -1,15 +1,37 @@
 package model;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
   String username;
   String fullName;
-  String password;
+  UserType userType;
 
-  public User(String username, String fullName, String password)
+  public User(String username, String fullName, UserType userType)
   {
     this.username = username;
     this.fullName = fullName;
-    this.password = password;
+    this.userType = userType;
+  }
+
+  public String getUsername()
+  {
+    return username;
+  }
+
+  public String getFullName()
+  {
+    return fullName;
+  }
+
+  public UserType getUserType()
+  {
+    return userType;
+  }
+
+  @Override public String toString()
+  {
+    return userType.name() + " " + fullName + " " + username;
   }
 }

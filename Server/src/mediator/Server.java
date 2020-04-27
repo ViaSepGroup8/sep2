@@ -30,9 +30,10 @@ public class Server implements WarehouseServer
     return "pong";
   }
 
-  @Override public UserType login(String username, String password) throws RemoteException
+  @Override public User login(String username, String password) throws RemoteException
   {
-    return database.getUserType(username, password);
+    //return database.getUserType(username, password);
+    return database.getUser(username, password);
   }
 
   @Override public ArrayList<Item> getAllWarehouseItems()
@@ -97,9 +98,9 @@ public class Server implements WarehouseServer
     return database.getOrders();
   }
 
-  @Override public Order getNewPickupOrder()
+  @Override public Order getNewPickupOrder(User user) throws RemoteException
   {
-    return null;
+    return database.getNewPickupOrder();
   }
 
   //  @Override public void registerClient(WarehouseClient client, User user) throws RemoteException

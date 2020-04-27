@@ -15,4 +15,5 @@ public interface Database
   void addOrder(Order order);
   ArrayList<Order> getOrders();
   void setOrderStatus(String orderId, OrderStatus status) throws InvalidDatabaseRequestException;
+  Order getNewPickupOrder();
 }

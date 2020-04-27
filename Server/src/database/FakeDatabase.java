@@ -52,7 +52,22 @@ public class FakeDatabase implements Database
 
   @Override public User getUser(String username, String password)
   {
-    return new User("Johnny1", "John Smith", "password");
+    UserType u;
+    switch (username)
+    {
+      case "admin":
+        u =  UserType.ADMIN;break;
+      case "picker":
+        u =  UserType.PICKER;break;
+      case "driver":
+        u = UserType.DRIVER;break;
+      case "customer":
+        u =  UserType.CUSTOMER;break;
+      default:
+        u = UserType.UNKNOWN;break;
+    }
+
+    return new User("Jon Snow", "Jon Snow", u);
   }
 
   @Override public UserType getUserType(String username, String password)
@@ -134,5 +149,11 @@ public class FakeDatabase implements Database
       }
     }
     throw new InvalidDatabaseRequestException("cannot find the order");
+  }
+
+  @Override public Order getNewPickupOrder()
+  {
+    //todo find order that doesnt have any driver assigned.
+    return new Order(new User("rema", "Rema 1000", UserType.CUSTOMER), OrderStatus.READY_FOR_PICKUP,"XVT1338", "Gate A", "1337 Street, Half-Life 1");
   }
 }

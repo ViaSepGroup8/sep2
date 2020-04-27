@@ -3,7 +3,6 @@ package model;
 import mediator.Client;
 import mediator.WarehouseClient;
 import mediator.WarehouseServer;
-import utility.ObserverSubject;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -18,6 +17,7 @@ public class ClientModelManager implements ClientModel
     private WarehouseServer server;
     private PropertyChangeSupport property;
     private Order order;
+    private User user;
 
     public ClientModelManager() throws RemoteException
     {
@@ -77,17 +77,24 @@ public class ClientModelManager implements ClientModel
         System.exit(0);
     }
 
-    @Override public UserType login(String username, String password)
+    @Override public void login(String username, String password)
     {
         try
         {
-            return server.login(username, password);
+            this.user = server.login(username, password);
+            debugLog(user.toString());
         }
         catch (RemoteException e)
         {
-            fatalError("error in remote login method");
+            e.printStackTrace();
+            fatalError("cannot login");
         }
-        return null;
+
+    }
+
+    @Override public User getUser()
+    {
+        return user;
     }
 
     @Override public ArrayList<Item> getAllWarehouseItems()
@@ -126,6 +133,19 @@ public class ClientModelManager implements ClientModel
 
     public void completeJob(String jobId) {
 
+    }
+
+    @Override public Order getNewPickupOrder()
+    {
+        try
+        {
+            return server.getNewPickupOrder(this.user);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override public void addListener(PropertyChangeListener listener)
