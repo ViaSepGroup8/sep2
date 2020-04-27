@@ -132,7 +132,7 @@ public class ClientModelManager implements ClientModel
     public ArrayList<Order> getOrderList() {
         ArrayList<Order> ordersInServer = new ArrayList<>();
         try {
-            ordersInServer = server.getOrderList();
+            ordersInServer = server.getUserOrders(user);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -155,9 +155,23 @@ public class ClientModelManager implements ClientModel
         }
         catch (RemoteException e)
         {
+            debugLog("shit");
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override public void deliver(Order order)
+    {
+        try
+        {
+            server.deliver(order, this.user);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+            fatalError("server does not respond to order deliver");
+        }
     }
 
     @Override public void addListener(PropertyChangeListener listener)

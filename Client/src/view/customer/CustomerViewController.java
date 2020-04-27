@@ -1,9 +1,6 @@
 package view.customer;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -35,11 +32,13 @@ public class CustomerViewController {
     @FXML public TableColumn<ItemTableRowData, Number> price;
 
     //Table 2
-    @FXML public TableView<ItemTableRowData> ordersTable;
-    @FXML public TableColumn<Order, Number> orderId;
-    @FXML public TableColumn<Order, String> numberOfItems;
-    @FXML public TableColumn<Order, Number> totalPrice;
-    @FXML public TableColumn<Order, Number> tableStatus;
+    @FXML public TableView<OrderTableRowData> ordersTable;
+    public TableColumn<OrderTableRowData, String> customerColumn;
+    public TableColumn<OrderTableRowData, String> orderColumn;
+    public TableColumn<OrderTableRowData, String> AddressColumn;
+    public TableColumn<OrderTableRowData, Number> sumCollumn;
+    public TableColumn<OrderTableRowData, Number> itemsColumn;
+    public TableColumn<OrderTableRowData, String> statusColumn;
 
     //Other
     private ViewHandler viewHandler;
@@ -51,24 +50,14 @@ public class CustomerViewController {
         this.viewModel = viewModel;
         this.root = root;
 
-        id.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ItemTableRowData, Number>, ObservableValue<Number>>()
-        {
-            @Override public ObservableValue<Number> call(TableColumn.CellDataFeatures<ItemTableRowData, Number> itemTableRowDataNumberCellDataFeatures)
-            {
-                return itemTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty();
-            }
-        });
+
+        //set the customer name:
+        customerName.setText(viewModel.getCustomerName());
+
+        id.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty());
         item.setCellValueFactory(CellData -> CellData.getValue().nameProperty());
-
         quantity.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
-
-        price.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ItemTableRowData, Number>, ObservableValue<Number>>()
-        {
-            @Override public ObservableValue<Number> call(TableColumn.CellDataFeatures<ItemTableRowData, Number> itemTableRowDataNumberCellDataFeatures)
-            {
-                return itemTableRowDataNumberCellDataFeatures.getValue().priceProperty();
-            }
-        });
+        price.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().priceProperty());
 
         //Update the table to allow for the first and last name fields
         //to be editable
@@ -78,6 +67,65 @@ public class CustomerViewController {
 //        functionalitiesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 //        subjectsColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         quantity.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+
+        //Orders Table
+        customerColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>()
+        {
+            @Override public ObservableValue<String> call(
+                TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures)
+            {
+                return orderTableRowDataStringCellDataFeatures.getValue().customerNameProperty();
+            }
+        });
+
+        orderColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>()
+        {
+            @Override public ObservableValue<String> call(
+                TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures)
+            {
+                return orderTableRowDataStringCellDataFeatures.getValue().orderIdProperty();
+            }
+        });
+
+        sumCollumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, Number>, ObservableValue<Number>>()
+        {
+            @Override public ObservableValue<Number> call(
+                TableColumn.CellDataFeatures<OrderTableRowData, Number> orderTableRowDataNumberCellDataFeatures)
+            {
+                return orderTableRowDataNumberCellDataFeatures.getValue().totalSumProperty();
+            }
+        });
+
+
+        AddressColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>()
+        {
+            @Override public ObservableValue<String> call(
+                TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures)
+            {
+                return orderTableRowDataStringCellDataFeatures.getValue().deliveryAddressProperty();
+            }
+        });
+
+        itemsColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, Number>, ObservableValue<Number>>()
+        {
+            @Override public ObservableValue<Number> call(
+                TableColumn.CellDataFeatures<OrderTableRowData, Number> orderTableRowDataNumberCellDataFeatures)
+            {
+                return orderTableRowDataNumberCellDataFeatures.getValue().totalItemsProperty();
+            }
+        });
+
+        statusColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>()
+        {
+            @Override public ObservableValue<String> call(
+                TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures)
+            {
+                return orderTableRowDataStringCellDataFeatures.getValue().orderStatusProperty();
+            }
+        });
+        ordersTable.setItems(viewModel.getOrdersList());
+
+
     }
 
     public Region getRoot() { return root; }
@@ -102,13 +150,18 @@ public class CustomerViewController {
         ArrayList<Item> valuesToRemove = new ArrayList<>();
         for (Item item : itemsSelected) {
             if (item.getQuantity() == 0){
-                valuesToRemove.remove(item);
+                //valuesToRemove.remove(item); This Fucking error took me 10 minutes of my life
+                valuesToRemove.add(item);
             }
         }
+
         itemsSelected.removeAll(valuesToRemove);
 
         //Pass info to viewModel
         viewModel.createCustomerNewOrder(itemsSelected);
+
+        //refresh the list of orders
+        ordersTable.setItems(viewModel.getOrdersList());
     }
 
     public void onLogOut (ActionEvent actionEvent) {
@@ -116,17 +169,18 @@ public class CustomerViewController {
     }
 
     public void onRefreshButton(ActionEvent actionEvent) {
-        ArrayList<Item> toTable2 = FXCollections.observableArrayList();
-
-        for(Order order : viewModel.refresh()){
-        }
-        ordersTable.setItems(toTable2);
-
-        //TODO: Upload table with items selected to the second FXML table.
-        orderId.setCellValueFactory(new PropertyValueFactory("MAMA"));
-        numberOfItems.setCellValueFactory(new PropertyValueFactory("Rains items"));
-        totalPrice.setCellValueFactory(new PropertyValueFactory("PRICE$$$"));
-        tableStatus.setCellValueFactory(new PropertyValueFactory("High status person"));
+        ordersTable.setItems(viewModel.getOrdersList());
+//        ArrayList<Item> toTable2 = FXCollections.observableArrayList();
+//
+//        for(Order order : viewModel.refresh()){
+//        }
+//        ordersTable.setItems(toTable2);
+//
+//        //TODO: Upload table with items selected to the second FXML table.
+//        orderId.setCellValueFactory(new PropertyValueFactory("MAMA"));
+//        numberOfItems.setCellValueFactory(new PropertyValueFactory("Rains items"));
+//        totalPrice.setCellValueFactory(new PropertyValueFactory("PRICE$$$"));
+//        tableStatus.setCellValueFactory(new PropertyValueFactory("High status person"));
 
         /* HOW IT SHOULD BE DONE(Arraylist to TableView)
             columnOne.setCellValueFactory(c -> new SimpleStringProperty(new String("123")));

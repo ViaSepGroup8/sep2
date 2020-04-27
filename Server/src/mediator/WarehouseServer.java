@@ -13,10 +13,13 @@ public interface WarehouseServer extends Remote
   Job getNewJob() throws RemoteException;
   void completeJob(String jobId) throws RemoteException;
   void createNewOrder(Order order) throws RemoteException;
-  ArrayList<Order> getOrderList() throws RemoteException;
+
+  ArrayList<Order> getUserOrders(User customer) throws RemoteException;
+  ArrayList<Order> getOrders() throws RemoteException;
 
   //Driver
   Order getNewPickupOrder(User user) throws RemoteException;
+  void deliver(Order order, User user) throws RemoteException;
 
 //  void registerClient(WarehouseClient client, User user) throws  RemoteException;
 //  void broadCast(Message message, WarehouseClient sender) throws RemoteException;

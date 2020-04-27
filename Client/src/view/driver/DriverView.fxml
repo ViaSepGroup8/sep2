@@ -11,7 +11,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="374.0" prefWidth="368.0" spacing="30.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.driver.DriverViewController">
    <children>
-      <Button mnemonicParsing="false" onAction="#ask" prefHeight="43.0" prefWidth="348.0" text="Ask for new order to pickup" />
+      <Button fx:id="askButton" mnemonicParsing="false" onAction="#ask" prefHeight="43.0" prefWidth="348.0" text="Ask for new order to pickup" />
       <GridPane prefHeight="158.0" prefWidth="368.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="132.0" />
@@ -32,8 +32,8 @@
             <Label fx:id="orderId" text="UTX44004" GridPane.columnIndex="1" />
             <Label fx:id="orderStatus" text="Ready For Pickup" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="orderGate" text="Gate E" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="customerId" text="Customer Name" GridPane.rowIndex="3" />
-            <Label fx:id="orderCustomerName" text="Via University" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Customer Name" GridPane.rowIndex="3" />
+            <Label fx:id="customerId" text="Via University" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="OrderDeliveryAddress" prefHeight="473.0" prefWidth="230.0" text="VIA University Campus Horsens, Chr.M Østergaards Vej 4, 8700 Horsens" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <padding>
@@ -42,7 +42,7 @@
       </GridPane>
       <HBox alignment="BOTTOM_CENTER" prefHeight="94.0" prefWidth="338.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#delivered" prefHeight="40.0" prefWidth="164.0" text="Delivered" />
+            <Button fx:id="deliveryButton" mnemonicParsing="false" onAction="#delivered" prefHeight="40.0" prefWidth="164.0" text="Delivered" />
             <Button mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="177.0" text="Log Out" />
          </children>
          <opaqueInsets>

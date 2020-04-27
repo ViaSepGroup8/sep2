@@ -26,11 +26,11 @@ public interface ClientModel extends ObserverSubject
 
   //Driver
   Order getNewPickupOrder();
+  void deliver(Order order);
 
   //Picker
   Job getNewJob() throws RemoteException;
   void completeJob(String jobId) throws RemoteException;
-
 
   //local model
   //  void setUser(User user);

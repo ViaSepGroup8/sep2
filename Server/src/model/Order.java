@@ -12,6 +12,7 @@ public class Order implements Serializable
   ArrayList<Job> jobs;
   String gate;
   String deliverAddress;
+  User driver;
 
   public Order(User user, ArrayList<Item> orderItems)
   {
@@ -28,6 +29,38 @@ public class Order implements Serializable
     this.uniqueId = uniqueId;
     this.gate = gate;
     this.deliverAddress = deliverAddress;
+  }
+
+  public Integer totalSum(){
+    if(items == null){
+      return 0;
+    }
+    Integer sum = 0;
+    for (Item item : items)
+    {
+      sum+=item.getPrice()*item.quantity;
+    }
+    return sum;
+  }
+
+  public Integer totalItemsNumber(){
+    Integer count = 0;
+    if(items == null){
+      return 0;
+    }
+
+    for (Item item : items)
+    {
+      count+=item.quantity;
+    }
+
+    return count;
+  }
+
+  @Override public String toString()
+  {
+    return "Order{" + "customer=" + customer + ", status=" + status + ", uniqueId='" + uniqueId + '\'' + ", items=" + items + ", jobs=" + jobs
+        + ", gate='" + gate + '\'' + ", deliverAddress='" + deliverAddress + '\'' + '}';
   }
 
   public void setCustomer(User customer)
@@ -98,5 +131,15 @@ public class Order implements Serializable
   public void setDeliverAddress(String deliverAddress)
   {
     this.deliverAddress = deliverAddress;
+  }
+
+  public User getDriver()
+  {
+    return driver;
+  }
+
+  public void setDriver(User driver)
+  {
+    this.driver = driver;
   }
 }

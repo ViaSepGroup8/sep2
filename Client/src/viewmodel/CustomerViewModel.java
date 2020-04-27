@@ -9,16 +9,18 @@ import model.Item;
 import model.Job;
 import model.Order;
 import view.customer.ItemTableRowData;
+import view.customer.OrderTableRowData;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CustomerViewModel {
     private ClientModel model;
+
     //private ArrayList<Item> itemsSelected;
 
     public CustomerViewModel(ClientModel model) {
         this.model = model;
+
         //this.itemsSelected = new ArrayList<>();
     }
 
@@ -37,6 +39,15 @@ public class CustomerViewModel {
         return AllwarehouseItems;
     }
 
+    public ObservableList<OrderTableRowData> getOrdersList()
+    {
+        ObservableList<OrderTableRowData> list = FXCollections.observableArrayList();
+        for (Order order: model.getOrderList())
+        {
+            list.add(new OrderTableRowData(order));
+        }
+        return list;
+    }
 
     //Creates order from list of items selected
     public void createCustomerNewOrder(ArrayList<Item> itemsSelected) {
@@ -44,10 +55,12 @@ public class CustomerViewModel {
         //return new Order(/*String uniqueId*/null, itemsSelected, /*ArrayList< Job > jobs*/null);
 
         //uniqueID of the list of items selected??
-        this.model.createCustomerNewOrder(new Order(/*String uniqueId*/"hey", itemsSelected, /*ArrayList< Job > jobs*/null));
+        this.model.createCustomerNewOrder(new Order(model.getUser(), itemsSelected));
     }
 
-    public ArrayList<Order> refresh() {
-        return model.getOrderList();
+
+    public String getCustomerName()
+    {
+        return model.getUser().getFullName();
     }
 }

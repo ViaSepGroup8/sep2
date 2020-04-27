@@ -3,6 +3,7 @@ package viewmodel;
 import javafx.beans.property.SimpleStringProperty;
 import model.ClientModel;
 import model.Order;
+import model.OrderStatus;
 
 public class DriverViewModel {
     private ClientModel model;
@@ -13,29 +14,38 @@ public class DriverViewModel {
     private SimpleStringProperty customerName;
     private SimpleStringProperty deliverAddress;
 
+    private Order order;
+
 
     public DriverViewModel(ClientModel model) {
         this.model = model;
 
-        orderId = new SimpleStringProperty("");
-        orderStatus = new SimpleStringProperty("");
-        gate = new SimpleStringProperty("");
-        customerName = new SimpleStringProperty("");
-        deliverAddress = new SimpleStringProperty("");
+        orderId = new SimpleStringProperty("-");
+        orderStatus = new SimpleStringProperty("-");
+        gate = new SimpleStringProperty("-");
+        customerName = new SimpleStringProperty("-");
+        deliverAddress = new SimpleStringProperty("-");
     }
 
     public void logOut() { model.logOut(); }
 
   public void deliver()
   {
-    //todo
+    model.deliver(order);
+    orderStatus.set(OrderStatus.DELIVERED.name());
   }
 
   public void ask()
   {
-    Order order = model.getNewPickupOrder();
+    order = model.getNewPickupOrder();
     if(order == null){
-      model.debugLog("got null order");
+      model.debugLog("did not receive any orders, seems like there are none available");
+
+      orderId.set("-");
+      orderStatus.set("-");
+      gate.set("-");
+      customerName.set("-");
+      deliverAddress.set("-");
     }
     else{
       orderId.set(order.getUniqueId());

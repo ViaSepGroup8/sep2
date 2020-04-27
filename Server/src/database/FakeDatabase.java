@@ -43,6 +43,15 @@ public class FakeDatabase implements Database
     }
 
     //System.out.println(items);
+
+    //add some fake orders
+    for (int i = 0; i < 5; i++)
+    {
+      orders.add(new Order(new User("rema", "Rema 1000", UserType.CUSTOMER), OrderStatus.READY_FOR_PICKUP, chars.charAt(rnd.nextInt(chars.length())) + "X" + chars.charAt(rnd.nextInt(chars.length())) + rnd.nextInt(1000), "Gate " + chars.charAt(rnd.nextInt(chars.length())), "1337 Street, Half-Life 1"));
+      //System.out.println("db>> " + orders.get(i));
+    }
+
+
   }
 
   @Override public ArrayList<Item> getAllWarehouseItems()
@@ -55,6 +64,8 @@ public class FakeDatabase implements Database
     UserType u;
     switch (username)
     {
+      case "":
+        u = UserType.CUSTOMER;break;
       case "admin":
         u =  UserType.ADMIN;break;
       case "picker":
@@ -67,25 +78,7 @@ public class FakeDatabase implements Database
         u = UserType.UNKNOWN;break;
     }
 
-    return new User("Jon Snow", "Jon Snow", u);
-  }
-
-  @Override public UserType getUserType(String username, String password)
-  {
-    //todo implement with database
-    switch (username)
-    {
-      case "admin":
-        return UserType.ADMIN;
-      case "picker":
-        return UserType.PICKER;
-      case "driver":
-        return UserType.DRIVER;
-      case "customer":
-        return UserType.CUSTOMER;
-      default:
-        return UserType.UNKNOWN;
-    }
+    return new User("fakeuser1", "Fake User", u);
   }
 
   @Override public void addJob(Job job)
@@ -114,7 +107,6 @@ public class FakeDatabase implements Database
     }
 
 
-
     return new Job("Job001", "fakeOrder", Jobitems);
   }
 
@@ -129,12 +121,33 @@ public class FakeDatabase implements Database
     throw new InvalidDatabaseRequestException("cannot find the job by id");
   }
 
-  @Override public void addOrder(Order order)
+  @Override public void addOrder(Order order) throws InvalidDatabaseRequestException
   {
+    if(order.totalItemsNumber() < 1){
+      throw new InvalidDatabaseRequestException("order cannot have 0 items");
+    }
+
+    String chars = "BCDEFGHI";
+    Random rnd = new Random();
+
+    order.setUniqueId(chars.charAt(rnd.nextInt(chars.length())) + "X" + chars.charAt(rnd.nextInt(chars.length())) + rnd.nextInt(1000));
     orders.add(order);
   }
 
-  @Override public ArrayList<Order> getOrders()
+  @Override public ArrayList<Order> getUserOrders(User customer)
+  {
+    ArrayList<Order> userOrders = new ArrayList<Order>();
+    for (Order order : orders)
+    {
+      if(order.getCustomer().getUsername().equals(customer.getUsername())){
+        userOrders.add(order);
+      }
+    }
+
+    return userOrders;
+  }
+
+  @Override public ArrayList<Order> getAllOrders()
   {
     return orders;
   }
@@ -151,9 +164,15 @@ public class FakeDatabase implements Database
     throw new InvalidDatabaseRequestException("cannot find the order");
   }
 
-  @Override public Order getNewPickupOrder()
+  @Override public Order getNewPickupOrder(User driver) throws InvalidDatabaseRequestException
   {
-    //todo find order that doesnt have any driver assigned.
-    return new Order(new User("rema", "Rema 1000", UserType.CUSTOMER), OrderStatus.READY_FOR_PICKUP,"XVT1338", "Gate A", "1337 Street, Half-Life 1");
+    for (Order order : orders)
+    {
+      if(order.getStatus().equals(OrderStatus.READY_FOR_PICKUP) && order.getDriver() == null){
+        order.setDriver(driver);
+        return order;
+      }
+    }
+    throw new InvalidDatabaseRequestException("no more orders");
   }
 }
