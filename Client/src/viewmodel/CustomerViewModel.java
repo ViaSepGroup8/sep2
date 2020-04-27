@@ -41,6 +41,6 @@ public class CustomerViewModel {
         //return new Order(/*String uniqueId*/null, itemsSelected, /*ArrayList< Job > jobs*/null);
 
         //uniqueID of the list of items selected??
-        this.model.createCustomerNewOrder(new Order(/*String uniqueId*/null, itemsSelected, /*ArrayList< Job > jobs*/null));
+        this.model.createCustomerNewOrder(new Order(/*String uniqueId*/"hey", itemsSelected, /*ArrayList< Job > jobs*/null));
     }
 }
