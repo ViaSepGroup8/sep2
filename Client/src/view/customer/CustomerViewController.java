@@ -104,13 +104,13 @@ public class CustomerViewController {
         }
 
         //Upload table with items selected to the second FXML table.
-        for (Item item : itemsSelected) {
-            orderId.setCellValueFactory();
-            numberOfItems.setCellValueFactory(CellData -> new ItemTableRowData((item).getQuantity());
-            totalPrice.setCellValueFactory();
-            totalPrice.setCellValueFactory();
-            tableStatus.setCellValueFactory();
-        }
+//        for (Item item : itemsSelected) {
+//            orderId.setCellValueFactory();
+//            numberOfItems.setCellValueFactory(CellData -> new ItemTableRowData((item).getQuantity());
+//            totalPrice.setCellValueFactory();
+//            totalPrice.setCellValueFactory();
+//            tableStatus.setCellValueFactory();
+//        }
         /* HOW IT SHOULD BE DONE(Arraylist to TableView)
             columnOne.setCellValueFactory(c -> new SimpleStringProperty(new String("123")));
             columnTwo.setCellValueFactory(c -> new SimpleStringProperty(new String("456")));

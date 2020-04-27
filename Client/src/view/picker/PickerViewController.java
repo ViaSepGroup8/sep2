@@ -20,10 +20,10 @@ public class PickerViewController {
     private Region root;
     private Job job;
 
-    @FXML public TableView<Item> pickerTable;
-    @FXML public TableColumn<> nameColumn;
-    @FXML public TableColumn<> quantityColumn;
-    @FXML public TableColumn<> locationColumn;
+//    @FXML public TableView<Item> pickerTable;
+//    @FXML public TableColumn<> nameColumn;
+//    @FXML public TableColumn<> quantityColumn;
+//    @FXML public TableColumn<> locationColumn;
 
     public PickerViewController() {}
 
