@@ -21,7 +21,7 @@ public class PickerViewController {
     @FXML public TableView<ItemTableRowData> pickerTable;
     @FXML public TableColumn<ItemTableRowData, String> nameColumn;
     @FXML public TableColumn<ItemTableRowData, Number> quantityColumn;
-    @FXML public TableColumn<ItemTableRowData, Location> locationColumn;
+    @FXML public TableColumn<ItemTableRowData, String> locationColumn;
 
     public PickerViewController() {}
 
@@ -29,10 +29,8 @@ public class PickerViewController {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
-    }
 
-    public void loadTable() {
-
+        try { this.getNewJob(); } catch (Exception e) {}
     }
 
     public Region getRoot() { return root; }
@@ -40,6 +38,16 @@ public class PickerViewController {
     public void getNewJob() throws RemoteException {
         job = viewModel.getNewJob();
         loadTable();
+    }
+
+    public void loadTable() {
+        nameColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().nameProperty());
+        quantityColumn.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
+        locationColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().locationProperty());
+
+        pickerTable.setEditable(true);
+
+        // No idea how to go from here
     }
 
     @FXML public void orderCompleted() throws RemoteException {
