@@ -5,6 +5,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Region;
 import model.Job;
+import model.Location;
 import view.ViewHandler;
 import viewmodel.PickerViewModel;
 
@@ -18,7 +19,6 @@ public class PickerViewController {
 
     //Table
     @FXML public TableView<ItemTableRowData> pickerTable;
-    @FXML public TableColumn<ItemTableRowData, Number> idColumn;
     @FXML public TableColumn<ItemTableRowData, String> nameColumn;
     @FXML public TableColumn<ItemTableRowData, Number> quantityColumn;
     @FXML public TableColumn<ItemTableRowData, String> locationColumn;
@@ -41,7 +41,6 @@ public class PickerViewController {
     }
 
     public void loadTable() {
-        idColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty());
         nameColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().nameProperty());
         quantityColumn.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
         locationColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().locationProperty());
