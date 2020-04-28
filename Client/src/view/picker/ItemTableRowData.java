@@ -42,11 +42,6 @@ public class ItemTableRowData
     return name;
   }
 
-  public SimpleStringProperty locationProperty()
-  {
-    return new SimpleStringProperty(location.toString());
-  }
-
   public int getQuantity()
   {
     return quantity.get();
