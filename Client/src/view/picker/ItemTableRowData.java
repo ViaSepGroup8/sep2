@@ -52,10 +52,7 @@ public class ItemTableRowData
     return quantity.get();
   }
 
-  public SimpleIntegerProperty quantityProperty()
-  {
-    return quantity;
-  }
+  public SimpleIntegerProperty quantityProperty() { return quantity; }
 
   public Location getLocation()
   {
