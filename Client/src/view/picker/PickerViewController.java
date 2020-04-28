@@ -1,12 +1,9 @@
 package view.picker;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.Region;
-import model.Item;
 import model.Job;
 import model.Location;
 import view.ViewHandler;
@@ -20,10 +17,11 @@ public class PickerViewController {
     private Region root;
     private Job job;
 
-//    @FXML public TableView<Item> pickerTable;
-//    @FXML public TableColumn<> nameColumn;
-//    @FXML public TableColumn<> quantityColumn;
-//    @FXML public TableColumn<> locationColumn;
+    //Table
+    @FXML public TableView<ItemTableRowData> pickerTable;
+    @FXML public TableColumn<ItemTableRowData, String> nameColumn;
+    @FXML public TableColumn<ItemTableRowData, Number> quantityColumn;
+    @FXML public TableColumn<ItemTableRowData, Location> locationColumn;
 
     public PickerViewController() {}
 
@@ -34,11 +32,7 @@ public class PickerViewController {
     }
 
     public void loadTable() {
-        /*
-        ObservableList<Exam> exams = FXCollections.observableArrayList();
-        exams.addAll(getModel().getExams());
-        examTable.setItems(exams);
-        examTable.getSelectionModel().selectFirst();*/
+
     }
 
     public Region getRoot() { return root; }
@@ -48,8 +42,9 @@ public class PickerViewController {
         loadTable();
     }
 
-    @FXML public void orderCompleted() {
-        //viewModel.completeJob();
+    @FXML public void orderCompleted() throws RemoteException {
+        String jobId = "POOP"
+        viewModel.completeJob(jobId);
     }
 
     @FXML public void logOut() { viewModel.logOut(); }
