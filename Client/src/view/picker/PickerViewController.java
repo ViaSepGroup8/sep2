@@ -43,7 +43,7 @@ public class PickerViewController {
     }
 
     @FXML public void orderCompleted() throws RemoteException {
-        String jobId = "POOP"
+        String jobId = this.job.getJobId();
         viewModel.completeJob(jobId);
     }
 
