@@ -1,9 +1,13 @@
 package view.picker;
 
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Region;
+import javafx.util.Callback;
+import javafx.util.converter.NumberStringConverter;
 import model.Job;
 import view.ViewHandler;
 import viewmodel.PickerViewModel;
@@ -17,11 +21,11 @@ public class PickerViewController {
     private Job job;
 
     //Table
-    @FXML public TableView<ItemTableRowData> pickerTable;
-    @FXML public TableColumn<ItemTableRowData, Number> idColumn;
-    @FXML public TableColumn<ItemTableRowData, String> nameColumn;
-    @FXML public TableColumn<ItemTableRowData, Number> quantityColumn;
-    @FXML public TableColumn<ItemTableRowData, String> locationColumn;
+    @FXML public TableView<PickerTableRowData> pickerTable;
+    @FXML public TableColumn<PickerTableRowData, Number> idColumn;
+    @FXML public TableColumn<PickerTableRowData, String> nameColumn;
+    @FXML public TableColumn<PickerTableRowData, Number> quantityColumn;
+    @FXML public TableColumn<PickerTableRowData, String> locationColumn;
 
     public PickerViewController() {}
 
@@ -48,11 +52,43 @@ public class PickerViewController {
 
         pickerTable.setEditable(true);
 
-        // No idea how to go from here
+        //Here I don't know what's happening
+        quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+
+        //Orders Table
+        idColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, Number>, ObservableValue<Number>>() {
+            @Override public ObservableValue<Number> call(
+                    TableColumn.CellDataFeatures<PickerTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
+                return orderTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty();
+            }
+        });
+
+        nameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(
+                    TableColumn.CellDataFeatures<PickerTableRowData, String> orderTableRowDataStringCellDataFeatures) {
+                return orderTableRowDataStringCellDataFeatures.getValue().nameProperty();
+            }
+        });
+
+        quantityColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, Number>, ObservableValue<Number>>() {
+            @Override public ObservableValue<Number> call(
+                    TableColumn.CellDataFeatures<PickerTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
+                return orderTableRowDataNumberCellDataFeatures.getValue().quantityProperty();
+            }
+        });
+
+
+        locationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call (
+                    TableColumn.CellDataFeatures<PickerTableRowData, String> orderTableRowDataStringCellDataFeatures) {
+                return orderTableRowDataStringCellDataFeatures.getValue().locationProperty();
+            }
+        });
+        //From here I know what's happening
     }
 
     @FXML public void orderCompleted() throws RemoteException {
-        String jobId = this.job.getJobId();
+        String jobId = this.job.getJobId(); //Null pointer exception
         viewModel.completeJob(jobId);
     }
 

@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import model.Item;
 import model.Location;
 
-public class ItemTableRowData
+public class PickerTableRowData
 {
   private SimpleIntegerProperty uniqueId;
   private SimpleStringProperty name;
@@ -13,7 +13,7 @@ public class ItemTableRowData
   private Location location;
   private SimpleIntegerProperty price;
 
-  public ItemTableRowData(Item item)
+  public PickerTableRowData(Item item)
   {
     uniqueId = new SimpleIntegerProperty(item.getUniqueId()){};
     name = new SimpleStringProperty(item.getName());
