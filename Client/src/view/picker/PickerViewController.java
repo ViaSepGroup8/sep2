@@ -34,28 +34,18 @@ public class PickerViewController {
         this.viewModel = viewModel;
         this.root = root;
 
-        try { this.getNewJob(); } catch (Exception e) {}
-    }
-
-    public Region getRoot() { return root; }
-
-    public void getNewJob() throws RemoteException {
-        job = viewModel.getNewJob();
-        loadTable();
-    }
-
-    public void loadTable() {
         idColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty());
         nameColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().nameProperty());
         quantityColumn.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
         locationColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().locationProperty());
 
+        //Here I don't know what's happening
         pickerTable.setEditable(true);
 
-        //Here I don't know what's happening
         quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+        //From here I know what's happening
 
-        //Orders Table
+        //Table
         idColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, Number>, ObservableValue<Number>>() {
             @Override public ObservableValue<Number> call(
                     TableColumn.CellDataFeatures<PickerTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
@@ -84,12 +74,30 @@ public class PickerViewController {
                 return orderTableRowDataStringCellDataFeatures.getValue().locationProperty();
             }
         });
-        //From here I know what's happening
+
+        //pickerTable.setItems(viewModel.getPickerList()); // FUUUUUUCK
+
+        try { this.getNewJob(); } catch (Exception e) {}
+    }
+
+    public Region getRoot() { return root; }
+
+    public void getNewJob() throws RemoteException {
+        job = viewModel.getNewJob();
+        loadTable();
+        System.out.println("client>> job loaded");
+    }
+
+    public void loadTable() {
+
     }
 
     @FXML public void orderCompleted() throws RemoteException {
-        String jobId = this.job.getJobId(); //Null pointer exception
-        viewModel.completeJob(jobId);
+        if (job != null) {
+            String jobId = this.job.getJobId();
+            viewModel.completeJob(jobId);
+        }
+        else { System.out.println("Job is null"); }
     }
 
     @FXML public void logOut() { viewModel.logOut(); }

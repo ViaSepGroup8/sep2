@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Job
+public class Job implements Serializable
 {
   String jobId;
   String orderId;

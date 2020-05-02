@@ -139,11 +139,11 @@ public class ClientModelManager implements ClientModel
         return ordersInServer;
     }
 
-    public Job getNewJob() throws RemoteException {
+    @Override public Job getNewJob() throws RemoteException {
         return server.getNewJob();
     }
 
-    public void completeJob(String jobId) {
+    @Override public void completeJob(String jobId) {
 
     }
 
