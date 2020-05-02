@@ -29,7 +29,7 @@ public class PickerViewController {
 
     public PickerViewController() {}
 
-    public void init(ViewHandler viewHandler, PickerViewModel viewModel, Region root) {
+    public void init(ViewHandler viewHandler, PickerViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
@@ -75,9 +75,7 @@ public class PickerViewController {
             }
         });
 
-        //pickerTable.setItems(viewModel.getPickerList()); // FUUUUUUCK
-
-        try { this.getNewJob(); } catch (Exception e) {}
+        pickerTable.setItems(viewModel.getPickerList());
     }
 
     public Region getRoot() { return root; }
