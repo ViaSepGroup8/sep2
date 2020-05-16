@@ -3,6 +3,7 @@ package mediator;
 import database.Database;
 import database.FakeDatabase;
 import database.InvalidDatabaseRequestException;
+import logger.Logger;
 import model.*;
 
 import java.rmi.RemoteException;
@@ -59,7 +60,7 @@ public class Server implements WarehouseServer
       }
       catch (InvalidDatabaseRequestException e)
       {
-        model.log(e.getMessage());
+        Logger.getInstance().addLog(e.getMessage());
       }
     }
   }
@@ -70,7 +71,7 @@ public class Server implements WarehouseServer
     try
     { database.addOrder(order); }
     catch (InvalidDatabaseRequestException e)
-    { model.log(e.getMessage()); return;}
+    { Logger.getInstance().addLog(e.getMessage()); return;}
 
     new Thread(() -> {
       //This is where the orders is split into smaller job objects
@@ -96,7 +97,7 @@ public class Server implements WarehouseServer
         }
       }
 
-      model.log("created " + jobCount + " jobs for pickers");
+      Logger.getInstance().addLog("created " + jobCount + " jobs for pickers");
 
       //change the status of the order to job divided
       try
@@ -105,7 +106,7 @@ public class Server implements WarehouseServer
       }
       catch (Exception e)
       {
-        model.log("database cannot find order id" + order.getUniqueId());
+        Logger.getInstance().addLog("database cannot find order id" + order.getUniqueId());
       }
 
     }).start();
@@ -127,11 +128,11 @@ public class Server implements WarehouseServer
     try
     {
       order = database.getNewPickupOrder(user);
-      model.log("driver " + user.getFullName() + " has been assigned to deliver order " + order.getUniqueId());
+      Logger.getInstance().addLog("driver " + user.getFullName() + " has been assigned to deliver order " + order.getUniqueId());
     }
     catch (InvalidDatabaseRequestException e)
     {
-      model.log("no available orders for drivers");
+      Logger.getInstance().addLog("no available orders for drivers");
     }
     finally
     {
@@ -143,12 +144,12 @@ public class Server implements WarehouseServer
   {
     try
     {
-      model.log("driver " + user.getFullName() + " has delivered order " + order.getUniqueId());
+      Logger.getInstance().addLog("driver " + user.getFullName() + " has delivered order " + order.getUniqueId());
       database.setOrderStatus(order.getUniqueId(), OrderStatus.DELIVERED);
     }
     catch (InvalidDatabaseRequestException e)
     {
-      model.log("requested order cannot be changed to deliver, order not found");
+      Logger.getInstance().addLog("requested order cannot be changed to deliver, order not found");
     }
 
     ArrayList<Order> list = database.getAllOrders();
@@ -163,13 +164,13 @@ public class Server implements WarehouseServer
   //  {
   //    clients.add(client);
   //    users.add(user);
-  //    model.log("new client connected " + client + "\n" + user);
+  //    Logger.getInstance().addLog("new client connected " + client + "\n" + user);
   //    updateAllClientsUserList();
   //  }
   //
   //  @Override public void broadCast(Message message, WarehouseClient sender) throws RemoteException
   //  {
-  //    model.log("broadcasting message" + message);
+  //    Logger.getInstance().addLog("broadcasting message" + message);
   //    for (WarehouseClient client : clients)
   //    {
   ////      if(client.equals(sender))
@@ -181,7 +182,7 @@ public class Server implements WarehouseServer
   //
   //  @Override public void requestUserList(WarehouseClient client) throws RemoteException
   //  {
-  //    model.log("userlist request");
+  //    Logger.getInstance().addLog("userlist request");
   //    client.receiveUserList(users);
   //  }
   //

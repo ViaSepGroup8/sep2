@@ -1,5 +1,6 @@
 package database;
 
+import logger.Logger;
 import model.*;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class FakeDatabase implements Database
     String chars = "BCDEFGHI";
     Random rnd = new Random();
     //load some fake data
-    System.out.println("db>> loading fake data");
+    Logger.getInstance().addLog("db>> loading fake data");
     String StringOfItems = "error";
     try
     {

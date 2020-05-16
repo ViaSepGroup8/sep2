@@ -1,7 +1,6 @@
 package database;
 
 import model.*;
-
 import java.util.ArrayList;
 
 public interface Database
