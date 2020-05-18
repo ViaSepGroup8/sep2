@@ -1,5 +1,6 @@
 package model;
 
+import logger.Logger;
 import mediator.Server;
 import mediator.WarehouseServer;
 
@@ -20,7 +21,7 @@ public class ServerModelManager implements ServerModel
     property = new PropertyChangeSupport(this);
 
     // Create server object for clients to connect to
-    try {server = new Server(this); } catch (RemoteException e) { log("initialization failed");}
+    try {server = new Server(this); } catch (RemoteException e) { Logger.getInstance().addLog("initialization failed");}
   }
 
   @Override public void start()
@@ -29,21 +30,16 @@ public class ServerModelManager implements ServerModel
     {
       Registry registry = LocateRegistry.createRegistry(1099);
       registry.bind("server", server);
-      log("server started..");
+      Logger.getInstance().addLog("server started..");
     }
     catch (Exception e){
-      log("server start failed");
+      Logger.getInstance().addLog("server start failed");
     }
   }
 
   @Override public void stop()
   {
     //todo add method to stop the server
-  }
-
-  @Override public void log(String line)
-  {
-    property.firePropertyChange("log", null, line);
   }
 
   @Override public void addListener(PropertyChangeListener listener)
