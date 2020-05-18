@@ -3,7 +3,6 @@ package mediator;
 import model.ClientModel;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-
 public class Client implements WarehouseClient
 {
   private ClientModel model;

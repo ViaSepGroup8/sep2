@@ -1,0 +1,13 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <codeStyleSettings language="JAVA">
+      <option name="SPACE_WITHIN_BRACKETS" value="true" />
+      <option name="SPACE_BEFORE_METHOD_CALL_PARENTHESES" value="true" />
+      <option name="SPACE_BEFORE_METHOD_PARENTHESES" value="true" />
+      <option name="SOFT_MARGINS" value="1" />
+    </codeStyleSettings>
+    <codeStyleSettings language="XML">
+      <option name="SOFT_MARGINS" value="3" />
+    </codeStyleSettings>
+  </code_scheme>
+</component>
