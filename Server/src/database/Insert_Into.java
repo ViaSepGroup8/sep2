@@ -2,10 +2,10 @@ package database;
 
 import java.sql.*;
 
-public class CreateDatabase {
+public class Insert_Into {
     public static void main (String[] args) {
         String driver = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost:5432/SEP2";
+        String url = "jdbc:postgresql://localhost:5432/Sep_Warehouse";
         String user = "postgres";
        // String password = PasswordContainer.getPassword();
 
@@ -17,15 +17,14 @@ public class CreateDatabase {
         }
         try {
             //1.Get a connection to database
-            connection = DriverManager.getConnection (url,user, "");
+            connection = DriverManager.getConnection (url,user, "password1234?");
             //2. Create a statement
-            PreparedStatement statement = connection.prepareStatement ("SELECT * FROM Users");
+            Statement statement = connection.createStatement ();
+
             //3. Execute SQL Query
-            ResultSet resultSet = statement.executeQuery ();
+            ResultSet resultSet = statement.executeQuery ("INSERT INTO \"Warehouse\".Users VALUES('juan','Juan Trebolle', 'contraseñaxd', '1')");
             //4. Process the result test
-            while (resultSet.next ()){
-                System.out.println (resultSet.getString ("username") + ", " + resultSet.getString ("fullName"));
-            }
+
         }catch (SQLException e){
             e.printStackTrace ();
         }
