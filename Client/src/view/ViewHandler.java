@@ -122,7 +122,7 @@ public class ViewHandler {
             loader.setLocation(getClass().getResource(fxmlFile));
             Region root = loader.load();
             controller = loader.getController();
-            controller.init(this, viewModelFactory.getAdministratorViewModel(), root);
+            controller.init(this, viewModelFactory.getAdministratorViewModel(), viewModelFactory.getCustomerViewModel(), viewModelFactory.getDriverViewModel(), viewModelFactory.getPickerViewModel(), root);
         }
         catch (IOException e) { e.printStackTrace(); }
         return controller;

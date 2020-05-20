@@ -37,27 +37,36 @@
       </TableView>
       <ButtonBar layoutX="278.0" layoutY="326.0" prefHeight="40.0" prefWidth="482.0">
          <buttons>
-            <Button fx:id="newOrderButtonClicked" mnemonicParsing="false" text="New Order" />
-            <Button fx:id="acceptOrderButtonClicked" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Accept Order" />
-            <Button fx:id="refreshButtonClicked" mnemonicParsing="false" text="Refresh" />
+            <Button mnemonicParsing="false" onAction="#newOrderButtonClicked" text="New Order" />
+            <Button mnemonicParsing="false" onAction="#acceptOrderButtonClicked" prefHeight="25.0" prefWidth="133.0" text="Accept Order" />
+            <Button mnemonicParsing="false" onAction="#refreshButtonClicked" text="Refresh" />
          </buttons>
       </ButtonBar>
       <ButtonBar layoutX="445.0" layoutY="599.0" prefHeight="40.0" prefWidth="316.0">
          <buttons>
-            <Button fx:id="askButtonClicked" minWidth="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Ask" />
-            <Button fx:id="deliveredButtonClicked" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Deliverd" />
+            <Button fx:id="askButton" minWidth="42.0" mnemonicParsing="false" onAction="#askButtonClicked" prefHeight="25.0" prefWidth="133.0" text="Ask" />
+            <Button fx:id="deliveryButton" mnemonicParsing="false" onAction="#deliveredButtonClicked" prefHeight="25.0" prefWidth="133.0" text="Deliverd" />
          </buttons>
       </ButtonBar>
       <ButtonBar layoutX="603.0" layoutY="519.0" prefHeight="40.0" prefWidth="157.0">
          <buttons>
-            <Button fx:id="orderCompletedButtonClicked" mnemonicParsing="false" prefHeight="25.0" prefWidth="133.0" text="Order Completed" />
+            <Button mnemonicParsing="false" onAction="#orderCompletedButtonClicked" prefHeight="25.0" prefWidth="133.0" text="Order Completed" />
          </buttons>
       </ButtonBar>
-      <Button fx:id="LogOutButtonClicked" layoutX="682.0" layoutY="641.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="73.0" text="Logout" />
+      <Button layoutX="682.0" layoutY="641.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="25.0" prefWidth="73.0" text="Logout" />
       <Label layoutX="24.0" layoutY="582.0" text="Order ID -" />
       <Label layoutX="207.0" layoutY="582.0" text="Order Status - " />
       <Label layoutX="388.0" layoutY="582.0" text="Pick-up Gate -" />
       <Label layoutX="568.0" layoutY="582.0" text="Customer Name -" />
       <Label layoutX="24.0" layoutY="611.0" text="Delivery Address - " />
+      <Label fx:id="orderId" layoutX="96.0" layoutY="582.0" />
+      <Label fx:id="orderStatus" layoutX="304.0" layoutY="582.0" />
+      <Label fx:id="orderGate" layoutX="483.0" layoutY="582.0" />
+      <Label fx:id="customerId" layoutX="675.0" layoutY="582.0" />
+      <Label fx:id="orderDeliveryAddress" layoutX="141.0" layoutY="611.0" />
+      <Label layoutX="218.0" layoutY="338.0" text="Total Sum:" />
+      <Label fx:id="totalSum" layoutX="283.0" layoutY="338.0" text="0kr" />
+      <Label layoutX="24.0" layoutY="338.0" text="Customer Name:" />
+      <Label fx:id="customerName" layoutX="127.0" layoutY="338.0" text="DEFAULT" />
    </children>
 </AnchorPane>
