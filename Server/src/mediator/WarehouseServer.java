@@ -10,8 +10,11 @@ public interface WarehouseServer extends Remote
   String ping() throws RemoteException;
   User login(String username, String password) throws RemoteException;
   ArrayList<Item> getAllWarehouseItems() throws RemoteException;
-  Job getNewJob() throws RemoteException;
-  void completeJob(String jobId) throws RemoteException;
+
+  //Picker
+  Job getNewJob(User user) throws RemoteException;
+  void completeJob(User user, Job job) throws RemoteException;
+
   void createNewOrder(Order order) throws RemoteException;
 
   ArrayList<Order> getUserOrders(User customer) throws RemoteException;

@@ -5,14 +5,13 @@ import javafx.collections.ObservableList;
 import model.ClientModel;
 import model.Item;
 import model.Job;
-import model.Order;
-import view.customer.OrderTableRowData;
 import view.picker.PickerTableRowData;
 
 import java.rmi.RemoteException;
 
 public class PickerViewModel {
     private ClientModel model;
+    private Job job;
 
     public PickerViewModel(ClientModel model) { this.model = model; }
 
@@ -20,12 +19,21 @@ public class PickerViewModel {
 
     public void logOut() { model.logOut(); }
 
-    public void completeJob(String jobId) throws RemoteException { model.completeJob(jobId); }
+    public void completeJob(String jobId) throws RemoteException {
+        model.completeJob(this.job);
+    }
 
     // I have doubts if this will work
-    public ObservableList<PickerTableRowData> getPickerList() throws RemoteException {
+    public ObservableList<PickerTableRowData> getPickerList(){
         ObservableList<PickerTableRowData> list = FXCollections.observableArrayList();
-        for (Item item:  model.getNewJob().getItems()) {
+
+        this.job = model.getNewJob();
+        if(job == null){
+            System.out.println("there are probably no jobs");
+            //todo show the message to the user as well
+        }
+
+        for (Item item:  job.getItems()) {
             list.add(new PickerTableRowData(item));
         }
         return list;

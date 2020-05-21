@@ -139,12 +139,28 @@ public class ClientModelManager implements ClientModel
         return ordersInServer;
     }
 
-    @Override public Job getNewJob() throws RemoteException {
-        return server.getNewJob();
+    @Override public Job getNewJob(){
+        try
+        {
+            return server.getNewJob(this.user);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+            fatalError("Cannot get new job");
+        }
+        return null;
     }
 
-    @Override public void completeJob(String jobId) {
-
+    @Override public void completeJob(Job job) {
+        try
+        {
+            server.completeJob(this.user, job);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override public Order getNewPickupOrder()
