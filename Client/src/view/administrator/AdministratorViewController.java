@@ -161,7 +161,7 @@ public class AdministratorViewController {
             }
         });
 
-        try { pickerTable.setItems(pViewModel.getPickerList()); } catch (RemoteException e) {}
+        pickerTable.setItems(pViewModel.getPickerList());
 
     }
 
