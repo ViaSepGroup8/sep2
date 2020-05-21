@@ -39,11 +39,9 @@ public class PickerViewController {
         quantityColumn.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
         locationColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().locationProperty());
 
-        //Here I don't know what's happening
         pickerTable.setEditable(true);
 
         quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
-        //From here I know what's happening
 
         //Table
         idColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, Number>, ObservableValue<Number>>() {

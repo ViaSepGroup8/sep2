@@ -1,6 +1,7 @@
 package view.driver;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
@@ -8,13 +9,13 @@ import view.ViewHandler;
 import viewmodel.DriverViewModel;
 
 public class DriverViewController {
-    public Label orderId;
-    public Label orderStatus;
-    public Label orderGate;
-    public Label customerId;
-    public Label OrderDeliveryAddress;
-    public Button askButton;
-    public Button deliveryButton;
+    @FXML public Label orderId;
+    @FXML public Label orderStatus;
+    @FXML public Label orderGate;
+    @FXML public Label customerId;
+    @FXML public Label OrderDeliveryAddress;
+    @FXML public Button askButton;
+    @FXML public Button deliveryButton;
 
     private ViewHandler viewHandler;
     private DriverViewModel viewModel;
