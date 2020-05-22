@@ -29,8 +29,8 @@ public interface ClientModel extends ObserverSubject
   void deliver(Order order);
 
   //Picker
-  Job getNewJob() throws RemoteException;
-  void completeJob(String jobId) throws RemoteException;
+  Job getNewJob();
+  void completeJob(Job job);
 
   //local model
   //  void setUser(User user);

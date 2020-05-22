@@ -87,6 +87,23 @@ public class FakeDatabase implements Database
     jobs.add(job);
   }
 
+  @Override public void completeJob(User user, Job job)
+  {
+    for (Job j : jobs)
+    {
+      if(j.getOrderId().equals(job.getJobId())){
+        job.setComplete(true);
+      }
+    }
+    Logger.getInstance().addLog("db cannot find job");
+  }
+
+  @Override public Job getJobByUser(User user) throws InvalidDatabaseRequestException
+  {
+    //this should check has a job assigned. If none is assigned return null;
+    return null;
+  }
+
   @Override public Job getNewJob()
   {
     //todo the job should have should not be assigned to anybody else.

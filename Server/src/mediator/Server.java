@@ -34,6 +34,7 @@ public class Server implements WarehouseServer
   @Override public User login(String username, String password) throws RemoteException
   {
     //return database.getUserType(username, password);
+    Logger.getInstance().addLog("user " + username + " has logged in");
     return database.getUser(username, password);
   }
 
@@ -42,26 +43,36 @@ public class Server implements WarehouseServer
     return database.getAllWarehouseItems();
   }
 
-  @Override public Job getNewJob() throws RemoteException
+  @Override public Job getNewJob(User user) throws RemoteException
   {
-    return database.getNewJob();
+    Job userCurrentJob = null;
+    try
+    {
+      userCurrentJob = database.getJobByUser(user);
+    }
+    catch (InvalidDatabaseRequestException e)
+    {
+      Logger.getInstance().addLog("wrong db request for job");
+      throw new RemoteException("cannot find user");
+    }
+
+    if(userCurrentJob == null){
+      userCurrentJob = database.getNewJob();
+    }
+
+    return userCurrentJob;
   }
 
-  @Override public void completeJob(String jobId) throws RemoteException
+  @Override public void completeJob(User user, Job job) throws RemoteException
   {
-    //todo database complete job
-    //todo check if its the last job of the order
-
-    if (false)
+    database.completeJob(user, job);
+    try
     {
-      try
-      {
-        database.setOrderStatus(database.getJobById(jobId).getOrderId(), OrderStatus.READY_FOR_PICKUP);
-      }
-      catch (InvalidDatabaseRequestException e)
-      {
-        Logger.getInstance().addLog(e.getMessage());
-      }
+      database.setOrderStatus(job.getOrderId(), OrderStatus.READY_FOR_PICKUP);
+    }
+    catch (InvalidDatabaseRequestException e)
+    {
+      Logger.getInstance().addLog("cannot find order " + job.getOrderId());
     }
   }
 
