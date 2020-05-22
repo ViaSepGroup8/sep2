@@ -5,8 +5,6 @@ import javafx.collections.ObservableList;
 import model.ClientModel;
 import model.Item;
 import model.Job;
-import model.Order;
-import view.customer.OrderTableRowData;
 import view.picker.PickerTableRowData;
 
 import java.rmi.RemoteException;

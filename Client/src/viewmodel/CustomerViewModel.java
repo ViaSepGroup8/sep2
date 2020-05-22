@@ -2,14 +2,9 @@ package viewmodel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mediator.Server;
-import mediator.WarehouseServer;
 import model.ClientModel;
 import model.Item;
-import model.Job;
 import model.Order;
-import view.customer.ItemTableRowData;
-import view.customer.OrderTableRowData;
 
 import java.util.ArrayList;
 

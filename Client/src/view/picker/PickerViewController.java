@@ -78,17 +78,13 @@ public class PickerViewController {
 
     public Region getRoot() { return root; }
 
-    public void getNewJob() throws RemoteException {
-        job = viewModel.getNewJob();
-        loadTable();
-        System.out.println("client>> job loaded");
-    }
+    public void getNewJob() throws RemoteException { job = viewModel.getNewJob(); }
 
-    public void loadTable() {
+    @FXML public void newOrderButtonPressed() {
 
     }
 
-    @FXML public void orderCompleted() throws RemoteException {
+    @FXML public void orderCompletedButtonPressed() throws RemoteException {
         if (job != null) {
             String jobId = this.job.getJobId();
             viewModel.completeJob(jobId);
