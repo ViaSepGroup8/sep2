@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Location implements Serializable
 {
@@ -14,7 +15,11 @@ public class Location implements Serializable
     this.B = B;
     this.C = C;
   }
-
+  public static Location fromString(String s){
+    String []myArray = new String[2];
+    myArray = s.split ("");
+    return new Location (myArray[0],Integer.parseInt (myArray[1]),Integer.parseInt (myArray[2]));
+  }
   public boolean onRightSide()
   {
     return B % 2 == 0;

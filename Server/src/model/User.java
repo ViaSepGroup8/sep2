@@ -14,6 +14,11 @@ public class User implements Serializable
     this.fullName = fullName;
     this.userType = userType;
   }
+  public User(String username, UserType userType)
+  {
+    this.username = username;
+    this.userType = userType;
+  }
 
   public String getUsername()
   {
