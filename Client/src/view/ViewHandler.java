@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import view.administrator.AdministratorViewController;
+import view.customer.CustomerViewController;
 import view.driver.DriverViewController;
 import view.login.LoginViewController;
 import view.picker.PickerViewController;

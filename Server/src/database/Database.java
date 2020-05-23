@@ -7,7 +7,7 @@ public interface Database
 {
   ArrayList<Item> getAllWarehouseItems();
   User getUser(String username, String password);
-
+  ArrayList<User> getAllUsers();
   //Jobs (for pickers)
   void addJob(Job job);
   void completeJob(User user, Job job);

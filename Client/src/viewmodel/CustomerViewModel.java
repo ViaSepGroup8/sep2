@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import model.ClientModel;
 import model.Item;
 import model.Order;
+import view.customer.ItemTableRowData;
+import view.customer.OrderTableRowData;
 
 import java.util.ArrayList;
 
