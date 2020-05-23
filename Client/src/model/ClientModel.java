@@ -19,6 +19,10 @@ public interface ClientModel extends ObserverSubject
 
   //Administrator
 
+  void addAccount();
+  void deleteAccount();
+  void deleteOrder();
+
   //Costumer
   ArrayList<Item> getAllWarehouseItems();
   void createCustomerNewOrder(Order order);

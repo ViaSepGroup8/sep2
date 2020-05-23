@@ -1,6 +1,7 @@
 package view.picker;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -72,16 +73,15 @@ public class PickerViewController {
                 return orderTableRowDataStringCellDataFeatures.getValue().locationProperty();
             }
         });
-
-        pickerTable.setItems(viewModel.getPickerList());
+        ObservableList<PickerTableRowData> pickerList = viewModel.getPickerList();
+        pickerTable.setItems(pickerList);
+        // I need to receive a Job object and initiate the job variable
     }
 
     public Region getRoot() { return root; }
 
-    public void getNewJob() throws RemoteException { job = viewModel.getNewJob(); }
-
-    @FXML public void newOrderButtonPressed() {
-
+    @FXML public void newOrderButtonPressed() throws RemoteException {
+        pickerTable.setItems(viewModel.getPickerList());
     }
 
     @FXML public void orderCompletedButtonPressed() throws RemoteException {
@@ -90,6 +90,7 @@ public class PickerViewController {
             viewModel.completeJob(jobId);
         }
         else { System.out.println("Job is null"); }
+        pickerTable.setItems(null);
     }
 
     @FXML public void logOut() { viewModel.logOut(); }

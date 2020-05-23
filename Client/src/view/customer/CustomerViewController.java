@@ -20,25 +20,25 @@ import java.util.ArrayList;
 
 public class CustomerViewController {
     //Labels
-    @FXML public Label statusLabel;
-    @FXML public Label totalSum;
-    @FXML public Label customerName;
+    @FXML private Label statusLabel;
+    @FXML private Label totalSum;
+    @FXML private Label customerName;
 
     //Table 1
-    @FXML public TableView<ItemTableRowData> itemsTable;
-    @FXML public TableColumn<ItemTableRowData, Number> id;
-    @FXML public TableColumn<ItemTableRowData, String> item;
-    @FXML public TableColumn<ItemTableRowData, Number> quantity;
-    @FXML public TableColumn<ItemTableRowData, Number> price;
+    @FXML private TableView<ItemTableRowData> itemsTable;
+    @FXML private TableColumn<ItemTableRowData, Number> id;
+    @FXML private TableColumn<ItemTableRowData, String> item;
+    @FXML private TableColumn<ItemTableRowData, Number> quantity;
+    @FXML private TableColumn<ItemTableRowData, Number> price;
 
     //Table 2
-    @FXML public TableView<OrderTableRowData> ordersTable;
-    public TableColumn<OrderTableRowData, String> customerColumn;
-    public TableColumn<OrderTableRowData, String> orderColumn;
-    public TableColumn<OrderTableRowData, String> AddressColumn;
-    public TableColumn<OrderTableRowData, Number> sumCollumn;
-    public TableColumn<OrderTableRowData, Number> itemsColumn;
-    public TableColumn<OrderTableRowData, String> statusColumn;
+    @FXML private TableView<OrderTableRowData> ordersTable;
+    @FXML private TableColumn<OrderTableRowData, String> customerColumn;
+    @FXML private TableColumn<OrderTableRowData, String> orderColumn;
+    @FXML private TableColumn<OrderTableRowData, String> AddressColumn;
+    @FXML private TableColumn<OrderTableRowData, Number> sumCollumn;
+    @FXML private TableColumn<OrderTableRowData, Number> itemsColumn;
+    @FXML private TableColumn<OrderTableRowData, String> statusColumn;
 
     //Other
     private ViewHandler viewHandler;

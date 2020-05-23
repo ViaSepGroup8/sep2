@@ -10,4 +10,10 @@ public class AdministratorViewModel {
     }
 
     public void logOut() { model.logOut(); }
+
+    public void addAccount() { model.addAccount(); }
+
+    public void deleteAccount() { model.deleteAccount(); }
+
+    public void deleteOrder() { model.deleteOrder(); }
 }

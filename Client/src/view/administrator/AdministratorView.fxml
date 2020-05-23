@@ -8,20 +8,20 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.administrator.AdministratorViewController">
    <children>
       <Button layoutX="764.0" layoutY="379.0" mnemonicParsing="false" onAction="#logOutButtonPressed" prefHeight="25.0" prefWidth="73.0" text="Log out" />
-      <TableView layoutX="14.0" layoutY="14.0" prefHeight="329.0" prefWidth="249.0">
+      <TableView fx:id="accountsTable" layoutX="14.0" layoutY="14.0" prefHeight="329.0" prefWidth="249.0">
         <columns>
-          <TableColumn prefWidth="126.0" text="Username" />
-          <TableColumn prefWidth="122.0" text="Type of Account" />
+          <TableColumn fx:id="usernameColumn" prefWidth="126.0" text="Username" />
+          <TableColumn fx:id="typeOfAccountColumn" prefWidth="122.0" text="Type of Account" />
         </columns>
       </TableView>
-      <TableView layoutX="282.0" layoutY="14.0" prefHeight="329.0" prefWidth="555.0">
+      <TableView fx:id="ordersTable" layoutX="282.0" layoutY="14.0" prefHeight="329.0" prefWidth="555.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Customer" />
-          <TableColumn prefWidth="75.0" text="Order" />
-            <TableColumn prefWidth="163.0" text="Delivery Adress" />
-            <TableColumn prefWidth="77.0" text="Total Sum" />
-            <TableColumn prefWidth="77.0" text="Total Items" />
-            <TableColumn prefWidth="87.0" text="Status" />
+          <TableColumn fx:id="customerColumn" prefWidth="75.0" text="Customer" />
+          <TableColumn fx:id="orderColumn" prefWidth="75.0" text="Order" />
+            <TableColumn fx:id="deliveryAddressColumn" prefWidth="163.0" text="Delivery Adress" />
+            <TableColumn fx:id="totalSumColumn" prefWidth="77.0" text="Total Sum" />
+            <TableColumn fx:id="totalItemsColumn" prefWidth="77.0" text="Total Items" />
+            <TableColumn fx:id="statusColumn" prefWidth="87.0" text="Status" />
         </columns>
       </TableView>
       <Button layoutX="14.0" layoutY="354.0" mnemonicParsing="false" onAction="#addAccountButtonPressed" prefHeight="25.0" prefWidth="110.0" text="Add Account" />

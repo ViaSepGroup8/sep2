@@ -6,15 +6,14 @@ import model.Order;
 
 public class OrderTableRowData
 {
-  SimpleStringProperty customerName;
-  SimpleStringProperty orderId;
-  SimpleStringProperty deliveryAddress;
-  SimpleIntegerProperty totalSum;
-  SimpleIntegerProperty totalItems;
-  SimpleStringProperty orderStatus;
+  private SimpleStringProperty customerName;
+  private SimpleStringProperty orderId;
+  private SimpleStringProperty deliveryAddress;
+  private SimpleIntegerProperty totalSum;
+  private SimpleIntegerProperty totalItems;
+  private SimpleStringProperty orderStatus;
 
-  public OrderTableRowData(Order order)
-  {
+  public OrderTableRowData(Order order) {
     customerName = new SimpleStringProperty(order.getCustomer().getFullName());
     orderId = new SimpleStringProperty(order.getUniqueId());
     deliveryAddress = new SimpleStringProperty(order.getDeliverAddress());
@@ -48,8 +47,5 @@ public class OrderTableRowData
     return totalItems;
   }
 
-  public SimpleStringProperty orderStatusProperty()
-  {
-    return orderStatus;
-  }
+  public SimpleStringProperty orderStatusProperty() { return orderStatus; }
 }

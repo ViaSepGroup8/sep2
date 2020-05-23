@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import model.ClientModel;
 import model.Item;
 import model.Order;
+import view.customer.ItemTableRowData;
+import view.customer.OrderTableRowData;
 
 import java.util.ArrayList;
 
@@ -24,21 +26,17 @@ public class CustomerViewModel {
         model.logOut();
     }
 
-    public ObservableList<ItemTableRowData> getAllWarehouseItems()
-    {
+    public ObservableList<ItemTableRowData> getAllWarehouseItems() {
         ObservableList<ItemTableRowData> AllwarehouseItems = FXCollections.observableArrayList();
-        for (Item item: model.getAllWarehouseItems())
-        {
+        for (Item item: model.getAllWarehouseItems()) {
             AllwarehouseItems.add(new ItemTableRowData(item));
         }
         return AllwarehouseItems;
     }
 
-    public ObservableList<OrderTableRowData> getOrdersList()
-    {
+    public ObservableList<OrderTableRowData> getOrdersList() {
         ObservableList<OrderTableRowData> list = FXCollections.observableArrayList();
-        for (Order order: model.getOrderList())
-        {
+        for (Order order: model.getOrderList()) {
             list.add(new OrderTableRowData(order));
         }
         return list;

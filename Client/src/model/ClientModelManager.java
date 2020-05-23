@@ -199,6 +199,9 @@ public class ClientModelManager implements ClientModel
     {
         property.addPropertyChangeListener(listener);
     }
+    @Override public void addAccount() { }
+    @Override public void deleteAccount() {}
+    @Override public void deleteOrder() {}
 
 
 
