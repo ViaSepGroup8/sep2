@@ -82,6 +82,11 @@ public class FakeDatabase implements Database
     return new User("fakeuser1", "Fake User", u);
   }
 
+  @Override
+  public ArrayList<User> getAllUsers () {
+    return null;
+  }
+
   @Override public void addJob(Job job)
   {
     jobs.add(job);
