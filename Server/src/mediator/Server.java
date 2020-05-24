@@ -102,7 +102,7 @@ public class Server implements WarehouseServer
         //with only the items that are left. Meaning the last job will have probably less items than 20.
         if (jobItems.size() >= 20 || (i == orderItems.size() - 1 && orderItems.size() > 0))
         {
-          database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(), order.getUniqueId(), jobItems));
+          //database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(), order.getUniqueId(), jobItems));
           jobItems = new ArrayList<>();
           jobCount++;
         }
@@ -171,6 +171,18 @@ public class Server implements WarehouseServer
     System.out.println("");
   }
 
+  @Override
+  public void addUser(String username, String fullName, UserType userType, String password) {
+    database.addUser(username, fullName, userType, password);
+  }
+
+  @Override
+  public void removeUser(String username) {
+    database.removeUser(username);
+  }
+
+}
+
   //  @Override public void registerClient(WarehouseClient client, User user) throws RemoteException
   //  {
   //    clients.add(client);
@@ -215,4 +227,3 @@ public class Server implements WarehouseServer
   //      warehouseClient.receiveUserList(users);
   //    }
   //  }
-}

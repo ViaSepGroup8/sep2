@@ -21,7 +21,25 @@ public class ServerModelManager implements ServerModel
     property = new PropertyChangeSupport(this);
 
     // Create server object for clients to connect to
-    try {server = new Server(this); } catch (RemoteException e) { Logger.getInstance().addLog("initialization failed");}
+    try {server = new Server(this); } catch (RemoteException e) { e.printStackTrace(); Logger.getInstance().addLog("initialization failed");}
+  }
+
+  @Override
+  public void addUser(String username, String fullName, UserType userType, String password) {
+    try {
+      server.addUser(username, fullName, userType, password);
+    } catch (RemoteException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void removeUser(String username) {
+    try {
+      server.removeUser(username);
+    } catch (RemoteException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override public void start()

@@ -24,6 +24,11 @@ public interface WarehouseServer extends Remote
   Order getNewPickupOrder(User user) throws RemoteException;
   void deliver(Order order, User user) throws RemoteException;
 
+  // Admin
+  //ArrayList<User> getAllUsers();
+  void addUser(String username, String fullName, UserType userType, String password) throws RemoteException;
+  void removeUser(String username) throws RemoteException;
+
 //  void registerClient(WarehouseClient client, User user) throws  RemoteException;
 //  void broadCast(Message message, WarehouseClient sender) throws RemoteException;
 //  void requestUserList(WarehouseClient client) throws  RemoteException;

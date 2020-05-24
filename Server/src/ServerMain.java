@@ -7,9 +7,12 @@ public class ServerMain {
     {
         //setup view and server
         ServerModel server = new ServerModelManager();
-        SimpleConsoleView view = new SimpleConsoleView(server);
 
-        //start the server
+        Thread view = new Thread(new SimpleConsoleView(server));
+        view.setDaemon(true);
+
+        //start them
         server.start();
+        view.start();
     }
 }

@@ -171,7 +171,7 @@ public class ClientModelManager implements ClientModel
         }
         catch (RemoteException e)
         {
-            debugLog("shit");
+            debugLog("error");
             e.printStackTrace();
         }
         return null;

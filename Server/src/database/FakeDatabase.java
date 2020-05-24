@@ -55,6 +55,47 @@ public class FakeDatabase implements Database
 
   }
 
+  @Override
+  public void removeUser(String username) {
+    System.out.println("removeing user" + username);
+  }
+
+  @Override
+  public String createJob(String order_id) {
+    return null;
+  }
+
+  @Override
+  public void jobAddItem(String item_id) {
+
+  }
+
+  @Override
+  public void setupStructure() {
+
+  }
+
+  @Override
+  public void loadSampleData() {
+
+  }
+
+
+  @Override
+  public void deleteAllData() {
+
+  }
+
+  @Override
+  public void connect() {
+
+  }
+
+  @Override
+  public void close() {
+
+  }
+
   @Override public ArrayList<Item> getAllWarehouseItems()
   {
     return items;
@@ -87,10 +128,11 @@ public class FakeDatabase implements Database
     return null;
   }
 
-  @Override public void addJob(Job job)
-  {
-    jobs.add(job);
+  @Override
+  public void addUser(String username, String fullName, UserType userType, String password) {
+    System.out.println(username + userType + fullName + password);
   }
+
 
   @Override public void completeJob(User user, Job job)
   {
@@ -107,6 +149,11 @@ public class FakeDatabase implements Database
   {
     //this should check has a job assigned. If none is assigned return null;
     return null;
+  }
+
+  @Override
+  public void remove(String order_id) throws InvalidDatabaseRequestException {
+
   }
 
   @Override public Job getNewJob()
@@ -133,16 +180,6 @@ public class FakeDatabase implements Database
     return new Job("Job001", "fakeOrder", Jobitems);
   }
 
-  @Override public Job getJobById(String id) throws InvalidDatabaseRequestException
-  {
-    for (Job job : jobs)
-    {
-      if(job.getJobId().equals(id)){
-        return job;
-      }
-    }
-    throw new InvalidDatabaseRequestException("cannot find the job by id");
-  }
 
   @Override public void addOrder(Order order) throws InvalidDatabaseRequestException
   {
