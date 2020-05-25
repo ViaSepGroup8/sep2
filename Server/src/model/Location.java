@@ -14,12 +14,13 @@ public class Location implements Serializable
     this.B = B;
     this.C = C;
   }
-  public static Location fromString(String s){
-    String A = s.substring(0,3);
-    Integer B = Integer.parseInt(s.substring(4,6));
-    Integer C = Integer.parseInt(s.substring(7,9));
-    return new Location(A,B,C);
+
+  public Location(String s){
+    A = s.substring(0,3);
+    B = Integer.parseInt(s.substring(3,5));
+    C = Integer.parseInt(s.substring(5,7));
   }
+
   public boolean onRightSide()
   {
     return B % 2 == 0;

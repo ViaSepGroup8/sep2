@@ -1,6 +1,6 @@
 package database;
 
-import model.Job;
+import logger.Logger;
 import model.UserType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,25 +12,26 @@ class DatabaseTest {
     @BeforeEach
     void setUp()
     {
+        Logger.getInstance().setEnabled(false);
         database = new Database_Implementation();
         database.deleteAllData();
         database.setupStructure();
         database.loadSampleData();
-        print("start");
+        print("------------- ------------- TEST START ------------- -------------");
     }
 
     @AfterEach
     void tearDown()
     {
+        print("------------- ------------- TEST END   ------------- -------------");
         database.close();
-        print("end");
     }
 
     @Test
     void getAllWarehouseItems()
     {
         print("all items in the warehouse:");
-        print(database.getAllWarehouseItems());
+        print(database.getAllWarehouseProducts());
     }
 
     @Test
@@ -52,15 +53,16 @@ class DatabaseTest {
     void addUser() {
         print("current users: ");
         print(database.getAllUsers());
-        print("adding new user, list after adding");
-        database.addUser("tester", "true tester doesnt have a name", UserType.ADMIN, "*secret*");
+        print("adding new users, list after adding");
+        database.addUser("tester1337", "FULL NAME", UserType.CUSTOMER, "*secret*");
+        database.addUser("tester2222", "FULL LONG NAME", UserType.PICKER, "*coool*");
         print(database.getAllUsers());
     }
 
     @Test
     void removeUser() {
         print("current users: ");
-        database.addUser("tester", "true tester doesnt have a name", UserType.ADMIN, "*secret*");
+        database.addUser("tester", "true tester doesnt have a name", UserType.CUSTOMER, "*secret*");
         print(database.getAllUsers());
         print("removing tester user, list after removing");
         database.removeUser("tester");
@@ -68,8 +70,13 @@ class DatabaseTest {
     }
 
     @Test
-    void addJob() {
+    void createJob() {
         print("adding a job");
+        print(database.createJob("1"));
+        print("adding a job");
+        print(database.createJob("1"));
+        print("adding a job");
+        print(database.createJob("1"));
     }
 
     @Test
@@ -112,5 +119,5 @@ class DatabaseTest {
     void getNewPickupOrder() {
     }
 
-    static void print(Object o){ System.out.println("test: " + o); }
+    static void print(Object o){ System.out.println("TEST " + o); }
 }

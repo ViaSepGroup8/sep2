@@ -20,6 +20,12 @@ public class User implements Serializable
     this.userType = userType;
   }
 
+  public User(){
+    username = "unknown";
+    fullName = "unknown";
+    userType = UserType.UNKNOWN;
+  }
+
   public String getUsername()
   {
     return username;
@@ -35,8 +41,12 @@ public class User implements Serializable
     return userType;
   }
 
-  @Override public String toString()
-  {
-    return userType.name() + " " + fullName + " " + username;
+  @Override
+  public String toString() {
+    return "User{" +
+            "username='" + username + '\'' +
+            ", fullName='" + fullName + '\'' +
+            ", userType=" + userType +
+            '}';
   }
 }

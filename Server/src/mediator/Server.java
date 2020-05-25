@@ -1,7 +1,7 @@
 package mediator;
 
 import database.Database;
-import database.FakeDatabase;
+import database.Database_Implementation;
 import database.InvalidDatabaseRequestException;
 import logger.Logger;
 import model.*;
@@ -19,7 +19,7 @@ public class Server implements WarehouseServer
 
   public Server(ServerModel model) throws RemoteException
   {
-    this.database = new FakeDatabase();
+    this.database = new Database_Implementation();
     this.model = model;
     //    clients = new ArrayList<WarehouseClient>();
     //    users = new ArrayList<User>();
@@ -40,27 +40,12 @@ public class Server implements WarehouseServer
 
   @Override public ArrayList<Item> getAllWarehouseItems()
   {
-    return database.getAllWarehouseItems();
+    return database.getAllWarehouseProducts();
   }
 
   @Override public Job getNewJob(User user) throws RemoteException
   {
-    Job userCurrentJob = null;
-    try
-    {
-      userCurrentJob = database.getJobByUser(user);
-    }
-    catch (InvalidDatabaseRequestException e)
-    {
-      Logger.getInstance().addLog("wrong db request for job");
-      throw new RemoteException("cannot find user");
-    }
-
-    if(userCurrentJob == null){
-      userCurrentJob = database.getNewJob();
-    }
-
-    return userCurrentJob;
+    return database.getNewJob(user);
   }
 
   @Override public void completeJob(User user, Job job) throws RemoteException
@@ -125,7 +110,7 @@ public class Server implements WarehouseServer
 
   @Override public ArrayList<Order> getUserOrders(User customer) throws RemoteException
   {
-    return database.getUserOrders(customer);
+    return database.getOrdersByUser(customer);
   }
 
   @Override public ArrayList<Order> getOrders() throws RemoteException
@@ -138,7 +123,7 @@ public class Server implements WarehouseServer
     Order order = null;
     try
     {
-      order = database.getNewPickupOrder(user);
+      order = database.getNewDriverOrder(user);
       Logger.getInstance().addLog("driver " + user.getFullName() + " has been assigned to deliver order " + order.getUniqueId());
     }
     catch (InvalidDatabaseRequestException e)

@@ -60,375 +60,190 @@ public class Database_Implementation implements Database{
     }
 
     @Override
-    public ArrayList<Item> getAllWarehouseItems () {
-        ArrayList<Item> items = new ArrayList<Item>();
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".item");
-            while (resultSet.next ()) {
-               // String id = resultSet.getString ("id") + ", description" + resultSet.getString ("description")+ ", price:" + resultSet.getString ("price") + ", quantity" + resultSet.getString ("quantity") ;
-                ////System.out.println (id);
-                int uniquedId = resultSet.getInt ("id");
-                String name = resultSet.getString ("description");
-                int quantity = resultSet.getInt ("quantity");
-                Location location = Location.fromString (resultSet.getString ("location"));
-                int price = resultSet.getInt ("price");
-                Item item = new Item (uniquedId, name, quantity, location, price);
-                items.add (item);
-            }
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        //System.out.println (items);
+    public ArrayList<Item> getAllWarehouseProducts() {
+        ArrayList<Item> items= new ArrayList<Item>();
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM \"warehouse\".products");
+        try {
+            while (resultSet.next()) {
+                int uniqueId = resultSet.getInt("product_id");
+                String description = resultSet.getString("description");
+                int price = resultSet.getInt("price");
+                Location location = new Location(resultSet.getString("location"));
+                Item item = new Item(uniqueId, description, 0, location, price);
+                items.add(item);
+            }resultSet.close();
+        }catch (SQLException e) { e.printStackTrace(); }
         return items;
     }
 
     @Override
     public User getUser (String username, String password) {
-        ArrayList<User> usuarios = new ArrayList<> ();
-        User usuario = null;
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".Users  WHERE(username = '" + username +"' AND password = '" + password +"')");
-            while (resultSet.next ()) {
+        User user = new User();
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM \"warehouse\".Users  WHERE(username = '" + username +"' AND password = '" + password +"')");
+        try {
+            while (resultSet.next()) {
                 String username1 = resultSet.getString ("username");
                 String fullName = resultSet.getString ("fullname");
                 int userType = resultSet.getInt ("role");
-                usuario = new User (username1,fullName,UserType.values ()[userType]);
-            }
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        if(usuario==null) return new User("",UserType.UNKNOWN);
-        return  usuario;
+                user = new User (username1,fullName,UserType.values ()[userType]);
+            }resultSet.close();
+        }catch (SQLException e) { e.printStackTrace(); }
+        return user;
     }
 
     @Override
     public ArrayList<User> getAllUsers () {
         ArrayList<User> users = new ArrayList<User>();
         try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".Users");
+            ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM \"warehouse\".users");
             while (resultSet.next ()) {
                 String username = resultSet.getString ("username");
                 String fullName = resultSet.getString ("fullname");
                 int roleNumber = resultSet.getInt ("role");
                 User user = new User (username, fullName, UserType.values ()[roleNumber]);
                 users.add (user);
-            }
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        //System.out.println (users);
+            }resultSet.close();
+        }catch (SQLException e) { e.printStackTrace(); }
         return users;
     }
 
     @Override
     public void addUser(String username, String fullName, UserType userType, String password) {
-        //todo add user method
+        executeSingleSQL("INSERT INTO users VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
     }
 
     @Override
     public void removeUser(String username) {
-
-    }
+        executeSingleSQL("DELETE FROM warehouse.users WHERE username = '" + username + "';");}
 
     @Override
     public String createJob(String order_id) {
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            String jobId = "";
-            String orderId = "";
-            ResultSet resultSet = statement.executeQuery ("INSERT INTO \"warehouse\".jobs VALUES(" +jobId+ "," + null+"," +orderId +")" );
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        return null;
+        ResultSet resultSet = executeSingleQuerySQL("INSERT INTO warehouse.jobs VALUES( DEFAULT, " + order_id + ", NULL,'false') RETURNING job_id;");
+        try {
+            resultSet.next();
+            return resultSet.getString("job_id");
+        } catch (SQLException e) { e.printStackTrace(); throw new RuntimeException("cannot create jobs");}
     }
 
     @Override
-    public void jobAddItem(String item_id) {
-
+    public void orderAddItem(String item_id, int quantity, String order_id, String job_id) {
+        executeSingleSQL("INSERT INTO warehouse.items VALUES("+item_id+", " + order_id + ", " + job_id + ", " + quantity +");");
     }
 
 
     @Override
     public void completeJob (User user, Job job) {
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            //the query changes all the order's status when we choose just one picker, ask someone how to do it
-            ResultSet resultSet = statement.executeQuery ("UPDATE \"warehouse\".orders SET status = 4 FROM \"warehouse\".orders a JOIN \"warehouse\".jobs b ON a.order_id = b.order_id WHERE b.username_picker = '" +user.getUsername ()+"' ;");
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
+        //todo also check for the job id with "and" for security
+        executeSingleSQL("UPDATE warehouse.jobs SET completed = true WHERE picker = ' " + user.getUsername() +"';");
+        //todo this should change status of job and check it is the last unfinshed job in order, if thats true it should also change the status of the order
+        //the query changes all the order's status when we choose just one picker, ask someone how to do it
+        //ResultSet resultSet = statement.executeQuery ("UPDATE \"warehouse\".orders SET status = 4 FROM \"warehouse\".orders a JOIN \"warehouse\".jobs b ON a.order_id = b.order_id WHERE b.username_picker = '" +user.getUsername ()+"' ;");
     }
 
     @Override
-    public Job getNewJob () {
-        ArrayList<Job> jobss = new ArrayList<> ();
-        Job job = null;
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".item a FULL JOIN \"warehouse\".jobs b ON a.job_id = b.job_id WHERE username_picker IS null;");
-            while (resultSet.next ()) {
-                String jobId = resultSet.getString ("job_id");
-                String orderId = resultSet.getString ("order_id");
-                Item item = new Item (resultSet.getInt ("id"),resultSet.getString ("description"),resultSet.getInt ("quantity"),Location.fromString (resultSet.getString ("location")), resultSet.getInt ("price"));
-                ArrayList<Item> itemss = new ArrayList<> ();
-                itemss.add (item);
-                job = new Job (jobId,orderId,itemss);
-                jobss.add (job);
-            }
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        //Job job_1 = null;
-        //job_1 = jobss.remove (0);
-
-        //System.out.println (jobss.remove (0).getItems ());
-        return  jobss.remove (0);
-    }
-
-    public Job getJobById (String id) throws InvalidDatabaseRequestException {
-        //String id is from order id or job id?
-
-        Job job = null;
-        if(id.equals (null)){
-            throw new InvalidDatabaseRequestException ("id cannot be null");
-        }else {
-            try{
-                Class.forName ("org.postgresql.Driver");
-                connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-                statement = connection.createStatement ();
-                ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".item a JOIN \"warehouse\".orders b ON a.order_id=b.order_id WHERE job_id = "+id+";");
-                while (resultSet.next ()) {
-                    String jobId = resultSet.getString ("job_id");
-                    String orderId = resultSet.getString ("order_id");
-                    Item item = new Item (resultSet.getInt ("id"),resultSet.getString ("description"),resultSet.getInt ("quantity"),Location.fromString (resultSet.getString ("location")), resultSet.getInt ("price"));
-                    ArrayList<Item> itemss = new ArrayList<> ();
-                    //only prints one item
-                    itemss.add (item);
-                    job = new Job (jobId,orderId,itemss);
+    public Job getNewJob (User user)
+    {
+        try {
+            ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.jobs b ON a.job_id = b.job_id WHERE picker IS null LIMIT 1;");
+            if (resultSet.next()) {
+                String jobId = resultSet.getString("job_id");
+                String orderId = resultSet.getString("order_id");
+                resultSet.close();
+                resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items WHERE job_id = " + jobId + ";");
+                ArrayList<Item> items = new ArrayList<Item>();
+                while (resultSet.next()) {
+                    int uniqueId = resultSet.getInt("product_id");
+                    String description = resultSet.getString("description");
+                    int price = resultSet.getInt("price");
+                    Location location = new Location(resultSet.getString("location"));
+                    Item item = new Item(uniqueId, description, 0, location, price);
+                    items.add(item);
                 }
-            }catch (Exception e) {
-                System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-                System.exit (0);
+                resultSet.close();
+                return new Job(jobId, orderId, items);
             }
-            for (int i = 0; i<job.getItems ().size (); i++){
-                //System.out.println (job.getItems ().get (i).getLocation ());
-            }
-            return  job;
-        }
+        }catch (SQLException e) {e.printStackTrace();}
+        return null;
     }
 
     @Override
-    public Job getJobByUser (User user) throws InvalidDatabaseRequestException {
-
-        Job job = null;
-        if(user.equals (null)){
-            throw new InvalidDatabaseRequestException ("id cannot be null");
-        }else {
-            try{
-                Class.forName ("org.postgresql.Driver");
-                connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-                statement = connection.createStatement ();
-                ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".item a JOIN \"warehouse\".orders b ON a.order_id=b.order_id WHERE username = '"+user.getUsername ()+"';");
-                while (resultSet.next ()) {
-                    String jobId = resultSet.getString ("job_id");
-                    String orderId = resultSet.getString ("order_id");
-                    Item item = new Item (resultSet.getInt ("id"),resultSet.getString ("description"),resultSet.getInt ("quantity"),Location.fromString (resultSet.getString ("location")), resultSet.getInt ("price"));
-                    ArrayList<Item> itemss = new ArrayList<> ();
-                    //only prints one item
-                    itemss.add (item);
-                    job = new Job (jobId,orderId,itemss);
-                }
-            }catch (Exception e) {
-                System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-                System.exit (0);
-            }
-            for (int i = 0; i<job.getItems ().size (); i++){
-                //System.out.println (job.getItems ().get (i).toString ());
-            }
-            return  job;
-        }
-    }
-
-    @Override
-    public void remove(String order_id) throws InvalidDatabaseRequestException {
-
+    public void removeOrder(String order_id) throws InvalidDatabaseRequestException {
+        executeSingleSQL("DELETE FROM warehouse.orders WHERE order_id = '" + order_id + "';");
     }
 
 
     @Override
     public void addOrder (Order order) throws InvalidDatabaseRequestException {
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            User username = order.getCustomer ();
-            OrderStatus status = order.getStatus ();
-            String uniqueId = order.getUniqueId ();
-            String gate = order.getGate ();
-            int totalItems = order.totalItemsNumber ();
-            String delivery_address = order.getDeliverAddress ();
-            ResultSet resultSet = statement.executeQuery ("INSERT INTO \"warehouse\".orders VALUES(" +uniqueId+ "," +totalItems+"," +status + ","+gate + "," + delivery_address + ","+username +")" );
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
+        User username = order.getCustomer ();
+        OrderStatus status = order.getStatus ();
+        String uniqueId = order.getUniqueId ();
+        String gate = order.getGate ();
+        int totalItems = order.totalItemsNumber ();
+        String delivery_address = order.getDeliverAddress ();
+
+        executeSingleSQL("INSERT INTO warehouse.orders VALUES(" +uniqueId+ "," +totalItems+"," +status + ","+gate + "," + delivery_address + ","+username +")" );
     }
 
     @Override
-    public ArrayList<Order> getUserOrders (User customer) {
+    public ArrayList<Order> getOrdersByUser(User customer) {
         ArrayList<Order> orders = new ArrayList<Order>();
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".Orders a LEFT JOIN \"warehouse\".Users b ON a.username = b.username");
-            while (resultSet.next ()) {
-                String username = resultSet.getString ("username");
-                String fullName = resultSet.getString ("fullname");
-                int roleNumber = resultSet.getInt ("role");
-                User user = new User (username, fullName, UserType.values ()[roleNumber]);
-                int status = resultSet.getInt ("status");
-                String uniqueId ="" + resultSet.getInt ("order_id");
-                String gate = resultSet.getString ("gate");
-                String delivery_address = resultSet.getString ("delivery_address");
-                Order order = new Order (user,OrderStatus.values()[status],uniqueId,gate,delivery_address);
-                orders.add (order);
-            }
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        for (Order order: orders) {
-            if (order.getCustomer () != customer){
-                orders.remove (order);
-            }
-        }
-        //System.out.println (orders);
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE a.customer = '" + customer.getUsername() + "';");
+        try { while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String fullName = resultSet.getString("fullname");
+                int roleNumber = resultSet.getInt("role");
+                User user = new User(username, fullName, UserType.values()[roleNumber]);
+                int status = resultSet.getInt("status");
+                String uniqueId = "" + resultSet.getInt("order_id");
+                String gate = resultSet.getString("gate");
+                String delivery_address = resultSet.getString("delivery_address");
+                Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
+                orders.add(order);}
+            }catch (SQLException e) {e.printStackTrace(); }
         return orders;
-    }
+        }
 
     @Override
     public ArrayList<Order> getAllOrders () {
         ArrayList<Order> orders = new ArrayList<Order>();
-        try{
-            Class.forName ("org.postgresql.Driver");
-            connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-            statement = connection.createStatement ();
-            ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".Orders a LEFT JOIN \"warehouse\".Users b ON a.username = b.username");
-            while (resultSet.next ()) {
-                String username = resultSet.getString ("username");
-                String fullName = resultSet.getString ("fullname");
-                int roleNumber = resultSet.getInt ("role");
-                User user = new User (username, fullName, UserType.values ()[roleNumber]);
-                int status = resultSet.getInt ("status");
-                String uniqueId ="" + resultSet.getInt ("order_id");
-                String gate = resultSet.getString ("gate");
-                String delivery_address = resultSet.getString ("delivery_address");
-                Order order = new Order (user,OrderStatus.values()[status],uniqueId,gate,delivery_address);
-                orders.add (order);
-            }
-            resultSet.close ();
-            statement.close ();
-            connection.close ();
-        }catch (Exception e){
-            System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-            System.exit (0);
-        }
-        //System.out.println (orders);
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username;");
+        try { while (resultSet.next()) {
+            String username = resultSet.getString("username");
+            String fullName = resultSet.getString("fullname");
+            int roleNumber = resultSet.getInt("role");
+            User user = new User(username, fullName, UserType.values()[roleNumber]);
+            int status = resultSet.getInt("status");
+            String uniqueId = "" + resultSet.getInt("order_id");
+            String gate = resultSet.getString("gate");
+            String delivery_address = resultSet.getString("delivery_address");
+            Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
+            orders.add(order);}
+        }catch (SQLException e) {e.printStackTrace(); }
         return orders;
     }
 
     @Override
     public void setOrderStatus (String orderId, OrderStatus status) throws InvalidDatabaseRequestException {
-        if(orderId.equals (null) || status.equals (null)){
-            throw new InvalidDatabaseRequestException ("order id and status no bueno te has equivocado");
-        }else {
-            try {
-                Class.forName ("org.postgresql.Driver");
-                connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database", "postgres", "password1234?");
-                statement = connection.createStatement ();
-                //the query changes all the order's status when we choose just one picker, ask someone how to do it
-                ResultSet resultSet = statement.executeQuery ("UPDATE \"warehouse\".orders SET status = " + status + " WHERE order_id = " + orderId);
-                resultSet.close ();
-                statement.close ();
-                connection.close ();
-            } catch (Exception e) {
-                System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-                System.exit (0);
-            }
-        }
+        executeSingleSQL("UPDATE warehouse.orders SET status = " + status.ordinal() + " WHERE order_id = " + orderId);
     }
 
     @Override
-    public Order getNewPickupOrder (User driver) throws InvalidDatabaseRequestException {
-        ArrayList<Order> order_driver = new ArrayList<> ();
-        if(driver.equals (null)){
-            throw new InvalidDatabaseRequestException ("driver cannot be null");
-        }else {
-            try{
-                Class.forName ("org.postgresql.Driver");
-                connection = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/warehouse_database","postgres","password1234?");
-                statement = connection.createStatement ();
-                ResultSet resultSet = statement.executeQuery ("SELECT * FROM \"warehouse\".orders a LEFT JOIN \"warehouse\".users b ON a.username = b.username  WHERE status = 3;");
-                while (resultSet.next ()) {
-                    String customer = resultSet.getString ("username");
-                    int userType = resultSet.getInt ("role");
-                    User user = new User (customer,UserType.values ()[userType]);
-                    int orderStatus = resultSet.getInt ("status");
-                    String uniqueId = resultSet.getString ("order_id");
-                    String gate = resultSet.getString ("gate");
-                    String delivery_address = resultSet.getString ("delivery_address");
-                    Order order = new Order (user,OrderStatus.values()[orderStatus],uniqueId,gate,delivery_address);
-                    order_driver.add (order);
-                }
-            }catch (Exception e) {
-                System.err.println (e.getClass ().getName () + ":" + e.getMessage ());
-                System.exit (0);
-            }
-            //System.out.println (order_driver);
-            //System.out.println (order_driver.remove (0));
-            return order_driver.remove (0);
-        }
+    public Order getNewDriverOrder(User driver) throws InvalidDatabaseRequestException {
+        Order order = null;
+        ResultSet resultSet = executeSingleQuerySQL ("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE status = 3 AND driver is NULL Limit 1;");
+        try{ if (resultSet.next ()) {
+            String username = resultSet.getString("customer");
+            String fullName = resultSet.getString("fullname");
+            int roleNumber = resultSet.getInt("role");
+            User user = new User(username, fullName, UserType.values()[roleNumber]);
+            int status = resultSet.getInt("status");
+            String uniqueId = "" + resultSet.getInt("order_id");
+            String gate = resultSet.getString("gate");
+            String delivery_address = resultSet.getString("delivery_address");
+            order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
+        }}catch (SQLException e) { e.printStackTrace();}
+        Logger.getInstance().addLog("driver order: " + order);
+        return order;
     }
 
     private void executeSingleSQL(String sql)

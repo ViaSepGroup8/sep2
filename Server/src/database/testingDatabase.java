@@ -15,9 +15,9 @@ public class testingDatabase {
         User juan = new User ("juan", "Juan Trebolle", UserType.CUSTOMER);
         User joao = new User ("joao", "Joao Bernardo Baptista Vieira Dias", UserType.DRIVER);
         ArrayList<Item> items = new ArrayList<> ();
-        items.add (new Item (1, "apple", 2, Location.fromString ("D40"), 7));
-        items.add (new Item (2, "bananas", 60, Location.fromString ("D38"), 4));
-        items.add (new Item (3, "chocolate", 52, Location.fromString ("D40"), (int) 7.80));
+//        items.add (new Item (1, "apple", 2, Location.fromString ("D40"), 7));
+//        items.add (new Item (2, "bananas", 60, Location.fromString ("D38"), 4));
+//        items.add (new Item (3, "chocolate", 52, Location.fromString ("D40"), (int) 7.80));
         //database.getAllWarehouseItems ();
         //database.getAllOrders();
         //database.getUserOrders (new User ("juan","Juan Trebolle", UserType.CUSTOMER));

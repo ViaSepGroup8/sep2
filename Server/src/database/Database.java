@@ -13,7 +13,7 @@ public interface Database
   void close();
                                                             // NOTES:
   // warehouse items
-  ArrayList<Item> getAllWarehouseItems();                   // should return list of every item in the warehouse with quantity set to 0
+  ArrayList<Item> getAllWarehouseProducts();                   // should return list of every item in the warehouse with quantity set to 0
 
   // login and user accounts
   User getUser(String username, String password);
@@ -22,19 +22,18 @@ public interface Database
   void removeUser(String username);
 
   // jobs for pickets
-  String createJob(String order_id);                           // only used by the server to generate new jobs when a new order is received, returns job_id
-  void jobAddItem(String item_id);
+  String createJob(String order_id);                        // only used by the server to generate new jobs when a new order is received, returns job_id
+  Job getNewJob(User user);                                          // checks if there are unassigned jobs and returns one of them, if none return null
   void completeJob(User user, Job job);
-  Job getNewJob();                                          // checks if there are unassigned jobs and returns one of them, if none return null
-  Job getJobByUser(User user) throws InvalidDatabaseRequestException;   // used to check if the worker is current assigned a job
 
   // orders
-  void remove(String order_id) throws InvalidDatabaseRequestException;
   void addOrder(Order order) throws InvalidDatabaseRequestException;
-  ArrayList<Order> getUserOrders(User customer);
+  void removeOrder(String order_id) throws InvalidDatabaseRequestException;
+  void orderAddItem(String item_id, int quantity, String order_id, String job_id);
+  ArrayList<Order> getOrdersByUser(User customer);
   ArrayList<Order> getAllOrders();
   void setOrderStatus(String orderId, OrderStatus status) throws InvalidDatabaseRequestException;
 
   // driver
-  Order getNewPickupOrder(User driver) throws InvalidDatabaseRequestException;
+  Order getNewDriverOrder(User driver) throws InvalidDatabaseRequestException;
 }

@@ -23,12 +23,14 @@ public class PickerViewModel {
     public ObservableList<PickerTableRowData> getPickerList(){
         ObservableList<PickerTableRowData> list = FXCollections.observableArrayList();
 
-        this.job = model.getNewJob();
-        if(job == null) {
-            System.out.println("There are probably no jobs");
+        job = model.getNewJob();
+        if(job != null) {
+            for (Item item : job.getItems()) {
+                list.add(new PickerTableRowData(item));
+            }
         }
-        for (Item item: job.getItems()) {
-            list.add(new PickerTableRowData(item));
+        else {
+            System.out.println("There are probably no jobs");
         }
         return list;
     }

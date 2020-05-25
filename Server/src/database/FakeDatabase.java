@@ -65,10 +65,11 @@ public class FakeDatabase implements Database
     return null;
   }
 
-  @Override
-  public void jobAddItem(String item_id) {
 
+  @Override
+  public void orderAddItem(String item_id, int quantity, String order_id, String job_id) {
   }
+
 
   @Override
   public void setupStructure() {
@@ -96,7 +97,7 @@ public class FakeDatabase implements Database
 
   }
 
-  @Override public ArrayList<Item> getAllWarehouseItems()
+  @Override public ArrayList<Item> getAllWarehouseProducts()
   {
     return items;
   }
@@ -145,18 +146,15 @@ public class FakeDatabase implements Database
     Logger.getInstance().addLog("db cannot find job");
   }
 
-  @Override public Job getJobByUser(User user) throws InvalidDatabaseRequestException
-  {
-    //this should check has a job assigned. If none is assigned return null;
-    return null;
-  }
+
+
 
   @Override
-  public void remove(String order_id) throws InvalidDatabaseRequestException {
+  public void removeOrder(String order_id) throws InvalidDatabaseRequestException {
 
   }
 
-  @Override public Job getNewJob()
+  @Override public Job getNewJob(User user)
   {
     //todo the job should have should not be assigned to anybody else.
 
@@ -194,7 +192,7 @@ public class FakeDatabase implements Database
     orders.add(order);
   }
 
-  @Override public ArrayList<Order> getUserOrders(User customer)
+  @Override public ArrayList<Order> getOrdersByUser(User customer)
   {
     ArrayList<Order> userOrders = new ArrayList<Order>();
     for (Order order : orders)
@@ -224,7 +222,7 @@ public class FakeDatabase implements Database
     throw new InvalidDatabaseRequestException("cannot find the order");
   }
 
-  @Override public Order getNewPickupOrder(User driver) throws InvalidDatabaseRequestException
+  @Override public Order getNewDriverOrder(User driver) throws InvalidDatabaseRequestException
   {
     for (Order order : orders)
     {
