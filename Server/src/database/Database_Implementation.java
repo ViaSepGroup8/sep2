@@ -109,7 +109,7 @@ public class Database_Implementation implements Database{
 
     @Override
     public void addUser(String username, String fullName, UserType userType, String password) {
-        executeSingleSQL("INSERT INTO users VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
+        executeSingleSQL("INSERT INTO warehouse.users VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
     }
 
     @Override
