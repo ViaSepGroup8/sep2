@@ -32,7 +32,6 @@ public class Database_Implementation implements Database{
         // create a postgres database and try to connect make a connection
         managePostgres("CREATE DATABASE " + DB + ";");
         connect();
-
         // read postgres-structure-setup.sql and try to execute it
         String setupSQL = fileToString("posgres-structure-setup.sql");
         executeSingleSQL(setupSQL);
@@ -46,8 +45,7 @@ public class Database_Implementation implements Database{
     }
 
     @Override
-    public void deleteAllData()
-    {
+    public void deleteAllData() {
         // kick all users first, trying to drop a database while users are connected would result in error
         managePostgres("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '" + DB +"' AND pid <> pg_backend_pid();");
         // drop the database
@@ -56,9 +54,9 @@ public class Database_Implementation implements Database{
 
     @Override
     public void close() {
-        try { if(connection!=null) connection.close(); Logger.getInstance().addLog("db disconnected");}
+        try { if(statement!=null) statement.close();
+              if(connection!=null) connection.close(); Logger.getInstance().addLog("db disconnected"); }
         catch (SQLException e) { e.printStackTrace(); }
-
     }
 
     @Override
@@ -435,23 +433,18 @@ public class Database_Implementation implements Database{
 
     private void executeSingleSQL(String sql)
     {
-        if(sql==null || sql.equals("")){
-            Logger.getInstance().addLog("sql query empty or null");return; }
-
         if(connection == null) connect();
-
-        try{
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(sql);
-            statement.close(); }
-        catch (Exception e ) {
-            e.printStackTrace();
-            Logger.getInstance().addLog("db error executing sql: " + sql); }
+        if(statement == null) { try { statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); }}
+        try{ statement.executeUpdate(sql); } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    private void executeQuerySQL(String sql)
+    private ResultSet executeSingleQuerySQL(String sql)
     {
-        //todo query
+        ResultSet resultSet = null;
+        if(connection == null) connect();
+        if(statement == null) { try { statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); }}
+        try { resultSet = statement.executeQuery(sql); } catch (SQLException e) { e.printStackTrace(); }
+        return resultSet;
     }
 
     private static void managePostgres(String SQL) {
