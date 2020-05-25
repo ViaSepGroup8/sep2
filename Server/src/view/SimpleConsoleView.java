@@ -32,7 +32,7 @@ public class SimpleConsoleView implements PropertyChangeListener, Runnable
         case "remove":
           model.removeUser(arguments[1]);break;
         case "help":
-          System.out.println("list of commands:\n add ");break;
+          System.out.println("list of commands:\nadd [username] [fullname] [userType] [password]\nremove [username]");break;
         default:
           System.out.println("invalid command, type help for list of commands");break;
       }}catch (Exception e){ System.out.println("error");}

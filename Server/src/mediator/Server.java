@@ -2,6 +2,7 @@ package mediator;
 
 import database.Database;
 import database.Database_Implementation;
+import database.FakeDatabase;
 import database.InvalidDatabaseRequestException;
 import logger.Logger;
 import model.*;
@@ -19,7 +20,7 @@ public class Server implements WarehouseServer
 
   public Server(ServerModel model) throws RemoteException
   {
-    this.database = new Database_Implementation();
+    this.database = new FakeDatabase();
     this.model = model;
     //    clients = new ArrayList<WarehouseClient>();
     //    users = new ArrayList<User>();
@@ -65,7 +66,7 @@ public class Server implements WarehouseServer
   {
     //add the order to the database
     try
-    { database.addOrder(order); }
+    { order.setUniqueId(database.addOrder(order)); }
     catch (InvalidDatabaseRequestException e)
     { Logger.getInstance().addLog(e.getMessage()); return;}
 

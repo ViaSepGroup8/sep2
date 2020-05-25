@@ -109,7 +109,7 @@ public class Database_Implementation implements Database{
 
     @Override
     public void addUser(String username, String fullName, UserType userType, String password) {
-        executeSingleSQL("INSERT INTO users VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
+        executeSingleSQL("INSERT INTO warehouse.users VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
     }
 
     @Override
@@ -143,6 +143,7 @@ public class Database_Implementation implements Database{
     @Override
     public Job getNewJob (User user)
     {
+        Job job = null;
         try {
             ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.jobs b ON a.job_id = b.job_id WHERE picker IS null LIMIT 1;");
             if (resultSet.next()) {
@@ -160,10 +161,11 @@ public class Database_Implementation implements Database{
                     items.add(item);
                 }
                 resultSet.close();
-                return new Job(jobId, orderId, items);
+                job = new Job(jobId, orderId, items);
             }
         }catch (SQLException e) {e.printStackTrace();}
-        return null;
+        Logger.getInstance().addLog("returning new job: " + job);
+        return job;
     }
 
     @Override
@@ -173,15 +175,22 @@ public class Database_Implementation implements Database{
 
 
     @Override
-    public void addOrder (Order order) throws InvalidDatabaseRequestException {
-        User username = order.getCustomer ();
-        OrderStatus status = order.getStatus ();
-        String uniqueId = order.getUniqueId ();
-        String gate = order.getGate ();
-        int totalItems = order.totalItemsNumber ();
-        String delivery_address = order.getDeliverAddress ();
+    public String addOrder (Order order) throws InvalidDatabaseRequestException {
+        if(order==null || order.totalItemsNumber() <= 0) throw new InvalidDatabaseRequestException("order with 0 items");
+        String order_id = order.getUniqueId();
+        int item_count = order.totalItemsNumber();
+        int status = order.getStatus().ordinal();
+        String gate = order.getGate();
+        String delivery_address = order.getDeliverAddress();
+        String customer = order.getCustomer().getUsername();
+        String driver = order.getCustomer().getUsername();
+        Logger.getInstance().addLog("user " + order.getCustomer().getUsername()+ " made a new order");
 
-        executeSingleSQL("INSERT INTO warehouse.orders VALUES(" +uniqueId+ "," +totalItems+"," +status + ","+gate + "," + delivery_address + ","+username +")" );
+        ResultSet resultSet = executeSingleQuerySQL("INSERT INTO warehouse.orders VALUES(DEFAULT,"+item_count+","+status+", null, '"+delivery_address+"', '"+customer+"', null) RETURNING order_id;");
+        try {
+            resultSet.next();
+            return resultSet.getString("order_id");
+        } catch (SQLException e) { e.printStackTrace(); throw new RuntimeException("cannot create jobs");}
     }
 
     @Override
@@ -198,8 +207,10 @@ public class Database_Implementation implements Database{
                 String gate = resultSet.getString("gate");
                 String delivery_address = resultSet.getString("delivery_address");
                 Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
+
                 orders.add(order);}
             }catch (SQLException e) {e.printStackTrace(); }
+        Logger.getInstance().addLog("user " + customer.getUsername() + " asked for orders: " + orders);
         return orders;
         }
 
@@ -248,6 +259,7 @@ public class Database_Implementation implements Database{
 
     private void executeSingleSQL(String sql)
     {
+        Logger.getInstance().addLog("SQL:" + sql);
         if(connection == null) connect();
         if(statement == null) { try { statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); }}
         try{ statement.executeUpdate(sql); } catch (SQLException e) { e.printStackTrace(); }
@@ -255,6 +267,7 @@ public class Database_Implementation implements Database{
 
     private ResultSet executeSingleQuerySQL(String sql)
     {
+        Logger.getInstance().addLog("SQL:" + sql);
         ResultSet resultSet = null;
         if(connection == null) connect();
         if(statement == null) { try { statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); }}

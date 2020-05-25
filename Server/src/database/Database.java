@@ -27,7 +27,7 @@ public interface Database
   void completeJob(User user, Job job);
 
   // orders
-  void addOrder(Order order) throws InvalidDatabaseRequestException;
+  String addOrder(Order order) throws InvalidDatabaseRequestException;  //returns id of the order
   void removeOrder(String order_id) throws InvalidDatabaseRequestException;
   void orderAddItem(String item_id, int quantity, String order_id, String job_id);
   ArrayList<Order> getOrdersByUser(User customer);

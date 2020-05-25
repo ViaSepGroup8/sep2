@@ -179,7 +179,7 @@ public class FakeDatabase implements Database
   }
 
 
-  @Override public void addOrder(Order order) throws InvalidDatabaseRequestException
+  @Override public String addOrder(Order order) throws InvalidDatabaseRequestException
   {
     if(order.totalItemsNumber() < 1){
       throw new InvalidDatabaseRequestException("order cannot have 0 items");
@@ -190,6 +190,7 @@ public class FakeDatabase implements Database
 
     order.setUniqueId(chars.charAt(rnd.nextInt(chars.length())) + "X" + chars.charAt(rnd.nextInt(chars.length())) + rnd.nextInt(1000));
     orders.add(order);
+      return chars;
   }
 
   @Override public ArrayList<Order> getOrdersByUser(User customer)
