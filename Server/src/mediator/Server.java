@@ -20,7 +20,7 @@ public class Server implements WarehouseServer
 
   public Server(ServerModel model) throws RemoteException
   {
-    this.database = new FakeDatabase();
+    this.database = new Database_Implementation();
     this.model = model;
     //    clients = new ArrayList<WarehouseClient>();
     //    users = new ArrayList<User>();
