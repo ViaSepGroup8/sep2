@@ -8,7 +8,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Server" />
-    <orderEntry type="library" name="javafx" level="application" />
-    <orderEntry type="library" name="postgresql-42.2.12" level="project" />
+    <orderEntry type="library" exported="" name="javafx" level="application" />
+    <orderEntry type="library" exported="" name="postgresql-42.2.12" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

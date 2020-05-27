@@ -73,25 +73,31 @@ public class PickerViewController {
                 return orderTableRowDataStringCellDataFeatures.getValue().locationProperty();
             }
         });
-        ObservableList<PickerTableRowData> pickerList = viewModel.getPickerList();
-        pickerTable.setItems(pickerList);
+        //ObservableList<PickerTableRowData> pickerList = viewModel.getPickerList();
+        getNewJob();
         // I need to receive a Job object and initiate the job variable
     }
 
     public Region getRoot() { return root; }
 
-    @FXML public void newOrderButtonPressed() throws RemoteException {
-        pickerTable.setItems(viewModel.getPickerList());
-    }
+    @FXML public void newOrderButtonPressed()  { getNewJob(); }
 
     @FXML public void orderCompletedButtonPressed() throws RemoteException {
         if (job != null) {
             String jobId = this.job.getJobId();
-            viewModel.completeJob(jobId);
+            viewModel.completeJob(job);
         }
         else { System.out.println("Job is null"); }
         pickerTable.setItems(null);
     }
 
     @FXML public void logOut() { viewModel.logOut(); }
+
+    private void getNewJob() {
+        try {
+            job = viewModel.getNewJob();
+            pickerTable.setItems(viewModel.getPickerList(job));
+            System.out.println("New job loaded");
+        } catch (Exception e) { System.out.println("No job loaded"); }
+    }
 }
