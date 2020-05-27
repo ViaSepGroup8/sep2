@@ -3,6 +3,7 @@ package view.picker;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -16,6 +17,7 @@ import viewmodel.PickerViewModel;
 import java.rmi.RemoteException;
 
 public class PickerViewController {
+    public Label jobLabel;
     private ViewHandler viewHandler;
     private PickerViewModel viewModel;
     private Region root;
@@ -35,63 +37,34 @@ public class PickerViewController {
         this.viewModel = viewModel;
         this.root = root;
 
+        // set cell value factory
         idColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty());
         nameColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().nameProperty());
         quantityColumn.setCellValueFactory(itemTableRowDataIntegerCellDataFeatures -> itemTableRowDataIntegerCellDataFeatures.getValue().quantityProperty());
         locationColumn.setCellValueFactory(itemTableRowDataNumberCellDataFeatures -> itemTableRowDataNumberCellDataFeatures.getValue().locationProperty());
 
-        pickerTable.setEditable(true);
+        // bind the picker list view <> viewmodel
+        pickerTable.setItems(viewModel.getPickerList());
+        jobLabel.textProperty().bindBidirectional(viewModel.getJobId());
 
-        quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
-
-        //Table
-        idColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, Number>, ObservableValue<Number>>() {
-            @Override public ObservableValue<Number> call(
-                    TableColumn.CellDataFeatures<PickerTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
-                return orderTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty();
-            }
-        });
-
-        nameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(
-                    TableColumn.CellDataFeatures<PickerTableRowData, String> orderTableRowDataStringCellDataFeatures) {
-                return orderTableRowDataStringCellDataFeatures.getValue().nameProperty();
-            }
-        });
-
-        quantityColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, Number>, ObservableValue<Number>>() {
-            @Override public ObservableValue<Number> call(
-                    TableColumn.CellDataFeatures<PickerTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
-                return orderTableRowDataNumberCellDataFeatures.getValue().quantityProperty();
-            }
-        });
-
-
-        locationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call (
-                    TableColumn.CellDataFeatures<PickerTableRowData, String> orderTableRowDataStringCellDataFeatures) {
-                return orderTableRowDataStringCellDataFeatures.getValue().locationProperty();
-            }
-        });
-        ObservableList<PickerTableRowData> pickerList = viewModel.getPickerList();
-        pickerTable.setItems(pickerList);
-        // I need to receive a Job object and initiate the job variable
+//        // make table editable
+//        pickerTable.setEditable(true);
+//        quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+//        idColumn.setCellValueFactory(orderTableRowDataNumberCellDataFeatures -> orderTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty());
+//        nameColumn.setCellValueFactory(orderTableRowDataStringCellDataFeatures -> orderTableRowDataStringCellDataFeatures.getValue().nameProperty());
     }
 
     public Region getRoot() { return root; }
 
     @FXML public void newOrderButtonPressed() throws RemoteException {
-        pickerTable.setItems(viewModel.getPickerList());
+        viewModel.getNewOrder();
     }
 
     @FXML public void orderCompletedButtonPressed() throws RemoteException {
-        if (job != null) {
-            String jobId = this.job.getJobId();
-            viewModel.completeJob(jobId);
-        }
-        else { System.out.println("Job is null"); }
-        pickerTable.setItems(null);
+        viewModel.completeJob();
     }
 
-    @FXML public void logOut() { viewModel.logOut(); }
+    @FXML public void logOut() {
+        viewModel.logOut();
+    }
 }

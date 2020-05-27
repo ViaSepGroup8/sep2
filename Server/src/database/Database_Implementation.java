@@ -3,10 +3,12 @@ package database;
 import logger.Logger;
 import model.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Database_Implementation implements Database{
 
@@ -42,6 +44,28 @@ public class Database_Implementation implements Database{
         // read sample-data.sql and try to execute it
         String sampleData = fileToString("sample-data.sql");
         executeSingleSQL(sampleData);
+
+        String chars = "BCDEFGHI";
+        Random rnd = new Random();
+        //load some fake data
+        Logger.getInstance().addLog("db>> loading fake data");
+        String StringOfItems = "error";
+        try
+        {
+            StringOfItems = Files.readString(Paths.get("Server/src/database/fake-data.txt"));
+        }
+        catch (IOException e)
+        {
+        }
+        String[] split = StringOfItems.replaceAll("\\s+", "").split(",");
+        for (int i = 0; i < split.length; i++)
+        {
+            String name = split[i];
+            Location  location = new Location(rnd.nextInt(10)+40 + "" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3));
+            int price = rnd.nextInt(100);
+            String sql = "INSERT INTO products VALUES(DEFAULT, '" + name+ "', "+price+",'"+location.databaseFormat()+"');";
+            executeSingleSQL(sql);
+        }
     }
 
     @Override
@@ -135,7 +159,8 @@ public class Database_Implementation implements Database{
     public void completeJob (User user, Job job) {
         //todo also check for the job id with "and" for security
         executeSingleSQL("UPDATE warehouse.jobs SET completed = true WHERE picker = ' " + user.getUsername() +"';");
-        //todo this should change status of job and check it is the last unfinshed job in order, if thats true it should also change the status of the order
+        Logger.getInstance().addLog("picker " + user.getUsername() + " completed job " + job.getJobId() + ".");
+        //todo this should change status of job and check it is the last unfinshed job in order, if that's true it should also change the status of the order
         //the query changes all the order's status when we choose just one picker, ask someone how to do it
         //ResultSet resultSet = statement.executeQuery ("UPDATE \"warehouse\".orders SET status = 4 FROM \"warehouse\".orders a JOIN \"warehouse\".jobs b ON a.order_id = b.order_id WHERE b.username_picker = '" +user.getUsername ()+"' ;");
     }
@@ -150,6 +175,7 @@ public class Database_Implementation implements Database{
                 String jobId = resultSet.getString("job_id");
                 String orderId = resultSet.getString("order_id");
                 resultSet.close();
+                executeSingleSQL("UPDATE warehouse.jobs SET picker = '" + user.getUsername() + "' WHERE job_id = ' " + jobId +"';");
                 resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE job_id = " + jobId + ";");
 //                product_id SERIAL,
 //                description description,

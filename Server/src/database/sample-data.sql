@@ -13,7 +13,7 @@ INSERT INTO orders VALUES(DEFAULT,1,0, '33C', 'Calle Serrano', 'lenka', 'javi');
 INSERT INTO jobs VALUES( DEFAULT, 1, NULL,'false');
 --ID
 --order id
---assigend picker
+--assigned picker
 --completed
 
 

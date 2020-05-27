@@ -45,7 +45,10 @@ public class Location implements Serializable
   {
     return String.format("%3s-%02d-%02d",A, B, C);
   }
-
+  public String databaseFormat()
+  {
+    return String.format("%3s%02d%02d",A, B, C);
+  }
   public String readableFormat()
   {
     return String.format("In ale: %s on position: 02%d:02%d", A, B, C);
