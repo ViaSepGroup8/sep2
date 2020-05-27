@@ -2,7 +2,6 @@ package mediator;
 
 import database.Database;
 import database.Database_Implementation;
-import database.FakeDatabase;
 import database.InvalidDatabaseRequestException;
 import logger.Logger;
 import model.*;
@@ -64,48 +63,40 @@ public class Server implements WarehouseServer
 
   @Override public void createNewOrder(Order order) throws RemoteException
   {
-    //add the order to the database
-    try
-    { order.setUniqueId(database.addOrder(order)); }
-    catch (InvalidDatabaseRequestException e)
-    { Logger.getInstance().addLog(e.getMessage()); return;}
+    //add the order to the database and get back the id it generates
+    try { order.setUniqueId(database.addOrder(order)); }
+    catch (InvalidDatabaseRequestException e) { e.printStackTrace(); return;}
 
-    new Thread(() -> {
-      //This is where the orders is split into smaller job objects
-      //lets make this action take at least one second \_^^_/
-      try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
-      ArrayList<Item> orderItems = order.getItems();
-      ArrayList<Item> jobItems = new ArrayList<Item>();
-      Integer jobCount = 0;
+    p("Creating jobs for order number " + order.getUniqueId() +" with total of " + order.totalItemsNumber() + " items.");
+    new Thread(() -> {                                                  //This is where the orders is split into picker jobs
+      sleepSeconds(2);
 
-      for (int i = 0; i < orderItems.size(); i++)
-      {
-        Item orderItem = orderItems.get(i);
-        jobItems.add(orderItem);
+      int jobCount = 0;
+      int maxQuantity = 200;                                            //set that max quantity of items one picker can have in one job
+      int jobItemCount = 0;                                             //keeps track of how many items we have while we are creating a new job
+      String jobId = database.createJob(order.getUniqueId()); jobCount++; p("Created new job with id " + jobId + "."); //let's create a new jobId we will assign items to it later
+      for (int i = 0; i < order.getItems().size(); i++) {               //we need to go over every item in the order
+        if(jobItemCount == maxQuantity) jobId = database.createJob(order.getUniqueId()); p("Job has max possible (" + jobItemCount + ") items new one created for the next items.");
 
-        //first part: if we have more 20 items create a job for a picker.
-        //second part: check if it is the last item in the order list. In this case we will create a job
-        //with only the items that are left. Meaning the last job will have probably less items than 20.
-        if (jobItems.size() >= 20 || (i == orderItems.size() - 1 && orderItems.size() > 0))
-        {
-          //database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(), order.getUniqueId(), jobItems));
-          jobItems = new ArrayList<>();
-          jobCount++;
+        Item item = order.getItems().get(i);
+        int itemQuantity = item.getQuantity();
+
+        while(jobItemCount + itemQuantity > maxQuantity){               //sometimes we need to split items if adding the item to the job would result in job having more than maximum allowed quantity
+          int maxPossibleCount = maxQuantity-jobItemCount;
+          itemQuantity-=maxPossibleCount;
+          database.orderAddItem(item.getUniqueId(), maxPossibleCount, order.getUniqueId(), jobId);
+          jobId = database.createJob(order.getUniqueId()); jobCount++; p("Added " + maxPossibleCount + " of " + item.getName() + " there are " + itemQuantity + " left for the next job.");
         }
-      }
+        jobItemCount+=itemQuantity; p("Added " + itemQuantity + " of " + item.getName() + ".");
+        database.orderAddItem(item.getUniqueId(), itemQuantity, order.getUniqueId(), jobId);
 
-      Logger.getInstance().addLog("created " + jobCount + " jobs for pickers");
+      }p("There are no more items in the order.  In total " + jobCount + " were created.");
 
       //change the status of the order to job divided
-      try
-      {
-        database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED);
-      }
-      catch (Exception e)
-      {
-        Logger.getInstance().addLog("database cannot find order id" + order.getUniqueId());
-      }
+      try { database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED); }
+      catch (Exception e) { Logger.getInstance().addLog("database cannot find order id" + order.getUniqueId()); }
 
+      //this code block is run in a separate thread to ensure that it doesn't block other server requests
     }).start();
   }
 
@@ -166,6 +157,19 @@ public class Server implements WarehouseServer
   public void removeUser(String username) {
     database.removeUser(username);
   }
+
+  private void sleepSeconds(int seconds){
+    try
+    {
+      Thread.sleep(seconds*1000);
+    }
+    catch (InterruptedException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  private void p(Object o){ Logger.getInstance().addLog(">>>>> JOB CREATOR >>>>> " + o); }
 
 }
 

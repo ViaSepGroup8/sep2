@@ -67,7 +67,7 @@ public class FakeDatabase implements Database
 
 
   @Override
-  public void orderAddItem(String item_id, int quantity, String order_id, String job_id) {
+  public void orderAddItem(int item_id, int quantity, String order_id, String job_id) {
   }
 
 

@@ -29,7 +29,7 @@ public interface Database
   // orders
   String addOrder(Order order) throws InvalidDatabaseRequestException;  //returns id of the order
   void removeOrder(String order_id) throws InvalidDatabaseRequestException;
-  void orderAddItem(String item_id, int quantity, String order_id, String job_id);
+  void orderAddItem(int item_id, int quantity, String order_id, String job_id);
   ArrayList<Order> getOrdersByUser(User customer);
   ArrayList<Order> getAllOrders();
   void setOrderStatus(String orderId, OrderStatus status) throws InvalidDatabaseRequestException;

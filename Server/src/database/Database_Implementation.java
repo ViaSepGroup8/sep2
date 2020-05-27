@@ -126,7 +126,7 @@ public class Database_Implementation implements Database{
     }
 
     @Override
-    public void orderAddItem(String item_id, int quantity, String order_id, String job_id) {
+    public void orderAddItem(int item_id, int quantity, String order_id, String job_id) {
         executeSingleSQL("INSERT INTO warehouse.items VALUES("+item_id+", " + order_id + ", " + job_id + ", " + quantity +");");
     }
 
@@ -150,7 +150,11 @@ public class Database_Implementation implements Database{
                 String jobId = resultSet.getString("job_id");
                 String orderId = resultSet.getString("order_id");
                 resultSet.close();
-                resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items WHERE job_id = " + jobId + ";");
+                resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE job_id = " + jobId + ";");
+//                product_id SERIAL,
+//                description description,
+//                price price,
+//                location location,
                 ArrayList<Item> items = new ArrayList<Item>();
                 while (resultSet.next()) {
                     int uniqueId = resultSet.getInt("product_id");
