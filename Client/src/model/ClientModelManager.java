@@ -55,9 +55,8 @@ public class ClientModelManager implements ClientModel
 
     @Override public void logOut()
     {
-        //todo close connection and inform the server the user left
         debugLog("user logout");
-        System.exit(0);
+        user = null;
     }
 
     @Override public void userError(String message)

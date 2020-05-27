@@ -66,5 +66,6 @@ public class PickerViewController {
 
     @FXML public void logOut() {
         viewModel.logOut();
+        viewHandler.openView("Login");
     }
 }

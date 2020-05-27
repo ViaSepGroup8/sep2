@@ -42,7 +42,6 @@ public class PickerViewModel {
                 jobId.set(job.getJobId());
                 pickerList.clear();
                 for (Item item : job.getItems()) {
-                    System.out.println(item);
                     pickerList.add(new PickerTableRowData(item));
                 }
             }

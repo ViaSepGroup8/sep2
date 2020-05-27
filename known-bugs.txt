@@ -1,0 +1,2 @@
+* when picker logs out while having a job he will receive a new one when he loggs back in
+* the job maker can get stuck when item size = maxJobsize

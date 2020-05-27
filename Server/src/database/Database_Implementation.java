@@ -158,7 +158,7 @@ public class Database_Implementation implements Database{
     @Override
     public void completeJob (User user, Job job) {
         //todo also check for the job id with "and" for security
-        executeSingleSQL("UPDATE warehouse.jobs SET completed = true WHERE picker = ' " + user.getUsername() +"';");
+        executeSingleSQL("UPDATE warehouse.jobs SET completed = true WHERE picker = '" + user.getUsername() +"';");
         Logger.getInstance().addLog("picker " + user.getUsername() + " completed job " + job.getJobId() + ".");
         //todo this should change status of job and check it is the last unfinshed job in order, if that's true it should also change the status of the order
         //the query changes all the order's status when we choose just one picker, ask someone how to do it
@@ -183,11 +183,12 @@ public class Database_Implementation implements Database{
 //                location location,
                 ArrayList<Item> items = new ArrayList<Item>();
                 while (resultSet.next()) {
+                    int quantity = resultSet.getInt("quantity");
                     int uniqueId = resultSet.getInt("product_id");
                     String description = resultSet.getString("description");
                     int price = resultSet.getInt("price");
                     Location location = new Location(resultSet.getString("location"));
-                    Item item = new Item(uniqueId, description, 0, location, price);
+                    Item item = new Item(uniqueId, description, quantity, location, price);
                     items.add(item);
                 }
                 resultSet.close();

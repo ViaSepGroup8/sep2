@@ -166,6 +166,7 @@ public class CustomerViewController {
 
     public void onLogOut (ActionEvent actionEvent) {
         viewModel.logOut();
+        viewHandler.openView("Login");
     }
 
     public void onRefreshButton(ActionEvent actionEvent) {
