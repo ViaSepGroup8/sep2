@@ -311,6 +311,7 @@ public class Database_Implementation implements Database{
     private ResultSet executeSingleQuerySQL(String sql)
     {
         return executeMultipleQuerySQL(sql);
+          //todo this should be resolved somehow
 //        Logger.getInstance().addLog("SQL:" + sql);
 //        ResultSet resultSet = null;
 //        if(connection == null) connect();
