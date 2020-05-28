@@ -177,10 +177,6 @@ public class Database_Implementation implements Database{
                 resultSet.close();
                 executeSingleSQL("UPDATE warehouse.jobs SET picker = '" + user.getUsername() + "' WHERE job_id = ' " + jobId +"';");
                 resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE job_id = " + jobId + ";");
-//                product_id SERIAL,
-//                description description,
-//                price price,
-//                location location,
                 ArrayList<Item> items = new ArrayList<Item>();
                 while (resultSet.next()) {
                     int quantity = resultSet.getInt("quantity");
@@ -228,7 +224,8 @@ public class Database_Implementation implements Database{
     public ArrayList<Order> getOrdersByUser(User customer) {
         ArrayList<Order> orders = new ArrayList<Order>();
         ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE a.customer = '" + customer.getUsername() + "';");
-        try { while (resultSet.next()) {
+        try {
+            while (resultSet.next()) {
                 String username = resultSet.getString("username");
                 String fullName = resultSet.getString("fullname");
                 int roleNumber = resultSet.getInt("role");
@@ -237,30 +234,45 @@ public class Database_Implementation implements Database{
                 String uniqueId = "" + resultSet.getInt("order_id");
                 String gate = resultSet.getString("gate");
                 String delivery_address = resultSet.getString("delivery_address");
-                Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
-
-                orders.add(order);}
-            }catch (SQLException e) {e.printStackTrace(); }
+                // SUB QUERY
+                ResultSet SubResultSet = executeMultipleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE order_id = " + uniqueId + ";");
+                if(SubResultSet == resultSet) System.out.println("WTDJASDKJ AJSNDKJ NASJDN KASJND KAJSND KNASND JANKSND ");
+                ArrayList<Item> items = new ArrayList<Item>();
+                while (SubResultSet.next()) {
+                    int quantity = SubResultSet.getInt("quantity");
+                    int product_id = SubResultSet.getInt("product_id");
+                    String description = SubResultSet.getString("description");
+                    int price = SubResultSet.getInt("price");
+                    Location location = new Location(SubResultSet.getString("location"));
+                    Item item = new Item(product_id, description, quantity, location, price);
+                    items.add(item);
+                }
+                SubResultSet.close();
+                //
+                Order order = new Order(user, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
+                orders.add(order);
+            }
+        }catch (SQLException e) {e.printStackTrace(); }
         Logger.getInstance().addLog("user " + customer.getUsername() + " asked for orders: " + orders);
         return orders;
-        }
+    }
 
     @Override
     public ArrayList<Order> getAllOrders () {
         ArrayList<Order> orders = new ArrayList<Order>();
-        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username;");
-        try { while (resultSet.next()) {
-            String username = resultSet.getString("username");
-            String fullName = resultSet.getString("fullname");
-            int roleNumber = resultSet.getInt("role");
-            User user = new User(username, fullName, UserType.values()[roleNumber]);
-            int status = resultSet.getInt("status");
-            String uniqueId = "" + resultSet.getInt("order_id");
-            String gate = resultSet.getString("gate");
-            String delivery_address = resultSet.getString("delivery_address");
-            Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
-            orders.add(order);}
-        }catch (SQLException e) {e.printStackTrace(); }
+//        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username;");
+//        try { while (resultSet.next()) {
+//            String username = resultSet.getString("username");
+//            String fullName = resultSet.getString("fullname");
+//            int roleNumber = resultSet.getInt("role");
+//            User user = new User(username, fullName, UserType.values()[roleNumber]);
+//            int status = resultSet.getInt("status");
+//            String uniqueId = "" + resultSet.getInt("order_id");
+//            String gate = resultSet.getString("gate");
+//            String delivery_address = resultSet.getString("delivery_address");
+//            Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
+//            orders.add(order);}
+//        }catch (SQLException e) {e.printStackTrace(); }
         return orders;
     }
 
@@ -298,10 +310,22 @@ public class Database_Implementation implements Database{
 
     private ResultSet executeSingleQuerySQL(String sql)
     {
+        return executeMultipleQuerySQL(sql);
+//        Logger.getInstance().addLog("SQL:" + sql);
+//        ResultSet resultSet = null;
+//        if(connection == null) connect();
+//        if(statement == null) { try { statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); }}
+//        try { resultSet = statement.executeQuery(sql); } catch (SQLException e) { e.printStackTrace(); }
+//        return resultSet;
+    }
+
+    private ResultSet executeMultipleQuerySQL(String sql)
+    {
         Logger.getInstance().addLog("SQL:" + sql);
         ResultSet resultSet = null;
+        Statement statement = null;
         if(connection == null) connect();
-        if(statement == null) { try { statement = connection.createStatement(); } catch (SQLException e) { e.printStackTrace(); }}
+        try { statement = connection.createStatement(); } catch (SQLException throwables) { throwables.printStackTrace(); }
         try { resultSet = statement.executeQuery(sql); } catch (SQLException e) { e.printStackTrace(); }
         return resultSet;
     }

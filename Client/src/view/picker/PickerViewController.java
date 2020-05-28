@@ -1,15 +1,10 @@
 package view.picker;
 
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Region;
-import javafx.util.Callback;
-import javafx.util.converter.NumberStringConverter;
 import model.Job;
 import view.ViewHandler;
 import viewmodel.PickerViewModel;

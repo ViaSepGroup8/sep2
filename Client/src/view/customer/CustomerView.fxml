@@ -20,8 +20,8 @@
       <Button layoutX="12.0" layoutY="237.0" mnemonicParsing="false" onAction="#onNewOrder" prefHeight="25.0" prefWidth="85.0" text="New Order" />
       <Button layoutX="581.0" layoutY="237.0" mnemonicParsing="false" onAction="#onAcceptOrder" text="Complete Order" />
       <Label layoutX="13.0" layoutY="5.0" text="Customer name" />
-      <Label layoutX="446.0" layoutY="241.0" text="Total sum:" />
-      <Label fx:id="totalSum" layoutX="509.0" layoutY="241.0" prefHeight="17.0" prefWidth="49.0" text="0 kr." />
+      <Label layoutX="432.0" layoutY="242.0" text="Total sum:" />
+      <Label fx:id="totalSum" layoutX="515.0" layoutY="242.0" prefHeight="17.0" prefWidth="49.0" text="0 kr." />
       <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="DEFAULT" />
       <TableView fx:id="ordersTable" layoutX="12.0" layoutY="299.0" prefHeight="182.0" prefWidth="671.0">
          <columns>

@@ -22,6 +22,16 @@ public class Order implements Serializable
     deliverAddress = "qwertyvej 123. WASD, WWW";
   }
 
+  public Order(User customer, OrderStatus status, String uniqueId, ArrayList<Item> items, String gate, String deliverAddress)
+  {
+    this.customer = customer;
+    this.status = status;
+    this.uniqueId = uniqueId;
+    this.gate = gate;
+    this.deliverAddress = deliverAddress;
+    this.items = items;
+  }
+
   public Order(User customer, OrderStatus status, String uniqueId, String gate, String deliverAddress)
   {
     this.customer = customer;

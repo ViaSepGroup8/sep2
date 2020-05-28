@@ -68,29 +68,36 @@ public class Server implements WarehouseServer
     catch (InvalidDatabaseRequestException e) { e.printStackTrace(); return;}
 
     p("Creating jobs for order number " + order.getUniqueId() +" with total of " + order.totalItemsNumber() + " items.");
-    new Thread(() -> {                                                  //This is where the orders is split into picker jobs
-      sleepSeconds(2);
+    new Thread(() -> {
+      //sleepSeconds(2);
 
-      int jobCount = 0;
-      int maxQuantity = 200;                                            //set that max quantity of items one picker can have in one job
-      int jobItemCount = 0;                                             //keeps track of how many items we have while we are creating a new job
-      String jobId = database.createJob(order.getUniqueId()); jobCount++; p("Created new job with id " + jobId + "."); //let's create a new jobId we will assign items to it later
-      for (int i = 0; i < order.getItems().size(); i++) {               //we need to go over every item in the order
-        if(jobItemCount == maxQuantity) jobId = database.createJob(order.getUniqueId()); p("Job has max possible (" + jobItemCount + ") items new one created for the next items.");
+      int jobCount = 1;
+      int maxQuantity = 200;
+      int jobItemCount = 0;
+      String jobId = database.createJob(order.getUniqueId());                                                                         p("Created new job with id " + jobId + ".");
+
+      for (int i = 0; i < order.getItems().size(); i++) {
+        if(jobItemCount == maxQuantity){
+          jobId = database.createJob(order.getUniqueId());
+          jobCount++;
+          jobItemCount = 0;                                                                                                            p("Job has max possible (" + maxQuantity + ") items new one created for the next items.");
+        }
 
         Item item = order.getItems().get(i);
         int itemQuantity = item.getQuantity();
 
-        while(jobItemCount + itemQuantity > maxQuantity){               //sometimes we need to split items if adding the item to the job would result in job having more than maximum allowed quantity
+        while(jobItemCount + itemQuantity > maxQuantity){
           int maxPossibleCount = maxQuantity-jobItemCount;
           itemQuantity-=maxPossibleCount;
           database.orderAddItem(item.getUniqueId(), maxPossibleCount, order.getUniqueId(), jobId);
-          jobId = database.createJob(order.getUniqueId()); jobCount++; p("Added " + maxPossibleCount + " of " + item.getName() + " there are " + itemQuantity + " left for the next job.");
+          jobId = database.createJob(order.getUniqueId());
+          jobCount++;
+          jobItemCount = 0;                                                                                                           p("Added " + maxPossibleCount + " of " + item.getName() + " there are " + itemQuantity + " left for the next job.");
         }
-        jobItemCount+=itemQuantity; p("Added " + itemQuantity + " of " + item.getName() + ".");
-        database.orderAddItem(item.getUniqueId(), itemQuantity, order.getUniqueId(), jobId);
 
-      }p("There are no more items in the order.  In total " + jobCount + " were created.");
+        jobItemCount+=itemQuantity;                                                                                                   p("Added " + itemQuantity + " of " + item.getName() + ".");
+        database.orderAddItem(item.getUniqueId(), itemQuantity, order.getUniqueId(), jobId);
+      }                                                                                                                               p("There are no more items in the order.  In total " + jobCount + " were created.");
 
       //change the status of the order to job divided
       try { database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED); }

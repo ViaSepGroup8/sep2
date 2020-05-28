@@ -67,7 +67,7 @@ public class ViewHandler {
         height = root.prefHeight(0);
 
         currentScene.setRoot(root);
-        primaryStage.setTitle("Bernardo's warehouse");
+        primaryStage.setTitle("Warehouse Management System");
         primaryStage.setScene(currentScene);
         primaryStage.setWidth(width);
         primaryStage.setHeight(height);

@@ -101,5 +101,8 @@ public class AdministratorViewController {
 
     @FXML public void deleteOrderButtonPressed() { viewModel.deleteOrder(); }
 
-    @FXML public void logOutButtonPressed() { viewModel.logOut(); }
+    @FXML public void logOutButtonPressed() {
+        viewModel.logOut();
+        viewHandler.openView("Login");
+    }
 }
