@@ -206,6 +206,11 @@ public class FakeDatabase implements Database
     return userOrders;
   }
 
+  @Override public Order getOrderByOrderId(String order_id) throws InvalidDatabaseRequestException
+  {
+    return null;
+  }
+
   @Override public ArrayList<Order> getAllOrders()
   {
     return orders;

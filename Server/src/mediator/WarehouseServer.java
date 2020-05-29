@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface WarehouseServer extends Remote
 {
   String ping() throws RemoteException;
-  User login(String username, String password) throws RemoteException;
+  User login(String username, String password, WarehouseClient client) throws RemoteException;
   ArrayList<Item> getAllWarehouseItems() throws RemoteException;
 
   //Picker

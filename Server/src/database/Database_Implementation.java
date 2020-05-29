@@ -220,6 +220,41 @@ public class Database_Implementation implements Database{
         } catch (SQLException e) { e.printStackTrace(); throw new RuntimeException("cannot create jobs");}
     }
 
+    @Override public Order getOrderByOrderId(String order_id) throws InvalidDatabaseRequestException
+    {
+        Order order = null;
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE a.order_id = '" + order_id + "';");
+        try {
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String fullName = resultSet.getString("fullname");
+                int roleNumber = resultSet.getInt("role");
+                User user = new User(username, fullName, UserType.values()[roleNumber]);
+                int status = resultSet.getInt("status");
+                String uniqueId = "" + resultSet.getInt("order_id");
+                String gate = resultSet.getString("gate");
+                String delivery_address = resultSet.getString("delivery_address");
+                // SUB QUERY
+                ResultSet SubResultSet = executeMultipleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE order_id = " + uniqueId + ";");
+                ArrayList<Item> items = new ArrayList<Item>();
+                while (SubResultSet.next()) {
+                    int quantity = SubResultSet.getInt("quantity");
+                    int product_id = SubResultSet.getInt("product_id");
+                    String description = SubResultSet.getString("description");
+                    int price = SubResultSet.getInt("price");
+                    Location location = new Location(SubResultSet.getString("location"));
+                    Item item = new Item(product_id, description, quantity, location, price);
+                    items.add(item);
+                }
+                SubResultSet.close();
+                //End Of SUB QUERY
+                order = new Order(user, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
+            }
+        }catch (SQLException e) {e.printStackTrace(); }
+        if (order == null) throw new InvalidDatabaseRequestException();
+        return order;
+    }
+
     @Override
     public ArrayList<Order> getOrdersByUser(User customer) {
         ArrayList<Order> orders = new ArrayList<Order>();
@@ -236,7 +271,6 @@ public class Database_Implementation implements Database{
                 String delivery_address = resultSet.getString("delivery_address");
                 // SUB QUERY
                 ResultSet SubResultSet = executeMultipleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE order_id = " + uniqueId + ";");
-                if(SubResultSet == resultSet) System.out.println("WTDJASDKJ AJSNDKJ NASJDN KASJND KAJSND KNASND JANKSND ");
                 ArrayList<Item> items = new ArrayList<Item>();
                 while (SubResultSet.next()) {
                     int quantity = SubResultSet.getInt("quantity");

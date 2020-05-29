@@ -1,5 +1,6 @@
 package model;
 
+import mediator.WarehouseClient;
 import utility.ObserverSubject;
 
 import java.lang.reflect.Array;
@@ -35,6 +36,9 @@ public interface ClientModel extends ObserverSubject
   //Picker
   Job getNewJob();
   void completeJob(Job job);
+
+  //Server Asynchronous updates
+  void receiveOrderUpdate(Order order);
 
   //local model
   //  void setUser(User user);

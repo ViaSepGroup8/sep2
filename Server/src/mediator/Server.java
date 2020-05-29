@@ -9,21 +9,28 @@ import model.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server implements WarehouseServer
 {
-  ServerModel model;
-  Database database;
-  //  ArrayList<WarehouseClient> clients;
-  //  ArrayList<User> users;
+  private ServerModel model;
+  private Database database;
+  private Map<String, WarehouseClient> clientMap = new HashMap();
 
   public Server(ServerModel model) throws RemoteException
   {
     this.database = new Database_Implementation();
     this.model = model;
-    //    clients = new ArrayList<WarehouseClient>();
-    //    users = new ArrayList<User>();
     UnicastRemoteObject.exportObject(this, 0);
+  }
+
+  private void updateOrder(Order order){
+    WarehouseClient client = clientMap.get(order.getCustomer().getUsername());
+    if(client != null){
+      try { client.receiveOrderUpdate(order); }
+      catch (RemoteException e) { e.printStackTrace(); }
+    }
   }
 
   @Override public String ping() throws RemoteException
@@ -31,11 +38,13 @@ public class Server implements WarehouseServer
     return "pong";
   }
 
-  @Override public User login(String username, String password) throws RemoteException
+  @Override public User login(String username, String password, WarehouseClient client) throws RemoteException
   {
-    //return database.getUserType(username, password);
+    User user = database.getUser(username, password);
+    clientMap.put(user.getUsername(), client);
+
     Logger.getInstance().addLog("user " + username + " has logged in");
-    return database.getUser(username, password);
+    return user;
   }
 
   @Override public ArrayList<Item> getAllWarehouseItems()
@@ -54,6 +63,7 @@ public class Server implements WarehouseServer
     try
     {
       database.setOrderStatus(job.getOrderId(), OrderStatus.READY_FOR_PICKUP);
+      updateOrder(database.getOrderByOrderId(job.getOrderId()));
     }
     catch (InvalidDatabaseRequestException e)
     {
@@ -64,12 +74,15 @@ public class Server implements WarehouseServer
   @Override public void createNewOrder(Order order) throws RemoteException
   {
     //add the order to the database and get back the id it generates
-    try { order.setUniqueId(database.addOrder(order)); }
+    try {
+      order.setUniqueId(database.addOrder(order));
+      updateOrder(order);
+    }
     catch (InvalidDatabaseRequestException e) { e.printStackTrace(); return;}
 
     p("Creating jobs for order number " + order.getUniqueId() +" with total of " + order.totalItemsNumber() + " items.");
     new Thread(() -> {
-      //sleepSeconds(2);
+      sleepSeconds(1);
 
       int jobCount = 1;
       int maxQuantity = 200;
@@ -100,7 +113,11 @@ public class Server implements WarehouseServer
       }                                                                                                                               p("There are no more items in the order.  In total " + jobCount + " were created.");
 
       //change the status of the order to job divided
-      try { database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED); }
+      try {
+        database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED);
+        order.setStatus(OrderStatus.JOBS_DIVIDED);
+        updateOrder(order);
+      }
       catch (Exception e) { Logger.getInstance().addLog("database cannot find order id" + order.getUniqueId()); }
 
       //this code block is run in a separate thread to ensure that it doesn't block other server requests
@@ -141,18 +158,13 @@ public class Server implements WarehouseServer
     {
       Logger.getInstance().addLog("driver " + user.getFullName() + " has delivered order " + order.getUniqueId());
       database.setOrderStatus(order.getUniqueId(), OrderStatus.DELIVERED);
+      updateOrder(order);
     }
     catch (InvalidDatabaseRequestException e)
     {
       Logger.getInstance().addLog("requested order cannot be changed to deliver, order not found");
     }
 
-    ArrayList<Order> list = database.getAllOrders();
-    for (Order o : list)
-    {
-      System.out.println("# " + o);
-    }
-    System.out.println("");
   }
 
   @Override

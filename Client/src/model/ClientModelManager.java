@@ -16,7 +16,7 @@ public class ClientModelManager implements ClientModel
     private WarehouseClient client;
     private WarehouseServer server;
     private PropertyChangeSupport property;
-    private Order order;
+    //private Order order;
     private User user;
 
     public ClientModelManager() throws RemoteException
@@ -80,7 +80,7 @@ public class ClientModelManager implements ClientModel
     {
         try
         {
-            this.user = server.login(username, password);
+            this.user = server.login(username, password, client);
             debugLog(user.toString());
         }
         catch (RemoteException e)
@@ -111,7 +111,6 @@ public class ClientModelManager implements ClientModel
 
     @Override
     public void createCustomerNewOrder(Order order){
-        this.order = order;
         // Pass order to the client that connects with the server.
         try {
             server.createNewOrder(order);
@@ -197,77 +196,14 @@ public class ClientModelManager implements ClientModel
     {
         property.addPropertyChangeListener(listener);
     }
+
+    @Override public void receiveOrderUpdate(Order order)
+    {
+        System.out.println("!@# " + order.toString());
+        property.firePropertyChange("orderUpdate", null, order);
+    }
+
     @Override public void addAccount() { }
     @Override public void deleteAccount() {}
     @Override public void deleteOrder() {}
-
-
-
-    //    @Override public void registerClient()
-//    {
-//        try
-//        {
-//            server.registerClient(client, user);
-//        }
-//        catch (RemoteException e)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Override public void broadCast(Message message)
-//    {
-//        try
-//        {
-//            server.broadCast(message, client);
-//        }
-//        catch (RemoteException e)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Override public void requestUserList()
-//    {
-//        try
-//        {
-//            server.requestUserList(client);
-//        }
-//        catch (RemoteException e)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Override public void receiveMessage(Message message)
-//    {
-//        System.out.println("got a message" + message);
-//        property.firePropertyChange("broadcast", null, message);
-//    }
-//    //Login
-//    public void login(String username, String password) { System.out.println("Logging in..."); }
-//
-//    @Override public User getUser()
-//    {
-//        return user;
-//    }
-//
-//    @Override public void setUser(User user)
-//    {
-//        System.out.println("new user profile " + user);
-//        this.user = user;
-//        updateUser();
-//    }
-//
-//    @Override public void updateUser()
-//    {
-//        try
-//        {
-//            server.updateUser(user, client);
-//        }
-//        catch (RemoteException e)
-//        {
-//            System.out.println("user profile update failed");
-//        }
-//    }
 }
