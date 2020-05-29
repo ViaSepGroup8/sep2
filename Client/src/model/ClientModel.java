@@ -1,10 +1,7 @@
 package model;
 
-import mediator.WarehouseClient;
-import utility.ObserverSubject;
 
-import java.lang.reflect.Array;
-import java.rmi.RemoteException;
+import utility.ObserverSubject;
 import java.util.ArrayList;
 
 public interface ClientModel extends ObserverSubject
@@ -39,19 +36,4 @@ public interface ClientModel extends ObserverSubject
 
   //Server Asynchronous updates
   void receiveOrderUpdate(Order order);
-
-  //local model
-  //  void setUser(User user);
-  //  User getUser();
-  //
-  //  //server side
-  //  void registerClient();
-  //  void updateUser();
-  //  void broadCast(Message message);
-  //  void requestUserList();
-  //
-  //  //client side
-  //  void receiveMessage(Message message);
-  //  void receiveUserList(ArrayList<User> users);
-  //  void answer(int profession);
 }

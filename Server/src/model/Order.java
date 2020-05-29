@@ -14,12 +14,12 @@ public class Order implements Serializable
   String deliverAddress;
   User driver;
 
-  public Order(User user, ArrayList<Item> orderItems)
+  public Order(User user, ArrayList<Item> orderItems, String deliverAddress)
   {
     customer = user;
     items = orderItems;
     status = OrderStatus.CREATED;
-    deliverAddress = "qwertyvej 123. WASD, WWW";
+    this.deliverAddress = deliverAddress;
   }
 
   public Order(User customer, OrderStatus status, String uniqueId, ArrayList<Item> items, String gate, String deliverAddress)

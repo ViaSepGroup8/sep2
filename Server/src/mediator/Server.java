@@ -158,7 +158,7 @@ public class Server implements WarehouseServer
     {
       Logger.getInstance().addLog("driver " + user.getFullName() + " has delivered order " + order.getUniqueId());
       database.setOrderStatus(order.getUniqueId(), OrderStatus.DELIVERED);
-      updateOrder(order);
+      updateOrder(database.getOrderByOrderId(order.getUniqueId()));
     }
     catch (InvalidDatabaseRequestException e)
     {
