@@ -42,19 +42,14 @@ public class PickerViewController {
         pickerTable.setItems(viewModel.getPickerList());
         jobLabel.textProperty().bindBidirectional(viewModel.getJobId());
 
-        locationColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PickerTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call (
-                    TableColumn.CellDataFeatures<PickerTableRowData, String> orderTableRowDataStringCellDataFeatures) {
-                return orderTableRowDataStringCellDataFeatures.getValue().locationProperty();
-            }
-        });
-        //ObservableList<PickerTableRowData> pickerList = viewModel.getPickerList();
-        getNewJob();
-        // I need to receive a Job object and initiate the job variable
+//        // make table editable
+//        pickerTable.setEditable(true);
+//        quantityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
+//        idColumn.setCellValueFactory(orderTableRowDataNumberCellDataFeatures -> orderTableRowDataNumberCellDataFeatures.getValue().uniqueIdProperty());
+//        nameColumn.setCellValueFactory(orderTableRowDataStringCellDataFeatures -> orderTableRowDataStringCellDataFeatures.getValue().nameProperty());
     }
 
     public Region getRoot() { return root; }
-
 
     @FXML public void newOrderButtonPressed() throws RemoteException {
         viewModel.getNewOrder();

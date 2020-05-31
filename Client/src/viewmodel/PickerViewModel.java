@@ -56,6 +56,4 @@ public class PickerViewModel {
     {
         return jobId;
     }
-
-    public Job getNewJob() { return model.getNewJob(); }
 }

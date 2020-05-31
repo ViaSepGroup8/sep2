@@ -1,15 +1,13 @@
 package view.administrator;
 
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Region;
 import javafx.util.Callback;
-import model.Order;
-import model.User;
 import view.ViewHandler;
+import view.customer.OrderTableRowData;
 import viewmodel.AdministratorViewModel;
 
 
@@ -40,60 +38,58 @@ public class AdministratorViewController {
 
         //User table
 
-        usernameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<UserTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TableColumn.CellDataFeatures<UserTableRowData, String> userTableRowDataStringCellDataFeatures) {
+        usernameColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<UserTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(javafx.scene.control.TableColumn.CellDataFeatures<UserTableRowData, String> userTableRowDataStringCellDataFeatures) {
                 return userTableRowDataStringCellDataFeatures.getValue().usernameProperty();
             }
         });
 
-        typeOfAccountColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<UserTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TableColumn.CellDataFeatures<UserTableRowData, String> userTableRowDataStringCellDataFeatures) {
+        typeOfAccountColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<UserTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(javafx.scene.control.TableColumn.CellDataFeatures<UserTableRowData, String> userTableRowDataStringCellDataFeatures) {
                 return userTableRowDataStringCellDataFeatures.getValue().typeOfAccountProperty();
             }
         });
 
-         accountsTable.setItems(viewModel.getAccountsList());
-
         //Order table
 
-        customerColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
+        customerColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
                 return orderTableRowDataStringCellDataFeatures.getValue().customerNameProperty();
             }
         });
 
-        orderColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
+        orderColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
                 return orderTableRowDataStringCellDataFeatures.getValue().orderIdProperty();
             }
         });
 
-        totalSumColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, Number>, ObservableValue<Number>>() {
-            @Override public ObservableValue<Number> call(TableColumn.CellDataFeatures<OrderTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
+        totalSumColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, Number>, ObservableValue<Number>>() {
+            @Override public ObservableValue<Number> call(javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
                 return orderTableRowDataNumberCellDataFeatures.getValue().totalSumProperty();
             }
         });
 
 
-        deliveryAddressColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
+        deliveryAddressColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
                 return orderTableRowDataStringCellDataFeatures.getValue().deliveryAddressProperty();
             }
         });
 
-        totalItemsColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, Number>, ObservableValue<Number>>() {
-            @Override public ObservableValue<Number> call(TableColumn.CellDataFeatures<OrderTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
+        totalItemsColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, Number>, ObservableValue<Number>>() {
+            @Override public ObservableValue<Number> call(javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, Number> orderTableRowDataNumberCellDataFeatures) {
                 return orderTableRowDataNumberCellDataFeatures.getValue().totalItemsProperty();
             }
         });
 
-        statusColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
-            @Override public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
+        statusColumn.setCellValueFactory(new Callback<javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String>, ObservableValue<String>>() {
+            @Override public ObservableValue<String> call(javafx.scene.control.TableColumn.CellDataFeatures<OrderTableRowData, String> orderTableRowDataStringCellDataFeatures) {
                 return orderTableRowDataStringCellDataFeatures.getValue().orderStatusProperty();
             }
         });
 
-        ordersTable.setItems(viewModel.getOrdersList());
+        //ordersTable.setItems(viewModel.getOrdersList());
 
     }
 
@@ -101,33 +97,9 @@ public class AdministratorViewController {
 
     @FXML public void addAccountButtonPressed() { viewModel.addAccount(); }
 
-    @FXML public void deleteAccountButtonPressed() {
-        ObservableList<User> selectedRows;
+    @FXML public void deleteAccountButtonPressed() { viewModel.deleteAccount(); }
 
-        selectedRows = convertToUser(accountsTable.getSelectionModel().getSelectedItems());
-
-        for (User user: selectedRows) {
-            viewModel.deleteAccount();
-        }
-    }
-
-    @FXML public void deleteOrderButtonPressed() {
-        ObservableList<Order> selectedRows;
-
-        selectedRows = convertToOrder(ordersTable.getSelectionModel().getSelectedItems());
-
-        for (Order order: selectedRows) {
-            viewModel.deleteAccount();
-        }
-    }
-
-    private ObservableList<User> convertToUser(ObservableList<UserTableRowData> userTableRowData) {
-        return null;
-    }
-
-    private ObservableList<Order> convertToOrder(ObservableList<OrderTableRowData> orderTableRowData) {
-        return null;
-    }
+    @FXML public void deleteOrderButtonPressed() { viewModel.deleteOrder(); }
 
     @FXML public void logOutButtonPressed() {
         viewModel.logOut();
