@@ -199,7 +199,6 @@ public class ClientModelManager implements ClientModel
 
     @Override public void receiveOrderUpdate(Order order)
     {
-        System.out.println("!@# " + order.toString());
         property.firePropertyChange("orderUpdate", null, order);
     }
 

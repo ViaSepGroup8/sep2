@@ -26,7 +26,7 @@ public class CustomerViewModel implements PropertyChangeListener
         this.model = model;
         model.addListener(this);
         username = new SimpleStringProperty();
-        userError = new SimpleStringProperty();
+        userError = new SimpleStringProperty("");
         deliveryAddress  = new SimpleStringProperty();
         orderList = FXCollections.observableArrayList();
         productList = FXCollections.observableArrayList();
@@ -47,6 +47,10 @@ public class CustomerViewModel implements PropertyChangeListener
 
     public void createNewOrder()
     {
+        if(deliveryAddress.get() == null || deliveryAddress.get().equals("")){
+            model.userError("Cannot create order without specifying the address.");return;
+        }
+
         ArrayList<Item> itemsSelected = new ArrayList<Item>();
 
         //Insert all elements from itemsSelectedRowData to itemsSelected(converting each element to Item Type)
@@ -57,7 +61,10 @@ public class CustomerViewModel implements PropertyChangeListener
         //Remove all not selected items by customer also remove invalid values
         ArrayList<Item> valuesToRemove = new ArrayList<>();
         for (Item item : itemsSelected) {
-            if (item.getQuantity() < 1) valuesToRemove.add(item);
+            if (item.getQuantity() == 0) valuesToRemove.add(item);
+            if (item.getQuantity() < 0){
+                model.userError("Cannot create order with negative quantity.");return;
+            }
         }
         itemsSelected.removeAll(valuesToRemove);
         if(itemsSelected.size()  == 0){
