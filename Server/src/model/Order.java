@@ -14,12 +14,22 @@ public class Order implements Serializable
   String deliverAddress;
   User driver;
 
-  public Order(User user, ArrayList<Item> orderItems)
+  public Order(User user, ArrayList<Item> orderItems, String deliverAddress)
   {
     customer = user;
     items = orderItems;
     status = OrderStatus.CREATED;
-    deliverAddress = "qwertyvej 123. WASD, WWW";
+    this.deliverAddress = deliverAddress;
+  }
+
+  public Order(User customer, OrderStatus status, String uniqueId, ArrayList<Item> items, String gate, String deliverAddress)
+  {
+    this.customer = customer;
+    this.status = status;
+    this.uniqueId = uniqueId;
+    this.gate = gate;
+    this.deliverAddress = deliverAddress;
+    this.items = items;
   }
 
   public Order(User customer, OrderStatus status, String uniqueId, String gate, String deliverAddress)

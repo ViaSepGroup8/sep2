@@ -1,7 +1,7 @@
 package mediator;
 
 import database.Database;
-import database.FakeDatabase;
+import database.Database_Implementation;
 import database.InvalidDatabaseRequestException;
 import logger.Logger;
 import model.*;
@@ -9,21 +9,28 @@ import model.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server implements WarehouseServer
 {
-  ServerModel model;
-  Database database;
-  //  ArrayList<WarehouseClient> clients;
-  //  ArrayList<User> users;
+  private ServerModel model;
+  private Database database;
+  private Map<String, WarehouseClient> clientMap = new HashMap();
 
   public Server(ServerModel model) throws RemoteException
   {
-    this.database = new FakeDatabase();
+    this.database = new Database_Implementation();
     this.model = model;
-    //    clients = new ArrayList<WarehouseClient>();
-    //    users = new ArrayList<User>();
     UnicastRemoteObject.exportObject(this, 0);
+  }
+
+  private void updateOrder(Order order){
+    WarehouseClient client = clientMap.get(order.getCustomer().getUsername());
+    if(client != null){
+      try { client.receiveOrderUpdate(order); }
+      catch (RemoteException e) { e.printStackTrace(); }
+    }
   }
 
   @Override public String ping() throws RemoteException
@@ -31,36 +38,23 @@ public class Server implements WarehouseServer
     return "pong";
   }
 
-  @Override public User login(String username, String password) throws RemoteException
+  @Override public User login(String username, String password, WarehouseClient client) throws RemoteException
   {
-    //return database.getUserType(username, password);
+    User user = database.getUser(username, password);
+    clientMap.put(user.getUsername(), client);
+
     Logger.getInstance().addLog("user " + username + " has logged in");
-    return database.getUser(username, password);
+    return user;
   }
 
   @Override public ArrayList<Item> getAllWarehouseItems()
   {
-    return database.getAllWarehouseItems();
+    return database.getAllWarehouseProducts();
   }
 
   @Override public Job getNewJob(User user) throws RemoteException
   {
-    Job userCurrentJob = null;
-    try
-    {
-      userCurrentJob = database.getJobByUser(user);
-    }
-    catch (InvalidDatabaseRequestException e)
-    {
-      Logger.getInstance().addLog("wrong db request for job");
-      throw new RemoteException("cannot find user");
-    }
-
-    if(userCurrentJob == null){
-      userCurrentJob = database.getNewJob();
-    }
-
-    return userCurrentJob;
+    return database.getNewJob(user);
   }
 
   @Override public void completeJob(User user, Job job) throws RemoteException
@@ -69,6 +63,7 @@ public class Server implements WarehouseServer
     try
     {
       database.setOrderStatus(job.getOrderId(), OrderStatus.READY_FOR_PICKUP);
+      updateOrder(database.getOrderByOrderId(job.getOrderId()));
     }
     catch (InvalidDatabaseRequestException e)
     {
@@ -78,54 +73,60 @@ public class Server implements WarehouseServer
 
   @Override public void createNewOrder(Order order) throws RemoteException
   {
-    //add the order to the database
-    try
-    { database.addOrder(order); }
-    catch (InvalidDatabaseRequestException e)
-    { Logger.getInstance().addLog(e.getMessage()); return;}
+    //add the order to the database and get back the id it generates
+    try {
+      order.setUniqueId(database.addOrder(order));
+      updateOrder(order);
+    }
+    catch (InvalidDatabaseRequestException e) { e.printStackTrace(); return;}
 
+    p("Creating jobs for order number " + order.getUniqueId() +" with total of " + order.totalItemsNumber() + " items.");
     new Thread(() -> {
-      //This is where the orders is split into smaller job objects
-      //lets make this action take at least one second \_^^_/
-      try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
-      ArrayList<Item> orderItems = order.getItems();
-      ArrayList<Item> jobItems = new ArrayList<Item>();
-      Integer jobCount = 0;
+      sleepSeconds(1);
 
-      for (int i = 0; i < orderItems.size(); i++)
-      {
-        Item orderItem = orderItems.get(i);
-        jobItems.add(orderItem);
+      int jobCount = 1;
+      int maxQuantity = 200;
+      int jobItemCount = 0;
+      String jobId = database.createJob(order.getUniqueId());                                                                         p("Created new job with id " + jobId + ".");
 
-        //first part: if we have more 20 items create a job for a picker.
-        //second part: check if it is the last item in the order list. In this case we will create a job
-        //with only the items that are left. Meaning the last job will have probably less items than 20.
-        if (jobItems.size() >= 20 || (i == orderItems.size() - 1 && orderItems.size() > 0))
-        {
-          database.addJob(new Job("Ord" + order.getUniqueId() + "-" + "Job" + jobCount.toString(), order.getUniqueId(), jobItems));
-          jobItems = new ArrayList<>();
+      for (int i = 0; i < order.getItems().size(); i++) {
+        if(jobItemCount == maxQuantity){
+          jobId = database.createJob(order.getUniqueId());
           jobCount++;
+          jobItemCount = 0;                                                                                                            p("Job has max possible (" + maxQuantity + ") items new one created for the next items.");
         }
-      }
 
-      Logger.getInstance().addLog("created " + jobCount + " jobs for pickers");
+        Item item = order.getItems().get(i);
+        int itemQuantity = item.getQuantity();
+
+        while(jobItemCount + itemQuantity > maxQuantity){
+          int maxPossibleCount = maxQuantity-jobItemCount;
+          itemQuantity-=maxPossibleCount;
+          database.orderAddItem(item.getUniqueId(), maxPossibleCount, order.getUniqueId(), jobId);
+          jobId = database.createJob(order.getUniqueId());
+          jobCount++;
+          jobItemCount = 0;                                                                                                           p("Added " + maxPossibleCount + " of " + item.getName() + " there are " + itemQuantity + " left for the next job.");
+        }
+
+        jobItemCount+=itemQuantity;                                                                                                   p("Added " + itemQuantity + " of " + item.getName() + ".");
+        database.orderAddItem(item.getUniqueId(), itemQuantity, order.getUniqueId(), jobId);
+      }                                                                                                                               p("There are no more items in the order.  In total " + jobCount + " were created.");
 
       //change the status of the order to job divided
-      try
-      {
+      try {
         database.setOrderStatus(order.getUniqueId(), OrderStatus.JOBS_DIVIDED);
+        order.setStatus(OrderStatus.JOBS_DIVIDED);
+        updateOrder(order);
       }
-      catch (Exception e)
-      {
-        Logger.getInstance().addLog("database cannot find order id" + order.getUniqueId());
-      }
+      catch (Exception e) { Logger.getInstance().addLog("database cannot find order id" + order.getUniqueId()); }
 
+      //this code block is run in a separate thread to ensure that it doesn't block other server requests
     }).start();
   }
 
   @Override public ArrayList<Order> getUserOrders(User customer) throws RemoteException
   {
-    return database.getUserOrders(customer);
+    return database.getOrdersByUser(customer);
   }
 
   @Override public ArrayList<Order> getOrders() throws RemoteException
@@ -138,7 +139,7 @@ public class Server implements WarehouseServer
     Order order = null;
     try
     {
-      order = database.getNewPickupOrder(user);
+      order = database.getNewDriverOrder(user);
       Logger.getInstance().addLog("driver " + user.getFullName() + " has been assigned to deliver order " + order.getUniqueId());
     }
     catch (InvalidDatabaseRequestException e)
@@ -157,19 +158,39 @@ public class Server implements WarehouseServer
     {
       Logger.getInstance().addLog("driver " + user.getFullName() + " has delivered order " + order.getUniqueId());
       database.setOrderStatus(order.getUniqueId(), OrderStatus.DELIVERED);
+      updateOrder(database.getOrderByOrderId(order.getUniqueId()));
     }
     catch (InvalidDatabaseRequestException e)
     {
       Logger.getInstance().addLog("requested order cannot be changed to deliver, order not found");
     }
 
-    ArrayList<Order> list = database.getAllOrders();
-    for (Order o : list)
-    {
-      System.out.println("# " + o);
-    }
-    System.out.println("");
   }
+
+  @Override
+  public void addUser(String username, String fullName, UserType userType, String password) {
+    database.addUser(username, fullName, userType, password);
+  }
+
+  @Override
+  public void removeUser(String username) {
+    database.removeUser(username);
+  }
+
+  private void sleepSeconds(int seconds){
+    try
+    {
+      Thread.sleep(seconds*1000);
+    }
+    catch (InterruptedException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  private void p(Object o){ Logger.getInstance().addLog(">>>>> JOB CREATOR >>>>> " + o); }
+
+}
 
   //  @Override public void registerClient(WarehouseClient client, User user) throws RemoteException
   //  {
@@ -215,4 +236,3 @@ public class Server implements WarehouseServer
   //      warehouseClient.receiveUserList(users);
   //    }
   //  }
-}
