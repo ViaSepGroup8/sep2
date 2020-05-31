@@ -15,22 +15,12 @@ public class OrderTableRowData
 
   public OrderTableRowData(Order order)
   {
-    customerName = new SimpleStringProperty();
-    orderId = new SimpleStringProperty();
-    deliveryAddress = new SimpleStringProperty();
-    totalSum = new SimpleIntegerProperty();
-    totalItems = new SimpleIntegerProperty();
-    orderStatus = new SimpleStringProperty();
-    set(order);
-  }
-
-  public void set(Order order){
-    customerName.set(order.getCustomer().getFullName());
-    orderId.set(order.getUniqueId());
-    deliveryAddress.set(order.getDeliverAddress());
-    totalSum.set(order.totalSum());
-    totalItems.set(order.totalItemsNumber());
-    orderStatus.set(order.getStatus().name());
+    customerName = new SimpleStringProperty(order.getCustomer().getFullName());
+    orderId = new SimpleStringProperty(order.getUniqueId());
+    deliveryAddress = new SimpleStringProperty(order.getDeliverAddress());
+    totalSum = new SimpleIntegerProperty(order.totalSum());
+    totalItems = new SimpleIntegerProperty(order.totalItemsNumber());
+    orderStatus = new SimpleStringProperty(order.getStatus().name());
   }
 
   public SimpleStringProperty customerNameProperty()

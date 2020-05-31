@@ -1,71 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="696.0" prefWidth="800.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="674.0">
-         <children>
-            <Label prefHeight="16.0" prefWidth="295.0" text="Customer name:">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="customerName" prefHeight="16.0" prefWidth="298.0" text="DEFAULT" />
-
-            <Label prefHeight="16.0" prefWidth="307.0" text="Delivery Address:">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></Label>
-            <TextField fx:id="deliveryAddress" prefHeight="26.0" prefWidth="486.0" />
-         </children>
-      </HBox>
-      <TableView fx:id="itemsTable" prefHeight="420.0" prefWidth="742.0">
+      <TableView fx:id="itemsTable" layoutX="12.0" layoutY="32.0" prefHeight="199.0" prefWidth="671.0">
          <columns>
             <TableColumn fx:id="id" prefWidth="133.0" text="Item Id" />
             <TableColumn fx:id="item" prefWidth="341.0" text="Description" />
-            <TableColumn fx:id="quantity" minWidth="0.0" prefWidth="99.0" text="Quantity" />
-            <TableColumn fx:id="price" minWidth="9.3333740234375" prefWidth="84.0" text="Price" />
+            <TableColumn fx:id="quantity" minWidth="0.0" prefWidth="77.0" text="Quantity" />
+            <TableColumn fx:id="price" minWidth="9.3333740234375" prefWidth="66.0" text="Price" />
          </columns>
       </TableView>
-      <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="674.0" spacing="10.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#onNewOrder" prefHeight="26.0" prefWidth="132.0" text="New Order" />
-            <Button mnemonicParsing="false" onAction="#onAcceptOrder" prefHeight="26.0" prefWidth="144.0" text="Submit Order" />
-            <Label alignment="CENTER_RIGHT" prefHeight="16.0" prefWidth="401.0" />
-            <Label fx:id="totalSum" prefHeight="17.0" prefWidth="49.0" />
-         </children>
-      </HBox>
-      <TableView fx:id="ordersTable" prefHeight="330.0" prefWidth="722.0">
+      <Button layoutX="599.0" layoutY="491.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="25.0" prefWidth="85.0" text="Log out" />
+      <Button layoutX="12.0" layoutY="237.0" mnemonicParsing="false" onAction="#onNewOrder" prefHeight="25.0" prefWidth="85.0" text="New Order" />
+      <Button layoutX="581.0" layoutY="237.0" mnemonicParsing="false" onAction="#onAcceptOrder" text="Complete Order" />
+      <Label layoutX="13.0" layoutY="5.0" text="Customer name" />
+      <Label layoutX="446.0" layoutY="241.0" text="Total sum:" />
+      <Label fx:id="totalSum" layoutX="509.0" layoutY="241.0" prefHeight="17.0" prefWidth="49.0" text="0 kr." />
+      <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="DEFAULT" />
+      <TableView fx:id="ordersTable" layoutX="12.0" layoutY="299.0" prefHeight="182.0" prefWidth="671.0">
          <columns>
             <TableColumn fx:id="customerColumn" prefWidth="94.0" text="Customer" />
             <TableColumn fx:id="orderColumn" prefWidth="76.0" text="Order" />
-            <TableColumn fx:id="AddressColumn" prefWidth="244.0" text="Delivery Address" />
-            <TableColumn fx:id="sumColumn" minWidth="0.0" prefWidth="97.0" text="Total Sum" />
-            <TableColumn fx:id="itemsColumn" minWidth="0.0" prefWidth="118.0" text="Total Items" />
-            <TableColumn fx:id="statusColumn" prefWidth="143.0" text="Status" />
+            <TableColumn fx:id="AddressColumn" prefWidth="214.0" text="Delivery Address" />
+            <TableColumn fx:id="sumCollumn" minWidth="0.0" prefWidth="66.0" text="Total Sum" />
+            <TableColumn fx:id="itemsColumn" minWidth="0.0" prefWidth="87.0" text="Total Items" />
+            <TableColumn fx:id="statusColumn" prefWidth="117.0" text="Status" />
          </columns>
       </TableView>
-      <HBox alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="742.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#onRefreshButton" prefHeight="26.0" prefWidth="167.0" text="Refresh Order List" />
-            <Label fx:id="userError" alignment="CENTER" prefHeight="16.0" prefWidth="518.0" text="You are not allowed to execute this action." textFill="#c90000" />
-            <Button mnemonicParsing="false" onAction="#onLogOut" prefHeight="25.0" prefWidth="85.0" text="Log out" />
-         </children>
-      </HBox>
+      <Button layoutX="12.0" layoutY="491.0" mnemonicParsing="false" onAction="#onRefreshButton" text="Refresh Order List" />
    </children>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</VBox>
+</AnchorPane>

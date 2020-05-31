@@ -129,8 +129,5 @@ public class AdministratorViewController {
         return null;
     }
 
-    @FXML public void logOutButtonPressed() {
-        viewModel.logOut();
-        viewHandler.openView("Login");
-    }
+    @FXML public void logOutButtonPressed() { viewModel.logOut(); }
 }

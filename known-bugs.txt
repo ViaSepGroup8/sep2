@@ -1,6 +1,0 @@
-#ISSUE                                                                                              #STATUS
-
-* when picker logs out while having a job he will receive a new one when he loggs back in           NOT WORKING
-* the job maker can get stuck when item size = maxJobsize                                           FIXED
-* If two users (customers) login only one will recive the updates bacase of the hashtable           NOT WORKING
-* The order is set to ready_for_pickup even thought some people are still piciking                  NOT WORKING

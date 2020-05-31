@@ -1,6 +1,5 @@
 package viewmodel;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.ClientModel;
@@ -12,49 +11,24 @@ import java.rmi.RemoteException;
 
 public class PickerViewModel {
     private ClientModel model;
-    private Job job;
-    private ObservableList<PickerTableRowData> pickerList = FXCollections.observableArrayList();
-    private SimpleStringProperty jobId;
 
-    public PickerViewModel(ClientModel model) {
-        this.model = model;
-        jobId = new SimpleStringProperty("none");
-    }
+    public PickerViewModel(ClientModel model) { this.model = model; }
+
     public void logOut() { model.logOut(); }
 
-    public void completeJob() throws RemoteException {
-        if (job != null) {
-            model.completeJob(job);
-            job = null;
-            jobId.set("none");
-            pickerList.clear();
+    public void completeJob(Job job) throws RemoteException { model.completeJob(job); }
+
+    // I have doubts if this will work
+    public ObservableList<PickerTableRowData> getPickerList(Job job){
+        ObservableList<PickerTableRowData> list = FXCollections.observableArrayList();
+
+        if(job == null) {
+            System.out.println("There are probably no jobs");
         }
-        else System.out.println("you don't have a job");
-    }
-
-    public void getNewOrder()
-    {
-        if(job != null) System.out.println("you already have a job");
-        else {
-            job = model.getNewJob();
-            if(job == null) System.out.println("there are probably no jobs");
-            else{
-                jobId.set(job.getJobId());
-                pickerList.clear();
-                for (Item item : job.getItems()) {
-                    pickerList.add(new PickerTableRowData(item));
-                }
-            }
+        for (Item item: job.getItems()) {
+            list.add(new PickerTableRowData(item));
         }
-    }
-
-    public ObservableList<PickerTableRowData> getPickerList(){
-        return pickerList;
-    }
-
-    public SimpleStringProperty getJobId()
-    {
-        return jobId;
+        return list;
     }
 
     public Job getNewJob() { return model.getNewJob(); }

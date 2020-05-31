@@ -56,6 +56,5 @@ public class DriverViewController {
     public void logout(ActionEvent actionEvent)
     {
         viewModel.logOut();
-        viewHandler.openView("Login");
     }
 }

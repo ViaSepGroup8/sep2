@@ -2,7 +2,6 @@ package logger                          ;
 
 public class Logger                     {
   private static Logger instance        ;
-  private boolean enabled = true;
 
   private Logger()                      {}
 
@@ -13,11 +12,6 @@ public class Logger                     {
           instance = new Logger()       ;}}}
     return instance                     ;}
 
-  public void setEnabled(boolean value) {
-    this.enabled = value                ;}
-
   public void addLog(String log)        {
     LogLine logLine = new LogLine(log)  ;
-    if(enabled)                         {
-      System.out.println(logLine)       ;
-                                        }}}
+    System.out.println(logLine)         ;}}
