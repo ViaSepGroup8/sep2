@@ -1,8 +1,8 @@
 import static javafx.application.Application.launch;
 
-public class clientLauncher
+public class RUN_CLIENT_ONLY
 {
   public static void main(String[] args) {
-    launch(ClientMain.class, args);
+    launch(ClientApp.class, args);
   }
 }

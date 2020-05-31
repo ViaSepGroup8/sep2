@@ -25,14 +25,14 @@ public class SimpleConsoleView implements PropertyChangeListener, Runnable
   public void run() {
     Scanner kb = new Scanner(System.in); String readLine = "";
     while (!(readLine=kb.nextLine()).equalsIgnoreCase("exit")){
-      String[] arguments = readLine.split(" ");
+      String[] arguments = readLine.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
       try{switch (arguments[0].toLowerCase()){
         case "add":
-          model.addUser(arguments[1], arguments[2], UserType.values()[Integer.parseInt(arguments[3])], arguments[4]);break;
+          model.addUser(arguments[1], arguments[2].replaceAll("\"", ""), UserType.values()[Integer.parseInt(arguments[3])], arguments[4]);break;
         case "remove":
           model.removeUser(arguments[1]);break;
         case "help":
-          System.out.println("list of commands:\nadd [username] [fullname] [userType] [password]\nremove [username]");break;
+          System.out.println("list of commands:\nadd [username] [full name] [userType] [password]\nremove [username]");break;
         default:
           System.out.println("invalid command, type help for list of commands");break;
       }}catch (Exception e){ System.out.println("error");}
