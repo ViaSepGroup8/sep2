@@ -51,6 +51,7 @@ public class ServerModelManager implements ServerModel
       Logger.getInstance().addLog("server started..");
     }
     catch (Exception e){
+      e.printStackTrace();
       Logger.getInstance().addLog("server start failed");
     }
   }
