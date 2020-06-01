@@ -14,10 +14,10 @@ import viewmodel.CustomerViewModel;
 
 public class CustomerViewController {
   //Labels
-  @FXML private Label totalSum;
   @FXML private Label customerName;
   @FXML private Label userError;
   @FXML private  TextField deliveryAddress;
+  //@FXML private Label totalSum;
 
   //Table 1
   @FXML private TableView<ItemTableRowData> itemsTable;

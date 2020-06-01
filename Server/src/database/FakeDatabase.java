@@ -102,6 +102,16 @@ public class FakeDatabase implements Database
     return items;
   }
 
+  @Override public void addProduct(String description, double price)
+  {
+
+  }
+
+  @Override public void removeProduct(int id)
+  {
+
+  }
+
   @Override public User getUser(String username, String password)
   {
     UserType u;

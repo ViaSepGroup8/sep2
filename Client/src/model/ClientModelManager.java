@@ -202,7 +202,81 @@ public class ClientModelManager implements ClientModel
         property.firePropertyChange("orderUpdate", null, order);
     }
 
-    @Override public void addAccount() { }
-    @Override public void deleteAccount() {}
-    @Override public void deleteOrder() {}
+    @Override public ArrayList<User> getAllUsers()
+    {
+        ArrayList<User> userList = new ArrayList<User>();
+        try
+        {
+            userList = server.getAllUsers();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    @Override public ArrayList<Order> getAllOrders()
+    {
+        ArrayList<Order> orders = new ArrayList<>();
+        try
+        {
+            orders = server.getAllOrders();
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println(orders);
+        return orders;
+    }
+
+    @Override public void addAccount(String username, String fullName, UserType userType, String password) {
+        try
+        {
+            server.addUser(username, fullName, userType, password);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    @Override public void deleteAccount(String username) {
+        try
+        {
+            server.removeUser(username);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    @Override public void deleteOrder(int orderId) {
+        //todo
+        System.out.println("not implemented client model manager");
+    }
+
+    @Override public void addProduct(String description, double price)
+    {
+        try
+        {
+            server.addProduct(description, price);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override public void removeProduct(int id)
+    {
+        try
+        {
+            server.removeProduct(id);
+        }
+        catch (RemoteException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

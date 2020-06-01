@@ -177,6 +177,26 @@ public class Server implements WarehouseServer
     database.removeUser(username);
   }
 
+  @Override public void addProduct(String description, double price)
+  {
+    database.addProduct(description, price);
+  }
+
+  @Override public void removeProduct(int id)
+  {
+    database.removeProduct(id);
+  }
+
+  @Override public ArrayList<Order> getAllOrders() throws RemoteException
+  {
+    return database.getAllOrders();
+  }
+
+  @Override public ArrayList<User> getAllUsers() throws RemoteException
+  {
+    return database.getAllUsers();
+  }
+
   private void sleepSeconds(int seconds){
     try
     {

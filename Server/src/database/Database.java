@@ -14,6 +14,8 @@ public interface Database
                                                             // NOTES:
   // warehouse items
   ArrayList<Item> getAllWarehouseProducts();                   // should return list of every item in the warehouse with quantity set to 0
+  void addProduct(String description, double price);
+  void removeProduct(int id);
 
   // login and user accounts
   User getUser(String username, String password);

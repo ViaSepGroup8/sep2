@@ -1,8 +1,6 @@
 import javafx.collections.ObservableList;
-import mediator.Client;
 import model.ClientModel;
 import model.ClientModelManager;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

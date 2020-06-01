@@ -28,6 +28,10 @@ public interface WarehouseServer extends Remote
   //ArrayList<User> getAllUsers();
   void addUser(String username, String fullName, UserType userType, String password) throws RemoteException;
   void removeUser(String username) throws RemoteException;
+  void addProduct(String description, double price) throws RemoteException;
+  void removeProduct(int id) throws RemoteException;
+  ArrayList<Order> getAllOrders() throws RemoteException;
+  ArrayList<User> getAllUsers() throws RemoteException;
 
 //  void registerClient(WarehouseClient client, User user) throws  RemoteException;
 //  void broadCast(Message message, WarehouseClient sender) throws RemoteException;

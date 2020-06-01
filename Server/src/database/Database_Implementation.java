@@ -63,7 +63,7 @@ public class Database_Implementation implements Database{
             String name = split[i];
             Location  location = new Location(rnd.nextInt(10)+40 + "" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3));
             int price = rnd.nextInt(100);
-            String sql = "INSERT INTO products VALUES(DEFAULT, '" + name+ "', "+price+",'"+location.databaseFormat()+"');";
+            String sql = "INSERT INTO warehouse.products VALUES(DEFAULT, '" + name+ "', "+price+",'"+location.databaseFormat()+"');";
             executeSingleSQL(sql);
         }
     }
@@ -98,6 +98,20 @@ public class Database_Implementation implements Database{
             }resultSet.close();
         }catch (SQLException e) { e.printStackTrace(); }
         return items;
+    }
+
+    @Override public void addProduct(String description, double price)
+    {
+        String chars = "BCDEFGHI";
+        Random rnd = new Random();
+        Location  location = new Location(rnd.nextInt(10)+40 + "" + chars.charAt(rnd.nextInt(chars.length())), 1 + rnd.nextInt(50), 1 + rnd.nextInt(3));
+        String sql = "INSERT INTO warehouse.products VALUES(DEFAULT, '" + description+ "', "+price+",'"+location.databaseFormat()+"');";
+        executeSingleSQL(sql);
+    }
+
+    @Override public void removeProduct(int id)
+    {
+        executeSingleSQL("DELETE FROM warehouse.products WHERE product_id = '" + id + "';");
     }
 
     @Override
@@ -294,19 +308,35 @@ public class Database_Implementation implements Database{
     @Override
     public ArrayList<Order> getAllOrders () {
         ArrayList<Order> orders = new ArrayList<Order>();
-//        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username;");
-//        try { while (resultSet.next()) {
-//            String username = resultSet.getString("username");
-//            String fullName = resultSet.getString("fullname");
-//            int roleNumber = resultSet.getInt("role");
-//            User user = new User(username, fullName, UserType.values()[roleNumber]);
-//            int status = resultSet.getInt("status");
-//            String uniqueId = "" + resultSet.getInt("order_id");
-//            String gate = resultSet.getString("gate");
-//            String delivery_address = resultSet.getString("delivery_address");
-//            Order order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
-//            orders.add(order);}
-//        }catch (SQLException e) {e.printStackTrace(); }
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username;");
+        try {
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String fullName = resultSet.getString("fullname");
+                int roleNumber = resultSet.getInt("role");
+                User user = new User(username, fullName, UserType.values()[roleNumber]);
+                int status = resultSet.getInt("status");
+                String uniqueId = "" + resultSet.getInt("order_id");
+                String gate = resultSet.getString("gate");
+                String delivery_address = resultSet.getString("delivery_address");
+                // SUB QUERY
+                ResultSet SubResultSet = executeMultipleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE order_id = " + uniqueId + ";");
+                ArrayList<Item> items = new ArrayList<Item>();
+                while (SubResultSet.next()) {
+                    int quantity = SubResultSet.getInt("quantity");
+                    int product_id = SubResultSet.getInt("product_id");
+                    String description = SubResultSet.getString("description");
+                    int price = SubResultSet.getInt("price");
+                    Location location = new Location(SubResultSet.getString("location"));
+                    Item item = new Item(product_id, description, quantity, location, price);
+                    items.add(item);
+                }
+                SubResultSet.close();
+                //
+                Order order = new Order(user, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
+                orders.add(order);
+            }
+        }catch (SQLException e) {e.printStackTrace(); }
         return orders;
     }
 
