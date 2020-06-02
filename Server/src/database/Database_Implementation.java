@@ -70,7 +70,7 @@ public class Database_Implementation implements Database{
 
     @Override
     public void deleteAllData() {
-        // kick all users first, trying to drop a database while users are connected would result in error
+        // kick all userAccounts first, trying to drop a database while userAccounts are connected would result in error
         managePostgres("SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '" + DB +"' AND pid <> pg_backend_pid();");
         // drop the database
         managePostgres("DROP DATABASE IF EXISTS "+DB+";");
@@ -115,44 +115,44 @@ public class Database_Implementation implements Database{
     }
 
     @Override
-    public User getUser (String username, String password) {
-        User user = new User();
+    public UserAccount getUser (String username, String password) {
+        UserAccount userAccount = new UserAccount();
         ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM \"warehouse\".Users  WHERE(username = '" + username +"' AND password = '" + password +"')");
         try {
             while (resultSet.next()) {
                 String username1 = resultSet.getString ("username");
                 String fullName = resultSet.getString ("fullname");
                 int userType = resultSet.getInt ("role");
-                user = new User (username1,fullName,UserType.values ()[userType]);
+                userAccount = new UserAccount(username1,fullName,UserType.values ()[userType]);
             }resultSet.close();
         }catch (SQLException e) { e.printStackTrace(); }
-        return user;
+        return userAccount;
     }
 
     @Override
-    public ArrayList<User> getAllUsers () {
-        ArrayList<User> users = new ArrayList<User>();
+    public ArrayList<UserAccount> getAllUsers () {
+        ArrayList<UserAccount> userAccounts = new ArrayList<UserAccount>();
         try{
-            ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM \"warehouse\".users");
+            ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM \"warehouse\".userAccounts");
             while (resultSet.next ()) {
                 String username = resultSet.getString ("username");
                 String fullName = resultSet.getString ("fullname");
                 int roleNumber = resultSet.getInt ("role");
-                User user = new User (username, fullName, UserType.values ()[roleNumber]);
-                users.add (user);
+                UserAccount userAccount = new UserAccount(username, fullName, UserType.values ()[roleNumber]);
+                userAccounts.add (userAccount);
             }resultSet.close();
         }catch (SQLException e) { e.printStackTrace(); }
-        return users;
+        return userAccounts;
     }
 
     @Override
     public void addUser(String username, String fullName, UserType userType, String password) {
-        executeSingleSQL("INSERT INTO warehouse.users VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
+        executeSingleSQL("INSERT INTO warehouse.userAccounts VALUES('"+username+"', '"+fullName+"', '" +password+"', '"+userType.ordinal()+"');");
     }
 
     @Override
     public void removeUser(String username) {
-        executeSingleSQL("DELETE FROM warehouse.users WHERE username = '" + username + "';");}
+        executeSingleSQL("DELETE FROM warehouse.userAccounts WHERE username = '" + username + "';");}
 
     @Override
     public String createJob(String order_id) {
@@ -170,17 +170,17 @@ public class Database_Implementation implements Database{
 
 
     @Override
-    public void completeJob (User user, Job job) {
+    public void completeJob (UserAccount userAccount, Job job) {
         //todo also check for the job id with "and" for security
-        executeSingleSQL("UPDATE warehouse.jobs SET completed = true WHERE picker = '" + user.getUsername() +"';");
-        Logger.getInstance().addLog("picker " + user.getUsername() + " completed job " + job.getJobId() + ".");
+        executeSingleSQL("UPDATE warehouse.jobs SET completed = true WHERE picker = '" + userAccount.getUsername() +"';");
+        Logger.getInstance().addLog("picker " + userAccount.getUsername() + " completed job " + job.getJobId() + ".");
         //todo this should change status of job and check it is the last unfinshed job in order, if that's true it should also change the status of the order
         //the query changes all the order's status when we choose just one picker, ask someone how to do it
-        //ResultSet resultSet = statement.executeQuery ("UPDATE \"warehouse\".orders SET status = 4 FROM \"warehouse\".orders a JOIN \"warehouse\".jobs b ON a.order_id = b.order_id WHERE b.username_picker = '" +user.getUsername ()+"' ;");
+        //ResultSet resultSet = statement.executeQuery ("UPDATE \"warehouse\".orders SET status = 4 FROM \"warehouse\".orders a JOIN \"warehouse\".jobs b ON a.order_id = b.order_id WHERE b.username_picker = '" +userAccount.getUsername ()+"' ;");
     }
 
     @Override
-    public Job getNewJob (User user)
+    public Job getNewJob (UserAccount userAccount)
     {
         Job job = null;
         try {
@@ -189,7 +189,7 @@ public class Database_Implementation implements Database{
                 String jobId = resultSet.getString("job_id");
                 String orderId = resultSet.getString("order_id");
                 resultSet.close();
-                executeSingleSQL("UPDATE warehouse.jobs SET picker = '" + user.getUsername() + "' WHERE job_id = ' " + jobId +"';");
+                executeSingleSQL("UPDATE warehouse.jobs SET picker = '" + userAccount.getUsername() + "' WHERE job_id = ' " + jobId +"';");
                 resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.items a JOIN warehouse.products b ON a.product_id = b.product_id WHERE job_id = " + jobId + ";");
                 ArrayList<Item> items = new ArrayList<Item>();
                 while (resultSet.next()) {
@@ -237,13 +237,13 @@ public class Database_Implementation implements Database{
     @Override public Order getOrderByOrderId(String order_id) throws InvalidDatabaseRequestException
     {
         Order order = null;
-        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE a.order_id = '" + order_id + "';");
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.userAccounts b ON a.customer = b.username WHERE a.order_id = '" + order_id + "';");
         try {
             while (resultSet.next()) {
                 String username = resultSet.getString("username");
                 String fullName = resultSet.getString("fullname");
                 int roleNumber = resultSet.getInt("role");
-                User user = new User(username, fullName, UserType.values()[roleNumber]);
+                UserAccount userAccount = new UserAccount(username, fullName, UserType.values()[roleNumber]);
                 int status = resultSet.getInt("status");
                 String uniqueId = "" + resultSet.getInt("order_id");
                 String gate = resultSet.getString("gate");
@@ -262,7 +262,7 @@ public class Database_Implementation implements Database{
                 }
                 SubResultSet.close();
                 //End Of SUB QUERY
-                order = new Order(user, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
+                order = new Order(userAccount, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
             }
         }catch (SQLException e) {e.printStackTrace(); }
         if (order == null) throw new InvalidDatabaseRequestException();
@@ -270,15 +270,15 @@ public class Database_Implementation implements Database{
     }
 
     @Override
-    public ArrayList<Order> getOrdersByUser(User customer) {
+    public ArrayList<Order> getOrdersByUser(UserAccount customer) {
         ArrayList<Order> orders = new ArrayList<Order>();
-        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE a.customer = '" + customer.getUsername() + "';");
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.userAccounts b ON a.customer = b.username WHERE a.customer = '" + customer.getUsername() + "';");
         try {
             while (resultSet.next()) {
                 String username = resultSet.getString("username");
                 String fullName = resultSet.getString("fullname");
                 int roleNumber = resultSet.getInt("role");
-                User user = new User(username, fullName, UserType.values()[roleNumber]);
+                UserAccount userAccount = new UserAccount(username, fullName, UserType.values()[roleNumber]);
                 int status = resultSet.getInt("status");
                 String uniqueId = "" + resultSet.getInt("order_id");
                 String gate = resultSet.getString("gate");
@@ -297,7 +297,7 @@ public class Database_Implementation implements Database{
                 }
                 SubResultSet.close();
                 //
-                Order order = new Order(user, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
+                Order order = new Order(userAccount, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
                 orders.add(order);
             }
         }catch (SQLException e) {e.printStackTrace(); }
@@ -308,13 +308,13 @@ public class Database_Implementation implements Database{
     @Override
     public ArrayList<Order> getAllOrders () {
         ArrayList<Order> orders = new ArrayList<Order>();
-        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username;");
+        ResultSet resultSet = executeSingleQuerySQL("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.userAccounts b ON a.customer = b.username;");
         try {
             while (resultSet.next()) {
                 String username = resultSet.getString("username");
                 String fullName = resultSet.getString("fullname");
                 int roleNumber = resultSet.getInt("role");
-                User user = new User(username, fullName, UserType.values()[roleNumber]);
+                UserAccount userAccount = new UserAccount(username, fullName, UserType.values()[roleNumber]);
                 int status = resultSet.getInt("status");
                 String uniqueId = "" + resultSet.getInt("order_id");
                 String gate = resultSet.getString("gate");
@@ -333,7 +333,7 @@ public class Database_Implementation implements Database{
                 }
                 SubResultSet.close();
                 //
-                Order order = new Order(user, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
+                Order order = new Order(userAccount, OrderStatus.values()[status], uniqueId, items, gate, delivery_address);
                 orders.add(order);
             }
         }catch (SQLException e) {e.printStackTrace(); }
@@ -346,19 +346,19 @@ public class Database_Implementation implements Database{
     }
 
     @Override
-    public Order getNewDriverOrder(User driver) throws InvalidDatabaseRequestException {
+    public Order getNewDriverOrder(UserAccount driver) throws InvalidDatabaseRequestException {
         Order order = null;
-        ResultSet resultSet = executeSingleQuerySQL ("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.users b ON a.customer = b.username WHERE status = 3 AND driver is NULL Limit 1;");
+        ResultSet resultSet = executeSingleQuerySQL ("SELECT * FROM warehouse.orders a LEFT JOIN warehouse.userAccounts b ON a.customer = b.username WHERE status = 3 AND driver is NULL Limit 1;");
         try{ if (resultSet.next ()) {
             String username = resultSet.getString("customer");
             String fullName = resultSet.getString("fullname");
             int roleNumber = resultSet.getInt("role");
-            User user = new User(username, fullName, UserType.values()[roleNumber]);
+            UserAccount userAccount = new UserAccount(username, fullName, UserType.values()[roleNumber]);
             int status = resultSet.getInt("status");
             String uniqueId = "" + resultSet.getInt("order_id");
             String gate = resultSet.getString("gate");
             String delivery_address = resultSet.getString("delivery_address");
-            order = new Order(user, OrderStatus.values()[status], uniqueId, gate, delivery_address);
+            order = new Order(userAccount, OrderStatus.values()[status], uniqueId, gate, delivery_address);
         }}catch (SQLException e) { e.printStackTrace();}
         Logger.getInstance().addLog("driver order: " + order);
         return order;

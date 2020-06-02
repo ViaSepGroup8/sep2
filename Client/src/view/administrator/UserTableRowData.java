@@ -1,20 +1,17 @@
 package view.administrator;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import model.Order;
-import model.User;
+import model.UserAccount;
 
 public class UserTableRowData {
   private SimpleStringProperty username;
   private SimpleStringProperty fullName;
   private SimpleStringProperty typeOfAccount;
 
-  public UserTableRowData(User user) {
-    username = new SimpleStringProperty(user.getUsername());
-    typeOfAccount = new SimpleStringProperty(user.getUserType().toString());
-    fullName = new SimpleStringProperty(user.getFullName());
+  public UserTableRowData(UserAccount userAccount) {
+    username = new SimpleStringProperty(userAccount.getUsername());
+    typeOfAccount = new SimpleStringProperty(userAccount.getUserType().toString());
+    fullName = new SimpleStringProperty(userAccount.getFullName());
   }
 
   public SimpleStringProperty usernameProperty() { return username; }

@@ -74,7 +74,7 @@ public class AdministratorViewController {
         itemsColumn.setCellValueFactory(orderTableRowDataNumberCellDataFeatures -> orderTableRowDataNumberCellDataFeatures.getValue().totalItemsProperty());
         statusColumn.setCellValueFactory(orderTableRowDataStringCellDataFeatures -> orderTableRowDataStringCellDataFeatures.getValue().orderStatusProperty());
 
-        //User Table
+        //UserAccount Table
         usernameColumn.setCellValueFactory(userTableRowDataStringCellDataFeatures -> userTableRowDataStringCellDataFeatures.getValue().usernameProperty());
         typeOfAccountColumn.setCellValueFactory(userTableRowDataStringCellDataFeatures -> userTableRowDataStringCellDataFeatures.getValue().fullNameProperty());
         roleColumn.setCellValueFactory(userTableRowDataStringCellDataFeatures -> userTableRowDataStringCellDataFeatures.getValue().userTypeProperty());

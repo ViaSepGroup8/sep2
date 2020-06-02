@@ -12,7 +12,7 @@ import java.util.Random;
 public class FakeDatabase implements Database
 {
   ArrayList<Item> items;
-  ArrayList<User> users;
+  ArrayList<UserAccount> userAccounts;
   ArrayList<Order> orders;
   ArrayList<Job> jobs;
 
@@ -20,7 +20,7 @@ public class FakeDatabase implements Database
   {
     //initialize list
     items = new ArrayList<Item>();
-    users = new ArrayList<User>();
+    userAccounts = new ArrayList<UserAccount>();
     orders = new ArrayList<Order>();
     jobs = new ArrayList<Job>();
 
@@ -48,7 +48,7 @@ public class FakeDatabase implements Database
     //add some fake orders
     for (int i = 0; i < 5; i++)
     {
-      orders.add(new Order(new User("rema", "Rema 1000", UserType.CUSTOMER), OrderStatus.READY_FOR_PICKUP, chars.charAt(rnd.nextInt(chars.length())) + "X" + chars.charAt(rnd.nextInt(chars.length())) + rnd.nextInt(1000), "Gate " + chars.charAt(rnd.nextInt(chars.length())), "1337 Street, Half-Life 1"));
+      orders.add(new Order(new UserAccount("rema", "Rema 1000", UserType.CUSTOMER), OrderStatus.READY_FOR_PICKUP, chars.charAt(rnd.nextInt(chars.length())) + "X" + chars.charAt(rnd.nextInt(chars.length())) + rnd.nextInt(1000), "Gate " + chars.charAt(rnd.nextInt(chars.length())), "1337 Street, Half-Life 1"));
       //System.out.println("db>> " + orders.get(i));
     }
 
@@ -112,7 +112,7 @@ public class FakeDatabase implements Database
 
   }
 
-  @Override public User getUser(String username, String password)
+  @Override public UserAccount getUser(String username, String password)
   {
     UserType u;
     switch (username)
@@ -131,11 +131,11 @@ public class FakeDatabase implements Database
         u = UserType.UNKNOWN;break;
     }
 
-    return new User("fakeuser1", "Fake User", u);
+    return new UserAccount("fakeuser1", "Fake UserAccount", u);
   }
 
   @Override
-  public ArrayList<User> getAllUsers () {
+  public ArrayList<UserAccount> getAllUsers () {
     return null;
   }
 
@@ -145,7 +145,7 @@ public class FakeDatabase implements Database
   }
 
 
-  @Override public void completeJob(User user, Job job)
+  @Override public void completeJob(UserAccount userAccount, Job job)
   {
     for (Job j : jobs)
     {
@@ -164,7 +164,7 @@ public class FakeDatabase implements Database
 
   }
 
-  @Override public Job getNewJob(User user)
+  @Override public Job getNewJob(UserAccount userAccount)
   {
     //todo the job should have should not be assigned to anybody else.
 
@@ -203,7 +203,7 @@ public class FakeDatabase implements Database
       return chars;
   }
 
-  @Override public ArrayList<Order> getOrdersByUser(User customer)
+  @Override public ArrayList<Order> getOrdersByUser(UserAccount customer)
   {
     ArrayList<Order> userOrders = new ArrayList<Order>();
     for (Order order : orders)
@@ -238,7 +238,7 @@ public class FakeDatabase implements Database
     throw new InvalidDatabaseRequestException("cannot find the order");
   }
 
-  @Override public Order getNewDriverOrder(User driver) throws InvalidDatabaseRequestException
+  @Override public Order getNewDriverOrder(UserAccount driver) throws InvalidDatabaseRequestException
   {
     for (Order order : orders)
     {

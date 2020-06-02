@@ -1,12 +1,10 @@
 package viewmodel;
 
 import javafx.application.Platform;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TablePosition;
 import model.*;
 import view.administrator.UserTableRowData;
 import view.customer.ItemTableRowData;
@@ -62,8 +60,8 @@ public class AdministratorViewModel implements PropertyChangeListener
     public void refreshUserList()
     {
         userList.clear();
-        for (User user: model.getAllUsers()){
-            userList.add(new UserTableRowData(user));
+        for (UserAccount userAccount : model.getAllUsers()){
+            userList.add(new UserTableRowData(userAccount));
         }
     }
 
@@ -90,7 +88,7 @@ public class AdministratorViewModel implements PropertyChangeListener
             model.userError("Cannot create order with zero items.");return;
         }
 
-        model.createCustomerNewOrder(new Order(model.getUser(), itemsSelected, ""));
+        model.createCustomerNewOrder(new Order(model.getUserAccount(), itemsSelected, ""));
         productList.clear();
     }
 

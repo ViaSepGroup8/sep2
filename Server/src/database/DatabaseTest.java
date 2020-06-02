@@ -45,15 +45,15 @@ class DatabaseTest {
 
     @Test
     void getAllUsers() {
-        print("all warehouse users: ");
+        print("all warehouse userAccounts: ");
         print(database.getAllUsers());
     }
 
     @Test
     void addUser() {
-        print("current users: ");
+        print("current userAccounts: ");
         print(database.getAllUsers());
-        print("adding new users, list after adding");
+        print("adding new userAccounts, list after adding");
         database.addUser("tester1337", "FULL NAME", UserType.CUSTOMER, "*secret*");
         database.addUser("tester2222", "FULL LONG NAME", UserType.PICKER, "*coool*");
         print(database.getAllUsers());
@@ -61,7 +61,7 @@ class DatabaseTest {
 
     @Test
     void removeUser() {
-        print("current users: ");
+        print("current userAccounts: ");
         database.addUser("tester", "true tester doesnt have a name", UserType.CUSTOMER, "*secret*");
         print(database.getAllUsers());
         print("removing tester user, list after removing");

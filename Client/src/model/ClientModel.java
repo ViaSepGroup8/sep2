@@ -13,10 +13,10 @@ public interface ClientModel extends ObserverSubject
 
   //Login
   void login(String username, String password);
-  User getUser();
+  UserAccount getUserAccount();
 
   //Administrator
-  ArrayList<User> getAllUsers();
+  ArrayList<UserAccount> getAllUsers();
   ArrayList<Order> getAllOrders();
   void addProduct(String description, double price);
   void removeProduct(int id);
