@@ -13,7 +13,7 @@ public class LoginViewModel {
 
     public void login(String username, String password, ViewHandler viewHandler) {
         model.login(username, password);
-        UserType userType = model.getUserAccount().getUserType();
+        UserType userType = model.getUser().getUserType();
 
         if(userType == null){
             model.fatalError("userType cannot be null");

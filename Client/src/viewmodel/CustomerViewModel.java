@@ -42,7 +42,7 @@ public class CustomerViewModel implements PropertyChangeListener
     {
         orderList.clear();
         for (Order order: model.getOrderList()) orderList.add(new OrderTableRowData(order));
-        username.set(model.getUserAccount().getFullName());
+        username.set(model.getUser().getFullName());
     }
 
     public void createNewOrder()
@@ -71,7 +71,7 @@ public class CustomerViewModel implements PropertyChangeListener
             model.userError("Cannot create order with zero items.");return;
         }
 
-        model.createCustomerNewOrder(new Order(model.getUserAccount(), itemsSelected, deliveryAddress.getValue()));
+        model.createCustomerNewOrder(new Order(model.getUser(), itemsSelected, deliveryAddress.getValue()));
         productList.clear();
     }
 

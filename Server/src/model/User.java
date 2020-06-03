@@ -2,25 +2,25 @@ package model;
 
 import java.io.Serializable;
 
-public class UserAccount implements Serializable
+public class User implements Serializable
 {
   String username;
   String fullName;
   UserType userType;
 
-  public UserAccount(String username, String fullName, UserType userType)
+  public User(String username, String fullName, UserType userType)
   {
     this.username = username;
     this.fullName = fullName;
     this.userType = userType;
   }
-  public UserAccount(String username, UserType userType)
+  public User(String username, UserType userType)
   {
     this.username = username;
     this.userType = userType;
   }
 
-  public UserAccount(){
+  public User(){
     username = "unknown";
     fullName = "unknown";
     userType = UserType.UNKNOWN;
@@ -43,7 +43,7 @@ public class UserAccount implements Serializable
 
   @Override
   public String toString() {
-    return "UserAccount{" +
+    return "User{" +
             "username='" + username + '\'' +
             ", fullName='" + fullName + '\'' +
             ", userType=" + userType +

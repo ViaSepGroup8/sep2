@@ -17,7 +17,7 @@ public class ClientModelManager implements ClientModel
     private WarehouseServer server;
     private PropertyChangeSupport property;
     //private Order order;
-    private UserAccount userAccount;
+    private User user;
 
     public ClientModelManager() throws RemoteException
     {
@@ -55,14 +55,14 @@ public class ClientModelManager implements ClientModel
 
     @Override public void logOut()
     {
-        debugLog("userAccount logout");
-        userAccount = null;
+        debugLog("user logout");
+        user = null;
     }
 
     @Override public void userError(String message)
     {
         property.firePropertyChange("userError", null, message);
-        debugLog("userAccount error:" + message);
+        debugLog("user error:" + message);
     }
 
     @Override public void debugLog(String message)
@@ -80,8 +80,8 @@ public class ClientModelManager implements ClientModel
     {
         try
         {
-            this.userAccount = server.login(username, password, client);
-            debugLog(userAccount.toString());
+            this.user = server.login(username, password, client);
+            debugLog(user.toString());
         }
         catch (RemoteException e)
         {
@@ -91,9 +91,9 @@ public class ClientModelManager implements ClientModel
 
     }
 
-    @Override public UserAccount getUserAccount()
+    @Override public User getUser()
     {
-        return userAccount;
+        return user;
     }
 
     @Override public ArrayList<Item> getAllWarehouseItems()
@@ -129,7 +129,7 @@ public class ClientModelManager implements ClientModel
     public ArrayList<Order> getOrderList() {
         ArrayList<Order> ordersInServer = new ArrayList<>();
         try {
-            ordersInServer = server.getUserOrders(userAccount);
+            ordersInServer = server.getUserOrders(user);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -139,7 +139,7 @@ public class ClientModelManager implements ClientModel
     @Override public Job getNewJob(){
         try
         {
-            return server.getNewJob(this.userAccount);
+            return server.getNewJob(this.user);
         }
         catch (RemoteException e)
         {
@@ -152,7 +152,7 @@ public class ClientModelManager implements ClientModel
     @Override public void completeJob(Job job) {
         try
         {
-            server.completeJob(this.userAccount, job);
+            server.completeJob(this.user, job);
         }
         catch (RemoteException e)
         {
@@ -164,7 +164,7 @@ public class ClientModelManager implements ClientModel
     {
         try
         {
-            return server.getNewPickupOrder(this.userAccount);
+            return server.getNewPickupOrder(this.user);
         }
         catch (RemoteException e)
         {
@@ -178,7 +178,7 @@ public class ClientModelManager implements ClientModel
     {
         try
         {
-            server.deliver(order, this.userAccount);
+            server.deliver(order, this.user);
         }
         catch (RemoteException e)
         {
@@ -202,18 +202,18 @@ public class ClientModelManager implements ClientModel
         property.firePropertyChange("orderUpdate", null, order);
     }
 
-    @Override public ArrayList<UserAccount> getAllUsers()
+    @Override public ArrayList<User> getAllUsers()
     {
-        ArrayList<UserAccount> userAccountList = new ArrayList<UserAccount>();
+        ArrayList<User> userList = new ArrayList<User>();
         try
         {
-            userAccountList = server.getAllUsers();
+            userList = server.getAllUsers();
         }
         catch (RemoteException e)
         {
             e.printStackTrace();
         }
-        return userAccountList;
+        return userList;
     }
 
     @Override public ArrayList<Order> getAllOrders()

@@ -38,13 +38,13 @@ public class Server implements WarehouseServer
     return "pong";
   }
 
-  @Override public UserAccount login(String username, String password, WarehouseClient client) throws RemoteException
+  @Override public User login(String username, String password, WarehouseClient client) throws RemoteException
   {
-    UserAccount userAccount = database.getUser(username, password);
-    clientMap.put(userAccount.getUsername(), client);
+    User user = database.getUser(username, password);
+    clientMap.put(user.getUsername(), client);
 
-    Logger.getInstance().addLog("userAccount " + username + " has logged in");
-    return userAccount;
+    Logger.getInstance().addLog("user " + username + " has logged in");
+    return user;
   }
 
   @Override public ArrayList<Item> getAllWarehouseItems()
@@ -52,14 +52,14 @@ public class Server implements WarehouseServer
     return database.getAllWarehouseProducts();
   }
 
-  @Override public Job getNewJob(UserAccount userAccount) throws RemoteException
+  @Override public Job getNewJob(User user) throws RemoteException
   {
-    return database.getNewJob(userAccount);
+    return database.getNewJob(user);
   }
 
-  @Override public void completeJob(UserAccount userAccount, Job job) throws RemoteException
+  @Override public void completeJob(User user, Job job) throws RemoteException
   {
-    database.completeJob(userAccount, job);
+    database.completeJob(user, job);
     try
     {
       database.setOrderStatus(job.getOrderId(), OrderStatus.READY_FOR_PICKUP);
@@ -124,7 +124,7 @@ public class Server implements WarehouseServer
     }).start();
   }
 
-  @Override public ArrayList<Order> getUserOrders(UserAccount customer) throws RemoteException
+  @Override public ArrayList<Order> getUserOrders(User customer) throws RemoteException
   {
     return database.getOrdersByUser(customer);
   }
@@ -134,13 +134,13 @@ public class Server implements WarehouseServer
     return database.getAllOrders();
   }
 
-  @Override public Order getNewPickupOrder(UserAccount userAccount) throws RemoteException
+  @Override public Order getNewPickupOrder(User user) throws RemoteException
   {
     Order order = null;
     try
     {
-      order = database.getNewDriverOrder(userAccount);
-      Logger.getInstance().addLog("driver " + userAccount.getFullName() + " has been assigned to deliver order " + order.getUniqueId());
+      order = database.getNewDriverOrder(user);
+      Logger.getInstance().addLog("driver " + user.getFullName() + " has been assigned to deliver order " + order.getUniqueId());
     }
     catch (InvalidDatabaseRequestException e)
     {
@@ -152,11 +152,11 @@ public class Server implements WarehouseServer
     }
   }
 
-  @Override public void deliver(Order order, UserAccount userAccount) throws RemoteException
+  @Override public void deliver(Order order, User user) throws RemoteException
   {
     try
     {
-      Logger.getInstance().addLog("driver " + userAccount.getFullName() + " has delivered order " + order.getUniqueId());
+      Logger.getInstance().addLog("driver " + user.getFullName() + " has delivered order " + order.getUniqueId());
       database.setOrderStatus(order.getUniqueId(), OrderStatus.DELIVERED);
       updateOrder(database.getOrderByOrderId(order.getUniqueId()));
     }
@@ -192,7 +192,7 @@ public class Server implements WarehouseServer
     return database.getAllOrders();
   }
 
-  @Override public ArrayList<UserAccount> getAllUsers() throws RemoteException
+  @Override public ArrayList<User> getAllUsers() throws RemoteException
   {
     return database.getAllUsers();
   }
@@ -212,7 +212,7 @@ public class Server implements WarehouseServer
 
 }
 
-  //  @Override public void registerClient(WarehouseClient client, UserAccount user) throws RemoteException
+  //  @Override public void registerClient(WarehouseClient client, User user) throws RemoteException
   //  {
   //    clients.add(client);
   //    users.add(user);
@@ -243,7 +243,7 @@ public class Server implements WarehouseServer
   //    return "pong";
   //  }
   //
-  //  @Override public void updateUser(UserAccount user, WarehouseClient client) throws RemoteException
+  //  @Override public void updateUser(User user, WarehouseClient client) throws RemoteException
   //  {
   //    users.set(clients.indexOf(client), user);
   //    updateAllClientsUserList();

@@ -5,24 +5,24 @@ import java.util.ArrayList;
 
 public class Order implements Serializable
 {
-  UserAccount customer;
+  User customer;
   OrderStatus status;
   String uniqueId;
   ArrayList<Item> items;
   ArrayList<Job> jobs;
   String gate;
   String deliverAddress;
-  UserAccount driver;
+  User driver;
 
-  public Order(UserAccount userAccount, ArrayList<Item> orderItems, String deliverAddress)
+  public Order(User user, ArrayList<Item> orderItems, String deliverAddress)
   {
-    customer = userAccount;
+    customer = user;
     items = orderItems;
     status = OrderStatus.CREATED;
     this.deliverAddress = deliverAddress;
   }
 
-  public Order(UserAccount customer, OrderStatus status, String uniqueId, ArrayList<Item> items, String gate, String deliverAddress)
+  public Order(User customer, OrderStatus status, String uniqueId, ArrayList<Item> items, String gate, String deliverAddress)
   {
     this.customer = customer;
     this.status = status;
@@ -32,7 +32,7 @@ public class Order implements Serializable
     this.items = items;
   }
 
-  public Order(UserAccount customer, OrderStatus status, String uniqueId, String gate, String deliverAddress)
+  public Order(User customer, OrderStatus status, String uniqueId, String gate, String deliverAddress)
   {
     this.customer = customer;
     this.status = status;
@@ -73,7 +73,7 @@ public class Order implements Serializable
         + ", gate='" + gate + '\'' + ", deliverAddress='" + deliverAddress + '\'' + '}';
   }
 
-  public void setCustomer(UserAccount customer)
+  public void setCustomer(User customer)
   {
     this.customer = customer;
   }
@@ -103,7 +103,7 @@ public class Order implements Serializable
     this.gate = gate;
   }
 
-  public UserAccount getCustomer()
+  public User getCustomer()
   {
     return customer;
   }
@@ -143,12 +143,12 @@ public class Order implements Serializable
     this.deliverAddress = deliverAddress;
   }
 
-  public UserAccount getDriver()
+  public User getDriver()
   {
     return driver;
   }
 
-  public void setDriver(UserAccount driver)
+  public void setDriver(User driver)
   {
     this.driver = driver;
   }
