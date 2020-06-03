@@ -1,9 +1,21 @@
 --INSERT INTO users VALUES('lenka', 'Lenka Orincakova', 'lenka10', '0');
 --INSERT INTO users VALUES('javi', 'Javier Candeira', 'javi10', '2');
 insert into users values('admin','system_user','pass',0);
+
 insert into users values('customer','system_user','pass',1);
+insert into users values('customer1','system_user','pass',1);
+insert into users values('customer2','system_user','pass',1);
+insert into users values('customer3','system_user','pass',1);
+
 insert into users values('picker','system_user','pass',2);
+insert into users values('picker1','system_user','pass',2);
+insert into users values('picker2','system_user','pass',2);
+insert into users values('picker3','system_user','pass',2);
+
 insert into users values('driver','system_user','pass',3);
+insert into users values('driver1','system_user','pass',3);
+insert into users values('driver2','system_user','pass',3);
+insert into users values('driver3','system_user','pass',3);
 
 --INSERT INTO orders VALUES(DEFAULT,1,0, '33C', 'Calle Serrano', 'lenka', 'javi');
 --ID
