@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.customer.CustomerViewController">
+   <children>
+      <TableView fx:id="itemsTable" layoutX="12.0" layoutY="32.0" prefHeight="199.0" prefWidth="671.0">
+         <columns>
+            <TableColumn fx:id="id" prefWidth="133.0" text="Item Id" />
+            <TableColumn fx:id="item" prefWidth="341.0" text="Description" />
+            <TableColumn fx:id="quantity" minWidth="0.0" prefWidth="77.0" text="Quantity" />
+            <TableColumn fx:id="price" minWidth="9.3333740234375" prefWidth="66.0" text="Price" />
+         </columns>
+      </TableView>
+      <Button layoutX="599.0" layoutY="491.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="25.0" prefWidth="85.0" text="Log out" />
+      <Button layoutX="12.0" layoutY="237.0" mnemonicParsing="false" onAction="#onNewOrder" prefHeight="25.0" prefWidth="85.0" text="New Order" />
+      <Button layoutX="581.0" layoutY="237.0" mnemonicParsing="false" onAction="#onAcceptOrder" text="Complete Order" />
+      <Label layoutX="13.0" layoutY="5.0" text="Customer name" />
+      <Label layoutX="446.0" layoutY="241.0" text="Total sum:" />
+      <Label fx:id="totalSum" layoutX="509.0" layoutY="241.0" prefHeight="17.0" prefWidth="49.0" text="0 kr." />
+      <Label fx:id="customerName" layoutX="123.0" layoutY="5.0" text="DEFAULT" />
+      <TableView fx:id="ordersTable" layoutX="12.0" layoutY="299.0" prefHeight="182.0" prefWidth="671.0">
+         <columns>
+            <TableColumn fx:id="customerColumn" prefWidth="94.0" text="Customer" />
+            <TableColumn fx:id="orderColumn" prefWidth="76.0" text="Order" />
+            <TableColumn fx:id="AddressColumn" prefWidth="214.0" text="Delivery Address" />
+            <TableColumn fx:id="sumCollumn" minWidth="0.0" prefWidth="66.0" text="Total Sum" />
+            <TableColumn fx:id="itemsColumn" minWidth="0.0" prefWidth="87.0" text="Total Items" />
+            <TableColumn fx:id="statusColumn" prefWidth="117.0" text="Status" />
+         </columns>
+      </TableView>
+      <Button layoutX="12.0" layoutY="491.0" mnemonicParsing="false" onAction="#onRefreshButton" text="Refresh Order List" />
+   </children>
+</AnchorPane>
